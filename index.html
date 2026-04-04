@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Archive Radio - Synchronized</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#120a02;--frame:#5c3820;
+  --brand-bg:linear-gradient(90deg,#2a1808,#3d2410,#2a1808);--brand-border:#5c3820;
+  --logo-color:#d4a843;--logo-glow:rgba(212,168,67,0.6);
+  --np-color:#e8c878;--ch-color:#d4a843;--ch-glow:#d4a843;
+  --btn-bg:linear-gradient(145deg,#3d2410,#2a1808);--btn-border:#5c3820;--btn-color:#8a6830;
+  --cnt-color:#e8c878;--gc-bg:#2a1808;--gc-border:#3d2410;
+}
+
+body{
+  background:var(--bg);
+  color:#eee;
+  font-family:system-ui,sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+
+.radio{
+  background:var(--frame);
+  border-radius:8px;
+  padding:30px;
+  width:100%;
+  max-width:600px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
+}
+
+.brand{
+  background:var(--brand-bg);
+  border:2px solid var(--brand-border);
+  border-radius:4px;
+  padding:12px 20px;
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.logo{
+  font-family:'Orbitron',sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--logo-color);
+  text-shadow:0 0 20px var(--logo-glow);
+  letter-spacing:3px;
+}
+
+.display{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  border-radius:4px;
+  padding:20px;
+  margin-bottom:25px;
+}
+
+.station-num{
+  font-family:'VT323',monospace;
+  font-size:48px;
+  color:var(--ch-color);
+  text-shadow:0 0 15px var(--ch-glow);
+  text-align:center;
+  line-height:1;
+  margin-bottom:8px;
+}
+
+.station-name{
+  font-family:'Rajdhani',sans-serif;
+  font-size:24px;
+  color:var(--np-color);
+  font-weight:600;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.now-playing{
+  font-family:'VT323',monospace;
+  font-size:14px;
+  color:var(--cnt-color);
+  text-align:center;
+  margin-bottom:15px;
+  min-height:40px;
+}
+
+audio{
+  width:100%;
+  height:40px;
+}
+
+.controls{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.btn{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  border-radius:4px;
+  color:var(--btn-color);
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  padding:15px;
+  cursor:pointer;
+  transition:all 0.2s;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.5);
+}
+
+.btn.active{
+  background:var(--ch-color);
+  color:#000;
+  box-shadow:0 0 20px var(--ch-glow);
+}
+
+.volume{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  border-radius:4px;
+  padding:15px;
+}
+
+.vol-label{
+  font-family:'Rajdhani',sans-serif;
+  font-size:14px;
+  color:var(--cnt-color);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+input[type="range"]{
+  width:100%;
+  height:6px;
+  background:#1a0f05;
+  border-radius:3px;
+  outline:none;
+  -webkit-appearance:none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:20px;
+  height:20px;
+  background:var(--ch-color);
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 0 10px var(--ch-glow);
+}
+
+input[type="range"]::-moz-range-thumb{
+  width:20px;
+  height:20px;
+  background:var(--ch-color);
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 0 10px var(--ch-glow);
+  border:none;
+}
+</style>
+</head>
+<body>
+
+<div class="radio">
+  <div class="brand">
+    <div class="logo">ARCHIVE RADIO</div>
+  </div>
+
+  <div class="display">
+    <div class="station-num" id="num">950</div>
+    <div class="station-name" id="name">🔥 Classic Rap Radio</div>
+    <div class="now-playing" id="now-playing">Initializing synchronized broadcast...</div>
+    <audio id="player" controls></audio>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="prev()">◄ PREV</button>
+    <button class="btn" onclick="power()" id="pwr">POWER</button>
+    <button class="btn" onclick="next()">NEXT ►</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="go(0)">950</button>
+    <button class="btn" onclick="go(1)">951</button>
+    <button class="btn" onclick="go(2)">952</button>
+    <button class="btn" onclick="go(3)">953</button>
+    <button class="btn" onclick="go(4)">954</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="go(5)">955</button>
+    <button class="btn" onclick="go(6)">956</button>
+    <button class="btn" onclick="go(7)">957</button>
+    <button class="btn" onclick="go(8)">958</button>
+    <button class="btn" onclick="go(9)">959</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="go(10)">960</button>
+    <button class="btn" onclick="go(11)">961</button>
+    <button class="btn" onclick="go(12)">962</button>
+    <button class="btn" onclick="go(13)">963</button>
+    <button class="btn" onclick="random()">🔀</button>
+  </div>
+
+  <div class="volume">
+    <div class="vol-label">Volume</div>
+    <input type="range" id="vol" min="0" max="100" value="70">
+  </div>
+</div>
+
+<script>
+// EXACT COPY OF TV MUSIC CHANNELS
+const STATIONS = [
+  {num:950, name:"🔥 Classic Rap Radio", cat:"Music", master:true, networkShows:["RicNuttIse-bPresentsWelcomeToSyndiegoMixtapes","dedication-2-lil-wayne","tdolapt1bykazeloon","Hiphop-farwest_-_lil_d_-_liveFast_die_young","the-drive-in-theatre-currensy","kiz-mixtapes","Pastor_Troy_-_Crown_Royal_Legend-2013","14yogottiigotemftlilwayneandthebirdman","2-09-i-wanna-disc-2-east-coast-edition-kurupt_202305","from-me-to-u-juelz","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_3-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","DJ_Ty_Boogie_-_The_Greatest_Whoever_Done_It_13_-MixFiend-2007","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_73-2011","cole-world-sideline-story-jcole-itunes","lil-peep-live-forever_202503","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_86-2011","va-dj-chuck-t-down-south-slangin-vol.-51-bootleg-2008-fpuo","va-dj-chuck-t-down-south-slangin-vol.-48-bootleg-2008-fpuo","dj-lindo_20251212_2301","Gangsta_Grillz_The_Whole_Series__Covers","VA-Superstar_Jay_-_I_Am_Mixtapes_197-2017","RonaldBigMacdonaldKazeLoon","VA-Superstar_Jay_-_I_Am_Mixtapes_208-2018","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes-2014","FlexinNReppin2DatPiff.com","VA-Superstar_Jay_-_I_Am_Mixtapes_207-2018","mixtapes_202212","VA-Superstar_Jay_-_I_Am_Mixtapes_194-2016","VA-Superstar_Jay_-_I_Am_Mixtapes_186-2016","DJ_Stretch_-_Mixtapes_For_Dummyz_Vol_1_Feat._Project_Pat_and_Three_6_Mafia-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_200-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_147-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_199-2017"], avgDur:2400},
+  {num:951, name:"💎 Superstar Jay Radio", cat:"Music", master:true, networkShows:["hiphopmixtapes2032","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_6-2014","Exclusive_Tunes_100_-_Biggy_Jiggy_Mixtapes","lil-wayne-da-drought-2","VA-Superstar_Jay_-_I_Am_Mixtapes_100-2011","Exclusive_Tunes_S.G._15_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_2-2012","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_4-2014","Exclusive_Tunes_41_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_2-2014","Exclusive_Tunes_S.G._6_-_Biggy_Jiggy_Mixtapes","king-of-the-mischievous-south-vol.-2","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_3-2012","Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._47-2011","VA-DJ_Red_Skull__DJ_ASAP_and_DJ_Suspence_-_5_Star_Mixtapes-2018","DJ_Messiah_and_Lloyd_Banks-I_Am_Mixtapes_2_Punchline_King_Edition-2008-MF","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_2-2011","Exclusive_Tunes_S.G._16_-_Biggy_Jiggy_Mixtapes","DJ_Ant-Lo_-_Radio_Play_7-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_211-2019","VA-Superstar_Jay_-_I_Am_Mixtapes_148-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_185-2015","VA-Superstar_Jay_-_I_Am_Mixtapes_77-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_74-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_209_Mixtape_Creed-2018","VA-Superstar_Jay_-_I_Am_Mixtapes_183-2015","VA-Superstar_Jay_-_I_Am_Mixtapes_150-2013","Exclusive_Tunes_S.G._7_-_Biggy_Jiggy_Mixtapes","VA-Superstar_Jay_-_I_Am_Mixtapes_76-2011","Superstar_Jay_-_I_Am_Mixtapes_71-2011","Exclusive_Tunes_S.G._13_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_98-2009","Obie_Trice_-_The_Fifth-2019","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_6-2012"], avgDur:2400},
+  {num:952, name:"🌊 DJ Masters Radio", cat:"Music", master:true, networkShows:["VA-Superstar_Jay_-_I_Am_Mixtapes_132-2012","Superstar_Jay_-_I_Am_Mixtapes_85-2011","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_63-2010","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D-2012","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","Superstar_Jay_-_I_Am_Mixtapes_92-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_161-2014","VA-BIggy_Jiggy_Mixtapes_-_Exclusive_Tunes_97-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_93-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_138-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_126-2012","VA-DJ_Messiah-I_Am_Mixtapes_Lil_Wayne_Freestyle_Edition-Bootleg-2008-GT4","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_95-2009","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_96-2009","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_4-2012","Superstar_Jay_-_I_Am_Mixtapes_68_Hosted_By_Lil_Kim-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_54_Hosted_By_Lamar_Odom-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_149-2013","VA-Biggy_Jiggy_Mixtapes_-_Exclusives_Tunes_S.G._23-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_104-2011","Superstar_Jay_-_I_Am_Mixtapes_94-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._30-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_118_Hosted_By_Waka_Flocka-2012","Papoose_collection","Redman_-_Funk_From_Hell-2010","DJ_Critical_Hype_-_The_Art_Of_Kendrick_Lamar_Blends-2012","DJ_Green_Lantern_and_Jadakiss_-_Kiss_My_Ass_The_Champ_Is_Here_Pt.2","VA-Kochece_and_Jim_Jones_-_One_Eyed_Willy_Vol.2Bootleg-2006","VA-DJ_Hektik_-_Inspired_By_The_Streets_43-2019","Royce_Da_5_9_-_The_Bar_Exam_4_Hosted_By_DJ_Green_Lantern-2017","VA-J._Armz-How_To_Be_An_Mc_Vol.612009","N.O.R.E._-_Crack_on_Steroids_Hosted_By_DJ_Green_Lantern-2012","Method_Man_And_Redman_-_Lights_Out_Mixed_By_DJ_Green_Lantern-2009","Tape_Kingz_15th_Anniversary_Mixtape","VA-Tony_Touch-Hip_Hop_88-Bootleg-2009"], avgDur:2400},
+  {num:953, name:"🎤 Hip Hop Classics", cat:"Music", master:true, networkShows:["DJ_Green_Lantern_and_Don_Cannon_Present_B.o.B._-_B.o.B._Vs._Bobby_Ray_No_DJ_Versi","DJ_Green_Lantern_-_Master_Class-2011","Suge_White_Presents_Jadakiss_and_Styles_P_-_Brothers-2012","Royce_Da_59-Bar_Exam_2_Mixed_By_DJ_Green_Lantern-2008","Nature-N-Noreaga_-_Queensbridge_2_Lefrak-2008","VA-DJ_Hood_and_DJ_Whiteowl_-_Kiss_That_Ass_Goodbye_Pt._1","DJ_Green_Lantern_And_Jay-Z_-_Creative_Control-2010","DJ_007_and_Jim_Jones-Pray_For_A_HustlaBootleg2010-","VA-DJ_Green_Lantern_-_Invasion_Radio_2K10-2010","the-champ-is-here-jadakiss","Capone-N-Noreaga_and_DJ_Green_Lantern-_Camouflage_Season-2010","VA-DJ_Holiday__DJ_Kutt_Throat_and_DJ_Green_Lantern_-_BET_Hip_Hop_Awards_2010_Invas","VA-DJ_Green_Lantern-I_Produced_That-Bootleg-2007_Bootleg_mixfiend","VA-DJ_Big_Mike_-_Soundtrack_To_The_Streets_2K20_Pt._3-2020","DJ_Mystery_-_L.O.X._Classics-2021","Kodak_Black_-_Unreleased-2016","01-rhymin-stealin","me-against-the-world_202510","stankonia_202511","1993-wu-tang-clan-enter-the-wu-tang-36-chambers","Boss_Hogg_Outlawz_-_Still_On_Da_Grind_2K10_2CD-2010","likefatherlikeson_202403","bad-vibes-forever_202409","liquid-swords-gza-wu-tang","doctors-advocate_202406","curtis_20240624","the-inspiration","Lil_Wayne_and_DJ_Drama_-_Dedication_5-2013","exclusive_202405","kings-of-crunk","timbaland-presents-shock-value","rolling-papers","bobs-04.-ms.-fat-booty","thug-pound-_-thug-pound_202501","the-infamous-mobb-deep_202409","the-blue-carpet-treatment","11.-emerica-feat.-young-life-and-chink-santana_202401"], avgDur:2400},
+  {num:954, name:"🎸 Classic Rock Radio", cat:"Music", master:true, networkShows:["METEORA20","linkinparkhybridtheory_202007","led-zeppelin_202510","abbey-road_202512","1973-pink-floyd-the-dark-side-of-the-moon","nirvana-in-utero_20250729","nevermind_202410","pearl-jam_202510","1963-the-beatles-please-please-me"], avgDur:2400},
+  {num:955, name:"🕺 Funk & Soul Radio", cat:"Music", master:true, networkShows:["beegeeshereatlast","bad_20260113","prince_20251023","bob_marley_catch_the-1995-mfsl"], avgDur:2400},
+  {num:956, name:"🎛️ Electronic Radio", cat:"Music", master:true, networkShows:["daft-punk-random-access-memories-2013","daft-punk-discovery-2001","kraftwerk_202511","the-prodigy_202509","massive-attack_202509","moby_202511"], avgDur:2400},
+  {num:957, name:"🥁 Drum & Bass Radio", cat:"Music", master:true, networkShows:["rz100","good_looking_records-vinyl-eps","wipeoutost","wieput_fusion_soundtrack-2002"], avgDur:2400},
+  {num:958, name:"📼 80s Hits Radio", cat:"Music", master:true, networkShows:["te_20230213","wave-goodbye-to-the-80s"], avgDur:2400},
+  {num:959, name:"🕺 EuroDance Radio", cat:"Music", master:true, networkShows:["90s-eurodance-part-ii-compiled-by-electro75-2018"], avgDur:2400},
+  {num:960, name:"🔊 Dubstep Radio", cat:"Music", master:true, networkShows:["rz098"], avgDur:2400},
+  {num:961, name:"🌆 Synthwave Radio", cat:"Music", master:true, networkShows:["synthwave-dreams-vol.-1-16"], avgDur:2400},
+  {num:962, name:"⚡ Hardcore Radio", cat:"Music", master:true, networkShows:["rz046","rz137","WAR004","rz110"], avgDur:2400},
+  {num:963, name:"🌌 Ambient Radio", cat:"Music", master:true, networkShows:["rz123","rz016","matrix-soundtrack-collection","new-emotions-vol.1-15","v-a-adismal-music-collection","final-fantasy-vii-1997-ost","the-legend-of-zelda-ocarina-of-time-original-soundtrack"], avgDur:2400}
+];
+
+let cur = 0;
+let on = true;
+const p = document.getElementById('player');
+const pwr = document.getElementById('pwr');
+const metaCache = {};
+
+// EXACT TV SYNC LOGIC
+async function fetchFiles(identifier){
+  if(metaCache[identifier]) return metaCache[identifier];
+  
+  try{
+    const r = await fetch('https://archive.org/metadata/' + identifier);
+    const j = await r.json();
+    
+    const files = j.files.filter(f => {
+      if(!f.name) return false;
+      
+      const validExtensions = ['.mp3', '.m4a', '.aac', '.ogg', '.oga', '.flac', '.wav', '.webm', '.mkv'];
+      const hasValidExt = validExtensions.some(ext => f.name.toLowerCase().endsWith(ext));
+      if(!hasValidExt) return false;
+      
+      if(f.name.includes('_thumb') || f.name.includes('_sample')) return false;
+      if(f.source === 'metadata') return false;
+      
+      const nameLower = f.name.toLowerCase();
+      if(nameLower.includes('skit')) return false;
+      if(nameLower.includes('intro')) return false;
+      if(nameLower.includes('outro')) return false;
+      if(nameLower.includes('interlude')) return false;
+      
+      const length = parseFloat(f.length);
+      if(!isNaN(length) && length > 0 && length < 90) return false;
+      
+      const size = parseFloat(f.size);
+      if(!isNaN(size) && size > 500000000) return false;
+      
+      return true;
+    }).sort((a,b) => {
+      const aScore = (a.name.endsWith('.mp4') || a.name.endsWith('.mp3')) ? 2 : (a.name.endsWith('.ia.mp4')) ? 1 : 0;
+      const bScore = (b.name.endsWith('.mp4') || b.name.endsWith('.mp3')) ? 2 : (b.name.endsWith('.ia.mp4')) ? 1 : 0;
+      return bScore - aScore || a.name.localeCompare(b.name);
+    });
+    
+    const result = files.map(f => ({
+      u: 'https://archive.org/download/' + identifier + '/' + encodeURIComponent(f.name),
+      n: f.name.replace(/\.[^.]+$/, '').replace(/[-_.]/g, ' ').trim(),
+      dur: parseFloat(f.length) || 180
+    }));
+    
+    if(result.length) metaCache[identifier] = result;
+    return result;
+  } catch(e) {
+    console.error('Error fetching files from', identifier, e);
+    return [];
+  }
+}
+
+async function playSync(){
+  if(!on) return;
+  
+  const ch = STATIONS[cur];
+  const showList = ch.networkShows || [];
+  if(showList.length === 0) return;
+  
+  // EXACT TV SYNC CALCULATION
+  const blockDuration = 180; // 3 min
+  const now = Date.now();
+  const secondsSinceMidnight = Math.floor(now / 1000) % 86400;
+  const totalBlocks = Math.floor(secondsSinceMidnight / blockDuration);
+  const showIndex = totalBlocks % showList.length;
+  const timeIntoBlock = secondsSinceMidnight % blockDuration;
+  
+  const today = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+  const episodeSeed = (today + totalBlocks) % 1000;
+  
+  const currentShow = showList[showIndex];
+  const nextShow = showList[(showIndex + 1) % showList.length];
+  
+  console.log('Syncing:', {show: currentShow, block: totalBlocks, timeIntoBlock});
+  
+  document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}... | Next: ${nextShow.substring(0,20)}...`;
+  
+  // Fetch tracks
+  const files = await fetchFiles(currentShow);
+  if(files.length === 0){
+    document.getElementById('now-playing').textContent = 'No tracks available';
+    return;
+  }
+  
+  const trackIndex = episodeSeed % files.length;
+  const track = files[trackIndex];
+  
+  p.src = track.u;
+  p.currentTime = Math.min(timeIntoBlock, track.dur - 5);
+  p.play().catch(e => console.log('Play blocked:', e));
+}
+
+function go(i){
+  if(!on) return;
+  cur = i;
+  const s = STATIONS[i];
+  document.getElementById('num').textContent = s.num;
+  document.getElementById('name').textContent = s.name;
+  playSync();
+  
+  document.querySelectorAll('.btn').forEach((b,x) => {
+    if(x >= 3 && x <= 16) b.classList.toggle('active', x-3 === i);
+  });
+}
+
+function next(){
+  if(!on) return;
+  go((cur + 1) % STATIONS.length);
+}
+
+function prev(){
+  if(!on) return;
+  go((cur - 1 + STATIONS.length) % STATIONS.length);
+}
+
+function random(){
+  if(!on) return;
+  go(Math.floor(Math.random() * STATIONS.length));
+}
+
+function power(){
+  on = !on;
+  if(on){
+    pwr.textContent = 'POWER';
+    pwr.classList.remove('active');
+    go(cur);
+  } else {
+    pwr.textContent = 'OFF';
+    pwr.classList.add('active');
+    p.pause();
+    p.src = '';
+  }
+}
+
+document.getElementById('vol').oninput = function(){
+  p.volume = this.value / 100;
+};
+
+p.addEventListener('ended', () => {
+  if(on){
+    // When track ends, move to NEXT track in the collection, don't resync to same track
+    setTimeout(async () => {
+      const ch = STATIONS[cur];
+      const showList = ch.networkShows || [];
+      if(showList.length === 0) return;
+      
+      const blockDuration = 180;
+      const now = Date.now();
+      const secondsSinceMidnight = Math.floor(now / 1000) % 86400;
+      const totalBlocks = Math.floor(secondsSinceMidnight / blockDuration);
+      const showIndex = totalBlocks % showList.length;
+      
+      const today = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+      const episodeSeed = (today + totalBlocks) % 1000;
+      
+      const currentShow = showList[showIndex];
+      const files = await fetchFiles(currentShow);
+      if(files.length === 0) return;
+      
+      // Get NEXT track (not same track)
+      const currentTrackIndex = episodeSeed % files.length;
+      const nextTrackIndex = (currentTrackIndex + 1) % files.length;
+      const track = files[nextTrackIndex];
+      
+      p.src = track.u;
+      p.currentTime = 0; // Start from beginning
+      p.play().catch(e => console.log('Play blocked:', e));
+    }, 100);
+  }
+});
+
+// Resync every 3 minutes (when block changes)
+setInterval(() => {
+  if(on) playSync();
+}, 180000);
+
+go(0);
+</script>
+</body>
+</html>
