@@ -337,7 +337,7 @@ async function playSync(){
   const track = files[trackIndex];
   
   p.src = track.u;
-  p.currentTime = Math.min(timeIntoBlock, track.dur - 5);
+  p.currentTime = 0; // Always start from beginning
   p.play().catch(e => console.log('Play blocked:', e));
 }
 
@@ -420,10 +420,7 @@ p.addEventListener('ended', () => {
   }
 });
 
-// Resync every 3 minutes (when block changes)
-setInterval(() => {
-  if(on) playSync();
-}, 180000);
+// Don't auto-resync - let tracks play naturally and only sync on station change
 
 go(0);
 </script>
