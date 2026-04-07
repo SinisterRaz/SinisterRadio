@@ -17,6 +17,46 @@
   --cnt-color:#e8c878;--gc-bg:#2a1808;--gc-border:#3d2410;
 }
 
+/* Blue Theme */
+:root.blue{
+  --bg:#020a12;--frame:#203858;
+  --brand-bg:linear-gradient(90deg,#08182a,#10243d,#08182a);--brand-border:#203858;
+  --logo-color:#43a8d4;--logo-glow:rgba(67,168,212,0.6);
+  --np-color:#78c8e8;--ch-color:#43a8d4;--ch-glow:#43a8d4;
+  --btn-bg:linear-gradient(145deg,#10243d,#08182a);--btn-border:#203858;--btn-color:#3086a8;
+  --cnt-color:#78c8e8;--gc-bg:#08182a;--gc-border:#10243d;
+}
+
+/* Red Theme */
+:root.red{
+  --bg:#120202;--frame:#582020;
+  --brand-bg:linear-gradient(90deg,#2a0808,#3d1010,#2a0808);--brand-border:#582020;
+  --logo-color:#d44343;--logo-glow:rgba(212,67,67,0.6);
+  --np-color:#e87878;--ch-color:#d44343;--ch-glow:#d44343;
+  --btn-bg:linear-gradient(145deg,#3d1010,#2a0808);--btn-border:#582020;--btn-color:#a83030;
+  --cnt-color:#e87878;--gc-bg:#2a0808;--gc-border:#3d1010;
+}
+
+/* Green Theme */
+:root.green{
+  --bg:#021208;--frame:#205838;
+  --brand-bg:linear-gradient(90deg,#082a18,#103d24,#082a18);--brand-border:#205838;
+  --logo-color:#43d487;--logo-glow:rgba(67,212,135,0.6);
+  --np-color:#78e8a8;--ch-color:#43d487;--ch-glow:#43d487;
+  --btn-bg:linear-gradient(145deg,#103d24,#082a18);--btn-border:#205838;--btn-color:#30a868;
+  --cnt-color:#78e8a8;--gc-bg:#082a18;--gc-border:#103d24;
+}
+
+/* Purple Theme */
+:root.purple{
+  --bg:#0a0212;--frame:#382058;
+  --brand-bg:linear-gradient(90deg,#18082a,#24103d,#18082a);--brand-border:#382058;
+  --logo-color:#8743d4;--logo-glow:rgba(135,67,212,0.6);
+  --np-color:#a878e8;--ch-color:#8743d4;--ch-glow:#8743d4;
+  --btn-bg:linear-gradient(145deg,#24103d,#18082a);--btn-border:#382058;--btn-color:#6830a8;
+  --cnt-color:#a878e8;--gc-bg:#18082a;--gc-border:#24103d;
+}
+
 body{
   background:var(--bg);
   color:#eee;
@@ -103,6 +143,74 @@ audio{
   margin-bottom:20px;
 }
 
+.dial-container{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  border-radius:4px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.dial-label{
+  font-family:'Rajdhani',sans-serif;
+  font-size:14px;
+  color:var(--cnt-color);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  text-align:center;
+}
+
+.station-display{
+  font-family:'VT323',monospace;
+  font-size:20px;
+  color:var(--ch-color);
+  text-align:center;
+  margin-bottom:15px;
+  min-height:24px;
+}
+
+.dial-slider{
+  width:100%;
+  height:40px;
+  background:linear-gradient(90deg,#1a0f05,var(--ch-color),#1a0f05);
+  border-radius:20px;
+  outline:none;
+  -webkit-appearance:none;
+  margin-bottom:10px;
+  cursor:pointer;
+}
+
+.dial-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:30px;
+  height:30px;
+  background:var(--logo-color);
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 0 20px var(--logo-glow),inset 0 0 10px rgba(0,0,0,0.5);
+  border:3px solid var(--btn-border);
+}
+
+.dial-slider::-moz-range-thumb{
+  width:30px;
+  height:30px;
+  background:var(--logo-color);
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 0 20px var(--logo-glow),inset 0 0 10px rgba(0,0,0,0.5);
+  border:3px solid var(--btn-border);
+}
+
+.dial-markers{
+  display:flex;
+  justify-content:space-between;
+  font-family:'VT323',monospace;
+  font-size:14px;
+  color:var(--cnt-color);
+  padding:0 5px;
+}
+
 .btn{
   background:var(--btn-bg);
   border:2px solid var(--btn-border);
@@ -127,6 +235,87 @@ audio{
   background:var(--ch-color);
   color:#000;
   box-shadow:0 0 20px var(--ch-glow);
+}
+
+.theme-menu{
+  display:none;
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  border-radius:4px;
+  margin-bottom:20px;
+  overflow:hidden;
+}
+
+.theme-menu.open{
+  display:block;
+}
+
+.theme-menu-header{
+  background:var(--brand-bg);
+  border-bottom:2px solid var(--brand-border);
+  padding:12px 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:'Rajdhani',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  color:var(--logo-color);
+  letter-spacing:1px;
+}
+
+.close-btn{
+  background:transparent;
+  border:none;
+  color:var(--logo-color);
+  font-size:20px;
+  cursor:pointer;
+  padding:0;
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.close-btn:hover{
+  color:var(--ch-color);
+}
+
+.theme-options{
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.theme-btn{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  border-radius:4px;
+  padding:12px 15px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+
+.theme-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.5);
+}
+
+.theme-icon{
+  font-size:24px;
+}
+
+.theme-name{
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  color:var(--btn-color);
+  letter-spacing:1px;
 }
 
 .volume{
@@ -190,33 +379,62 @@ input[type="range"]::-moz-range-thumb{
   </div>
 
   <div class="controls">
-    <button class="btn" onclick="prev()">◄ PREV</button>
+    <button class="btn" onclick="prevTrack()">⏮️ PREV TRACK</button>
     <button class="btn" onclick="power()" id="pwr">POWER</button>
-    <button class="btn" onclick="next()">NEXT ►</button>
+    <button class="btn" onclick="nextTrack()">NEXT TRACK ⏭️</button>
   </div>
 
   <div class="controls">
-    <button class="btn" onclick="go(0)">950</button>
-    <button class="btn" onclick="go(1)">951</button>
-    <button class="btn" onclick="go(2)">952</button>
-    <button class="btn" onclick="go(3)">953</button>
-    <button class="btn" onclick="go(4)">954</button>
+    <button class="btn" onclick="toggleThemeMenu()">🎨 THEMES</button>
+  </div>
+
+  <div class="theme-menu" id="theme-menu">
+    <div class="theme-menu-header">
+      <span>SELECT THEME</span>
+      <button class="close-btn" onclick="toggleThemeMenu()">✕</button>
+    </div>
+    <div class="theme-options">
+      <button class="theme-btn" onclick="changeTheme('brown')">
+        <span class="theme-icon">🟤</span>
+        <span class="theme-name">Brown Classic</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('blue')">
+        <span class="theme-icon">🔵</span>
+        <span class="theme-name">Blue Ocean</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('red')">
+        <span class="theme-icon">🔴</span>
+        <span class="theme-name">Red Fire</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('green')">
+        <span class="theme-icon">🟢</span>
+        <span class="theme-name">Green Forest</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('purple')">
+        <span class="theme-icon">🟣</span>
+        <span class="theme-name">Purple Night</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="dial-container">
+    <div class="dial-label">STATION TUNER</div>
+    <div class="station-display" id="station-display">950 - 🔥 Classic Rap Radio</div>
+    <input type="range" id="dial" min="0" max="16" value="0" class="dial-slider">
+    <div class="dial-markers">
+      <span>950</span>
+      <span>955</span>
+      <span>960</span>
+      <span>966</span>
+    </div>
   </div>
 
   <div class="controls">
-    <button class="btn" onclick="go(5)">955</button>
-    <button class="btn" onclick="go(6)">956</button>
-    <button class="btn" onclick="go(7)">957</button>
-    <button class="btn" onclick="go(8)">958</button>
-    <button class="btn" onclick="go(9)">959</button>
-  </div>
-
-  <div class="controls">
-    <button class="btn" onclick="go(10)">960</button>
-    <button class="btn" onclick="go(11)">961</button>
-    <button class="btn" onclick="go(12)">962</button>
-    <button class="btn" onclick="go(13)">963</button>
-    <button class="btn" onclick="random()">🔀</button>
+    <button class="btn" onclick="changeTheme('brown')">🟤</button>
+    <button class="btn" onclick="changeTheme('blue')">🔵</button>
+    <button class="btn" onclick="changeTheme('red')">🔴</button>
+    <button class="btn" onclick="changeTheme('green')">🟢</button>
+    <button class="btn" onclick="changeTheme('purple')">🟣</button>
   </div>
 
   <div class="volume">
@@ -231,21 +449,27 @@ const STATIONS = [
   {num:950, name:"🔥 Classic Rap Radio", cat:"Music", master:true, networkShows:["RicNuttIse-bPresentsWelcomeToSyndiegoMixtapes","dedication-2-lil-wayne","tdolapt1bykazeloon","Hiphop-farwest_-_lil_d_-_liveFast_die_young","the-drive-in-theatre-currensy","kiz-mixtapes","Pastor_Troy_-_Crown_Royal_Legend-2013","14yogottiigotemftlilwayneandthebirdman","2-09-i-wanna-disc-2-east-coast-edition-kurupt_202305","from-me-to-u-juelz","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_3-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","DJ_Ty_Boogie_-_The_Greatest_Whoever_Done_It_13_-MixFiend-2007","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_73-2011","cole-world-sideline-story-jcole-itunes","lil-peep-live-forever_202503","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_86-2011","va-dj-chuck-t-down-south-slangin-vol.-51-bootleg-2008-fpuo","va-dj-chuck-t-down-south-slangin-vol.-48-bootleg-2008-fpuo","dj-lindo_20251212_2301","Gangsta_Grillz_The_Whole_Series__Covers","VA-Superstar_Jay_-_I_Am_Mixtapes_197-2017","RonaldBigMacdonaldKazeLoon","VA-Superstar_Jay_-_I_Am_Mixtapes_208-2018","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes-2014","FlexinNReppin2DatPiff.com","VA-Superstar_Jay_-_I_Am_Mixtapes_207-2018","mixtapes_202212","VA-Superstar_Jay_-_I_Am_Mixtapes_194-2016","VA-Superstar_Jay_-_I_Am_Mixtapes_186-2016","DJ_Stretch_-_Mixtapes_For_Dummyz_Vol_1_Feat._Project_Pat_and_Three_6_Mafia-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_200-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_147-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_199-2017"], avgDur:2400},
   {num:951, name:"💎 Superstar Jay Radio", cat:"Music", master:true, networkShows:["hiphopmixtapes2032","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_6-2014","Exclusive_Tunes_100_-_Biggy_Jiggy_Mixtapes","lil-wayne-da-drought-2","VA-Superstar_Jay_-_I_Am_Mixtapes_100-2011","Exclusive_Tunes_S.G._15_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_2-2012","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_4-2014","Exclusive_Tunes_41_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_2-2014","Exclusive_Tunes_S.G._6_-_Biggy_Jiggy_Mixtapes","king-of-the-mischievous-south-vol.-2","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_3-2012","Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._47-2011","VA-DJ_Red_Skull__DJ_ASAP_and_DJ_Suspence_-_5_Star_Mixtapes-2018","DJ_Messiah_and_Lloyd_Banks-I_Am_Mixtapes_2_Punchline_King_Edition-2008-MF","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_2-2011","Exclusive_Tunes_S.G._16_-_Biggy_Jiggy_Mixtapes","DJ_Ant-Lo_-_Radio_Play_7-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_211-2019","VA-Superstar_Jay_-_I_Am_Mixtapes_148-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_185-2015","VA-Superstar_Jay_-_I_Am_Mixtapes_77-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_74-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_209_Mixtape_Creed-2018","VA-Superstar_Jay_-_I_Am_Mixtapes_183-2015","VA-Superstar_Jay_-_I_Am_Mixtapes_150-2013","Exclusive_Tunes_S.G._7_-_Biggy_Jiggy_Mixtapes","VA-Superstar_Jay_-_I_Am_Mixtapes_76-2011","Superstar_Jay_-_I_Am_Mixtapes_71-2011","Exclusive_Tunes_S.G._13_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_98-2009","Obie_Trice_-_The_Fifth-2019","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_6-2012"], avgDur:2400},
   {num:952, name:"🌊 DJ Masters Radio", cat:"Music", master:true, networkShows:["VA-Superstar_Jay_-_I_Am_Mixtapes_132-2012","Superstar_Jay_-_I_Am_Mixtapes_85-2011","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_63-2010","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D-2012","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","Superstar_Jay_-_I_Am_Mixtapes_92-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_161-2014","VA-BIggy_Jiggy_Mixtapes_-_Exclusive_Tunes_97-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_93-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_138-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_126-2012","VA-DJ_Messiah-I_Am_Mixtapes_Lil_Wayne_Freestyle_Edition-Bootleg-2008-GT4","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_95-2009","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_96-2009","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_4-2012","Superstar_Jay_-_I_Am_Mixtapes_68_Hosted_By_Lil_Kim-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_54_Hosted_By_Lamar_Odom-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_149-2013","VA-Biggy_Jiggy_Mixtapes_-_Exclusives_Tunes_S.G._23-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_104-2011","Superstar_Jay_-_I_Am_Mixtapes_94-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._30-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_118_Hosted_By_Waka_Flocka-2012","Papoose_collection","Redman_-_Funk_From_Hell-2010","DJ_Critical_Hype_-_The_Art_Of_Kendrick_Lamar_Blends-2012","DJ_Green_Lantern_and_Jadakiss_-_Kiss_My_Ass_The_Champ_Is_Here_Pt.2","VA-Kochece_and_Jim_Jones_-_One_Eyed_Willy_Vol.2Bootleg-2006","VA-DJ_Hektik_-_Inspired_By_The_Streets_43-2019","Royce_Da_5_9_-_The_Bar_Exam_4_Hosted_By_DJ_Green_Lantern-2017","VA-J._Armz-How_To_Be_An_Mc_Vol.612009","N.O.R.E._-_Crack_on_Steroids_Hosted_By_DJ_Green_Lantern-2012","Method_Man_And_Redman_-_Lights_Out_Mixed_By_DJ_Green_Lantern-2009","Tape_Kingz_15th_Anniversary_Mixtape","VA-Tony_Touch-Hip_Hop_88-Bootleg-2009"], avgDur:2400},
-  {num:953, name:"🎤 Hip Hop Classics", cat:"Music", master:true, networkShows:["DJ_Green_Lantern_and_Don_Cannon_Present_B.o.B._-_B.o.B._Vs._Bobby_Ray_No_DJ_Versi","DJ_Green_Lantern_-_Master_Class-2011","Suge_White_Presents_Jadakiss_and_Styles_P_-_Brothers-2012","Royce_Da_59-Bar_Exam_2_Mixed_By_DJ_Green_Lantern-2008","Nature-N-Noreaga_-_Queensbridge_2_Lefrak-2008","VA-DJ_Hood_and_DJ_Whiteowl_-_Kiss_That_Ass_Goodbye_Pt._1","DJ_Green_Lantern_And_Jay-Z_-_Creative_Control-2010","DJ_007_and_Jim_Jones-Pray_For_A_HustlaBootleg2010-","VA-DJ_Green_Lantern_-_Invasion_Radio_2K10-2010","the-champ-is-here-jadakiss","Capone-N-Noreaga_and_DJ_Green_Lantern-_Camouflage_Season-2010","VA-DJ_Holiday__DJ_Kutt_Throat_and_DJ_Green_Lantern_-_BET_Hip_Hop_Awards_2010_Invas","VA-DJ_Green_Lantern-I_Produced_That-Bootleg-2007_Bootleg_mixfiend","VA-DJ_Big_Mike_-_Soundtrack_To_The_Streets_2K20_Pt._3-2020","DJ_Mystery_-_L.O.X._Classics-2021","Kodak_Black_-_Unreleased-2016","01-rhymin-stealin","me-against-the-world_202510","stankonia_202511","1993-wu-tang-clan-enter-the-wu-tang-36-chambers","Boss_Hogg_Outlawz_-_Still_On_Da_Grind_2K10_2CD-2010","likefatherlikeson_202403","bad-vibes-forever_202409","liquid-swords-gza-wu-tang","doctors-advocate_202406","curtis_20240624","the-inspiration","Lil_Wayne_and_DJ_Drama_-_Dedication_5-2013","exclusive_202405","kings-of-crunk","timbaland-presents-shock-value","rolling-papers","bobs-04.-ms.-fat-booty","thug-pound-_-thug-pound_202501","the-infamous-mobb-deep_202409","the-blue-carpet-treatment","11.-emerica-feat.-young-life-and-chink-santana_202401"], avgDur:2400},
+  {num:953, name:"🎤 Hip Hop Classics", cat:"Music", master:true, networkShows:["DJ_Green_Lantern_and_Don_Cannon_Present_B.o.B._-_B.o.B._Vs._Bobby_Ray_No_DJ_Versi","DJ_Green_Lantern_-_Master_Class-2011","Suge_White_Presents_Jadakiss_and_Styles_P_-_Brothers-2012","Royce_Da_59-Bar_Exam_2_Mixed_By_DJ_Green_Lantern-2008","Nature-N-Noreaga_-_Queensbridge_2_Lefrak-2008","VA-DJ_Hood_and_DJ_Whiteowl_-_Kiss_That_Ass_Goodbye_Pt._1","DJ_Green_Lantern_And_Jay-Z_-_Creative_Control-2010","DJ_007_and_Jim_Jones-Pray_For_A_HustlaBootleg2010-","VA-DJ_Green_Lantern_-_Invasion_Radio_2K10-2010","the-champ-is-here-jadakiss","Capone-N-Noreaga_and_DJ_Green_Lantern-_Camouflage_Season-2010","VA-DJ_Holiday__DJ_Kutt_Throat_and_DJ_Green_Lantern_-_BET_Hip_Hop_Awards_2010_Invas","VA-DJ_Green_Lantern-I_Produced_That-Bootleg-2007_Bootleg_mixfiend","VA-DJ_Big_Mike_-_Soundtrack_To_The_Streets_2K20_Pt._3-2020","DJ_Mystery_-_L.O.X._Classics-2021","Kodak_Black_-_Unreleased-2016","01-rhymin-stealin","me-against-the-world_202510","stankonia_202511","1993-wu-tang-clan-enter-the-wu-tang-36-chambers","Boss_Hogg_Outlawz_-_Still_On_Da_Grind_2K10_2CD-2010","likefatherlikeson_202403","bad-vibes-forever_202409","liquid-swords-gza-wu-tang","doctors-advocate_202406","curtis_20240624","the-inspiration","Lil_Wayne_and_DJ_Drama_-_Dedication_5-2013","exclusive_202405","kings-of-crunk","timbaland-presents-shock-value","rolling-papers","bobs-04.-ms.-fat-booty","thug-pound-_-thug-pound_202501","the-infamous-mobb-deep_202409","the-blue-carpet-treatment","11.-emerica-feat.-young-life-and-chink-santana_202401","VA-Striclty_4_Traps_N_Trunks_Christmas_2022_Edition-2022","VA-DJ_S.R._-_Arrogant_Music_51-2022","VA-DJ_Triple_Exe-The_Passion_Of_RandB_152","VA-DJ_S.R._-_Good_Muziikk_19-2022","VA-DJ_S.R._-_Faloos_15-2022","VA-DJ_S.R._-_Dont_Kill_Our_Vibe_14-2022","VA-DJ_S.R._and_DJ_Spinatik_-_History_In_The_Making_53-2022","VA-Strictly_4_The_Traps_N_Trunks_Halloween_Edition_2022-2022","VA-DJ_S.R._-_Backwood_Music_28-2022","VA-DJ_S.R._-_No_Friends_In_The_Industry_12-2022","VA-DJ_Slim_K__OG_Ron_C_and_The_Chopstars_-_Chop_Apocalypse_X-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_65-2022","VA-DJ_Red_Skull_and_DJ_ASAP_-_Sex_and_Hip-Hop-2022","VA-DJ_Red_Skull_and_DJ_ASAP_-_Trap_Club_Music_2-2022","VA-DJ_Ben_Frank_-_Only_For_The_Plugs_32-2022","VA-Strictly_4_The_Traps_N_Trunks_182-2022","VA-DJ_Trigga_-_New_World_Order_2-2022","VA-DJ_Tokars_-_Street_Sorority-2022","VA-DJ_S.R._-_Street_imoney_41-2022","VA-DJ_S.R._-_Faloos_14-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_64-2022","VA-DJ_Konvict_-_Texas_Street_Kings_and_Queens_8-2022","VA-DJ_Immature_-_Ratchet_Azz_Friends-2022","VA-DJ_E-Dub_-_Takeoff_Season_12-2022","VA-Strictly_4_The_Traps_N_Trunks_Real_Radio_Edition_Pt._2-2022","VA-DJ_S.R._-_Only_Good_Vibes_32-2022","VA-DJ_S.R._-_History_In_The_Making_51-2022","VA-DJ_S.R._-_Backwood_Music_27-2022","VA-DJ_S.R._-_No_Friends_In_The_Industry_10-2022","VA-DJ_Konvict_-_Trap_Bangers_5-2022","VA-Strictly_4_The_Traps_N_Trunks_long_Live_Trouble_Edition-2022","VA-DJ_S.R._-_No_Foreplay_Needed_7-2022","VA-DJ_S.R._-_Faloos_12-2022","VA-Strictly_4_The_Traps_N_Trunks_180-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_63-2022","VA-Strictly_4_The_Traps_N_Trunks_Dopeboy_Edition_Pt._2-2022","VA-Strictly_4_The_Traps_N_Trunks_Memorial_Day_2022-2022","VA-Strictly_4_The_Traps_N_Trunks_179-2022","VA-DJ_S.R._-_Only_Good_Vibes_30-2022","VA-DJ_S.R._-_Smooth_Operator_9-2022","VA-DJ_S.R._-_Faloos_11-2022","VA-DJ_S.R._-_Dont_Kill_Our_Vibe_9-2022","VA-DJ_S.R._-_Backwood_Music_26-2022","VA-DJ_Smooth_Montana_-_Teflon_Don_40-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_62-2022","VA-DJ_Konvict_-_Plug_4-2022","VA-DJ_Kenny_Mac_-_Trappin_After_Dark_25-2022","VA-DJ_DES_-_The_Block_Never_Sleeps_187-2022","VA-DJ_Cinemax_-_Take_Risks_And_Prosper-2022","VA-Strictly_4_The_Traps_N_Trunks_420_Edition-2022","VA-DJ_S.R._-_Arrogant_Music_46-2022","VA-DJ_Mellz_-_March_Madness_2K22-2022","Kevin_Gates_-_Arm_and_Hammer-2016","Kevin_Gates_-_Bismillah-2017","YFN_Lucci_-_Wish_Me_Well_2-2016","Lil_Boosie_Lil-Boosie-Ana_Best_of_Boosie","Young_Thug_and_Migos_-_Migos_Thuggin-2015","VA-DJ_New_Era_-_Mood_Musiq_14-2016","Kevin_Gates_-_Gold_Paradise-2017","Lil_Uzi_Vert_-_Luv_Is_Rage_1.5-2017","Kodak_Black_-_Lil_B-I-G-_Pac-2016","Yelawolf_-_Trunk_Muzik_Returns","NBA_Young_Boy_-_Never_Broke_Again_Untouchable-2017","Drake_Vs._Tory_Lanez","Kodak_Black_-_Project_Baby_2-2017","Lil_Uzi_Vert_-_The_Rare_Uzi-2016","VA-DJ_Cortez__DJ_Wats_and_DJ_Suspence_-_Codeine_Overdose_Vol._5-2016","VA-DJ_Slick10_and_2Pair_Tate_-_Winter_Classic_2K16-2016","VA-DJ_Diggz_and_DJ_Arab_-_Press_Play_3-2016","VA-DJ_S.R._-_Arrogant_Music_10-2016","VA-DJ_Amanda_Blaze_-_Flee_God_South_Trap_Miami_2-2015","VA-DJ_Whiteowl_-_Whiteowl_Drop_That_249-2015"], avgDur:2400},
   {num:954, name:"🎸 Classic Rock Radio", cat:"Music", master:true, networkShows:["METEORA20","linkinparkhybridtheory_202007","led-zeppelin_202510","abbey-road_202512","1973-pink-floyd-the-dark-side-of-the-moon","nirvana-in-utero_20250729","nevermind_202410","pearl-jam_202510","1963-the-beatles-please-please-me"], avgDur:2400},
   {num:955, name:"🕺 Funk & Soul Radio", cat:"Music", master:true, networkShows:["beegeeshereatlast","bad_20260113","prince_20251023","bob_marley_catch_the-1995-mfsl"], avgDur:2400},
   {num:956, name:"🎛️ Electronic Radio", cat:"Music", master:true, networkShows:["daft-punk-random-access-memories-2013","daft-punk-discovery-2001","kraftwerk_202511","the-prodigy_202509","massive-attack_202509","moby_202511"], avgDur:2400},
-  {num:957, name:"🥁 Drum & Bass Radio", cat:"Music", master:true, networkShows:["rz100","good_looking_records-vinyl-eps","wipeoutost","wieput_fusion_soundtrack-2002"], avgDur:2400},
+  {num:957, name:"🥁 Drum & Bass Radio", cat:"Music", master:true, networkShows:["rz100","good_looking_records-vinyl-eps","wipeoutost","wieput_fusion_soundtrack-2002","jamendo-188268","the-art-of-noise-the-drum-and-bass-collection-1996","Sniper_-_Drum_and_Bass","soundcloud-895968703","classic-drum-and-bass-mix-2004-2006","tkset009","djfez_mixes_8189","gein-14-years-of-jungle-syndicate-gein-best-drum-and-bass","chilled-drum-and-bass","djfez_mixes_4914","djfez_mixes_10436","jamendo-308176","AndyCPendulumInnovationDrumAndBassCarnival29","djfez_mixes_1141","djfez_mixes_532","djfez_mixes_1012","DNALOUNGE-2021-04-03c","One_Nation_-_United_States_of_Drum_and_Bass_II_-_1998","One_Nation_-_United_States_Of_Drum_N_Bass_30.5.97","ultimate-drum-n-bass-1997","a-sides-illusions","goldie-saturnz-return-cd2-saturn-1998","trans-central-connection-ii-cd2-mixed-by-dj-addiction-1998","neil-trix-ft.-b.-c.-2-sixth-sense","omni-trio-the-haunted-science-1996","omnitrio-breakbeatetiquettenubirth2000","lookingback12000","ronisizereprazent-inthemode2000","djhype-junglemassivecd22000","dj-dara-from-here-to-there-2000","aphrodite-project22000","ronisize-onpointlbreaks2000","roni-size-roni-size-remixes-1995","ganja-bass-2-2000","ganja-bass-4-ganja-bass-compilations-ganja-bass-4-2000","aphrodite-recuts32000","dieselboy-patriotgamesep2000","badcompanyuk-digitalnation2000","pointsintime0092000","ltjbukem-progressionsessionsvol.5cd12000","fabriclive18andycdjhype2004","blacksunempire-drivinginsanecd12004","technicalitch-raisedbyevildemon2006","tc-evolution2007","piratestation662007","limewax-empireepwiththepanacea2007","technicalitch-thediageneep2003","ramrecords15x152007","dieselboy-substancedcd2-unmixed2008","killahmadison-deadspeech2008","nextlevel2mixedbydjfrictioncd22006","fabriclive03djhype2002","waxdoctor-cruisecontrolep2000","therapysession7mixedbypanacea2008","omni-trio-music-for-the-next-millenium-1995","roni-size-reprazent-new-forms-1997","omni-trio-skeleton-keys-1997","moving-shadow-98.1-mixed-by-rob-playford-1998","drumfunk-hooliganz-cd2-mixed-by-ez-rollers-1998","goldie-timeless-cd2-1995","full-force-cd2-1997","innovation-the-album-cd2","dj-roger-more-more-drum-more-bass","drumbassessentialscd22005","drumbassessentialscd12005","metalheadz-platinum-breakz-2-1997","jonny-l-moving-thru-air-optical-remix","metalheadz-platinum-breakz-1-1996","grooverider-mysteries-of-funk-1998https","ltj-bukem-presents-earth-volume-three-1998","ltj-bukem-presents-earth-volume-one-1996","drumfunkhooliganz2cd12000","subbase-sampler-1996","artcore-4-drum-bass-beat-technology-cd2-1997","the-different-colours-of-drum-n-bass-d1-1997","atmospheric-drum-bass-vol.-ii-cd1-1997","artcore-3-expressions-in-drum-bass-1997","soundcloud-462718026","soundcloud-209794646","jamendo-043683","ct_One_Nation_United_States_Of_Drum_N_Bass_30.5.97","mashup_ToToM_2008-Bootleg_is_Resistance_Vol_II-FLAC","mashup_Zamali_Motown_Compilation","Forgotten_Hits","hiphopmixtapes"], avgDur:2400},
   {num:958, name:"📼 80s Hits Radio", cat:"Music", master:true, networkShows:["te_20230213","wave-goodbye-to-the-80s"], avgDur:2400},
   {num:959, name:"🕺 EuroDance Radio", cat:"Music", master:true, networkShows:["90s-eurodance-part-ii-compiled-by-electro75-2018"], avgDur:2400},
-  {num:960, name:"🔊 Dubstep Radio", cat:"Music", master:true, networkShows:["rz098"], avgDur:2400},
+  {num:960, name:"🔊 Dubstep Radio", cat:"Music", master:true, networkShows:["rz098","Dubstep_Odyssey","jamendo-309436","jamendo-127486","jamendo-400457","jamendo-411053","Dubstepdubsteppin4chico","riddim-dubstep-community-vs.-dubstar-records-lp-2017","Watch_Your_Dubstep_-_EP-4741","soundcloud-301280371","soundcloud-337773931","soundcloud-325068258","this-is-dubstep-2012-various","remix-nin-com-audio-26846","soundcloud-511315206"], avgDur:2400},
   {num:961, name:"🌆 Synthwave Radio", cat:"Music", master:true, networkShows:["synthwave-dreams-vol.-1-16"], avgDur:2400},
   {num:962, name:"⚡ Hardcore Radio", cat:"Music", master:true, networkShows:["rz046","rz137","WAR004","rz110"], avgDur:2400},
-  {num:963, name:"🌌 Ambient Radio", cat:"Music", master:true, networkShows:["rz123","rz016","matrix-soundtrack-collection","new-emotions-vol.1-15","v-a-adismal-music-collection","final-fantasy-vii-1997-ost","the-legend-of-zelda-ocarina-of-time-original-soundtrack"], avgDur:2400}
+  {num:963, name:"🌌 Ambient Radio", cat:"Music", master:true, networkShows:["rz123","rz016","matrix-soundtrack-collection","new-emotions-vol.1-15","v-a-adismal-music-collection","final-fantasy-vii-1997-ost","the-legend-of-zelda-ocarina-of-time-original-soundtrack"], avgDur:2400},
+  {num:964, name:"🎧 Deejay Dan", cat:"Music", master:true, networkShows:["DeeJayDanHALLOWEENDUBSTEP2017","DeeJayDanComplextro22017","DeeJayDanBurnTheFire2013","DeeJayDanThisIsMOOMBAHCORE2013","DeeJayDanBurnTheFire22014","DeeJayDanBurnTheFire32014","dee-jay-dan-e-motion-39-2025","DeeJayDanMelodicFullOn62017","DeeJayDanMelodicFullOn112017","DeeJayDanMelodicFullOn132018","DeeJayDanMelodicFullOn162018","DeeJayDanMelodicFullOn122018","DeeJayDanMelodicFullOn72017","DeeJayDanMelodicFullOn102017","DeeJayDanEuromixSarov2352018","dee-jay-dan-capricorn-2025","dee-jay-dan-halloween-house-2025","dee-jay-dan-acid-breaks-13-2024","dee-jay-dan-acid-breaks-11-2024","dee-jay-dan-aquarius-2024","dee-jay-dan-libra-2024","deejaydanemotion342019","deejaydanwinteredm2020","deejaydanwinteredm22020","deejaydaneasternedm2020","deejaydanwinteredm32020","DeeJayDanWhiteNights92019","DeeJayDanWhiteNights32015","DeeJayDanEMotion202018","DeeJayDanKnockout2017","deejaydanstereolove2020","DeeJayDanThisIsMELODICDUBSTEP42014","DeeJayDanThisIsMELODICDUBSTEP102017","DeeJayDanThisIsMELODICDUBSTEP82015","DeeJayDanThisIsMELODICDUBSTEP112018","DeeJayDanThisIsMELODICDUBSTEP72015","DeeJayDanArabianDubstep22018","DeeJayDanThisIsMELODICDUBSTEP122018","DeeJayDanTropicalHouse2015","DeeJayDanMakeYouHappy2014","DeeJayDanFutureHouse2015","DeeJayDanHalloweenDubstep2019","DeeJayDanJapanTrance22018","deejaydanclubnights52019","DeeJayDanArabianDubstep2017","deejaydansummermegamix22019","DeeJayDanHALLOWEENTRAPDUBSTEP2017","DeeJayDanTropicalHouse22015","DeeJayDanTropicalHouse32015","deejaydansummermegamix32019","DeeJayDanHiTech2017","DeeJayDanTropicalHouse42015","deejaydan1001arabiannights2020","DeeJayDanDeepInMySoul1002019","DeeJayDanSpaceJam32016","DeeJayDanSpaceJam22015","DeeJayDanLionsHeart32016","DeeJayDanLionsHeart52016","DeeJayDanLionsHeart42016","DeeJayDanSummerIsBack32015","DeeJayDanSummerIsCalling32015","DeeJayDanSummerIsBack42017","DeeJayDanMakeYouMove2015","DeeJayDanTheWeekendStartsHere22015","DeeJayDanDieselPower2017","DeeJayDanUppercut2018","DeeJayDanComplextro52018","DeeJayDanComplextro32018","DeeJayDanImTheLaw2017","DeeJayDanBurnTheFire52016","DeeJayDanBurnTheFire42016","DeeJayDanMadness2015","DeeJayDanKnockdown2017","DeeJayDanWaitingForTheSummer22015","DeeJayDanSunriseSunset22015","DeeJayDanZeroGravity22015"], avgDur:2400},
+  {num:965, name:"🎙️ DJ Clue Radio", cat:"Music", master:true, networkShows:["VA-DJ_Clue_-_Banned_From_CD_Pt._1-2015","VA-DJ_Clue-Where_Ya_Hood_At_Pt.3-2003-WCR","DJ_clue_where_ya_hood_at_pt.1-mf-","DJ_Clue-_Hes_A_Hustler_Pt.1-mf-","DJ_Clue-_Desert_Storm_98-mf-","DJ_Clue_-_Best_of_Freestyles_vol._1--mf--","Fabolous_and_DJ_Clue_-_Friday_Night_Freestyles-2015","Fabolous_and_DJ_Clue_-_Live_From_The_718_Freestyles-2015","DJ_Clue_Best_Of_Clue_Freestyles_Pt_II","DJ_CLUE_-_STADIUM_SERIES_2-mf-","DJ_Clue_-_Hate_Me_Now_Part_2_2002-mf-","DJ_Clue_Show_Me_The_Money_2002-mf-","DJ_Clue-_Clue_For_President_PT.2-mf-","VA-DJ_Clue-Clue_Manatti-The_Clue_World_Order-1997-4HM","DJ_Clue-_Queens_Day_Pt.1_-mf-1999","DJ_Clue-_The_Curse_Of_Clue--mf--_1997","dj_clue-_clue_for_president_1-mf-1997","VA-DJ_Clue-When_Animals_Attack-2004-WCR","VA-DJ_Clue_And_Desert_Storm_Present-The_Mixtape_After_Tomorrow_-2004-mf-","DJ_Clue-DJ_Envy_Desert_Storm_Mixtape_Vol.4_-mf-_2002","DJClueSpringtymeStickup1996","Dj_Clue_Clue_For_President_Pt._3_new_Acuzations_1998-mf-"], avgDur:2400},
+  {num:966, name:"💿 Funkmaster Flex Radio", cat:"Music", master:true, networkShows:["VA-Funkmaster_Flex_-_Who_You_Mad_At_Me_Or_Yourself-2013","funkmaster-flex-hot-97-2002-side-b","FunkmasterFlex-19940709","ChuckChilloutShow-199008","FunkmasterFlex-BestOf1995-199512","ChuckChilloutShow-April1990","funkmaster-flex-hot-97-4-9-04","FunkmasterFlex-199709","FunkmasterFlex-FridayNightStreetJams-Hot97-19930130","FunkmasterFlexPeteRockHot971994","ChuckChilloutShow-withFunkmasterFlex-1989","funkmaster-flex-friday-night-street-jam-hot-97-9-26-97","funkmaster-flex-friday-night-street-jam-hot-97-7-19-96","funkmaster-flex-radio-1-rap-exchange-w-fat-joe-big-pun-flipmode-squad-missy-elli","funkmaster-flex-saturday-night-street-jam-hot-97-7-4-98","Funkmaster_Flex_-_Special_Delivery_3","Funkmaster_Flex_and_Roc-A-Fella_Presents_-_Live_Hot_97_Freestyles_Hosted_By_Jay-Z","FunkmasterFlexHot97StreetJams-19950728","djrizhot97streetjams1994"], avgDur:2400}
 ];
 
 let cur = 0;
 let on = true;
+let currentShowIndex = 0;
+let currentTrackIndex = 0;
+let currentFiles = [];
 const p = document.getElementById('player');
 const pwr = document.getElementById('pwr');
 const metaCache = {};
@@ -308,21 +532,12 @@ async function playSync(){
   const showList = ch.networkShows || [];
   if(showList.length === 0) return;
   
-  // EXACT TV SYNC CALCULATION
-  const blockDuration = 180; // 3 min
-  const now = Date.now();
-  const secondsSinceMidnight = Math.floor(now / 1000) % 86400;
-  const totalBlocks = Math.floor(secondsSinceMidnight / blockDuration);
-  const showIndex = totalBlocks % showList.length;
-  const timeIntoBlock = secondsSinceMidnight % blockDuration;
+  // Random show selection
+  currentShowIndex = Math.floor(Math.random() * showList.length);
+  const currentShow = showList[currentShowIndex];
+  const nextShow = showList[(currentShowIndex + 1) % showList.length];
   
-  const today = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
-  const episodeSeed = (today + totalBlocks) % 1000;
-  
-  const currentShow = showList[showIndex];
-  const nextShow = showList[(showIndex + 1) % showList.length];
-  
-  console.log('Syncing:', {show: currentShow, block: totalBlocks, timeIntoBlock});
+  console.log('Playing:', currentShow, 'on station:', ch.name);
   
   document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}... | Next: ${nextShow.substring(0,20)}...`;
   
@@ -333,11 +548,14 @@ async function playSync(){
     return;
   }
   
-  const trackIndex = episodeSeed % files.length;
-  const track = files[trackIndex];
+  currentFiles = files;
+  
+  // Random track selection
+  currentTrackIndex = Math.floor(Math.random() * files.length);
+  const track = files[currentTrackIndex];
   
   p.src = track.u;
-  p.currentTime = 0; // Always start from beginning
+  p.currentTime = 0;
   p.play().catch(e => console.log('Play blocked:', e));
 }
 
@@ -347,11 +565,9 @@ function go(i){
   const s = STATIONS[i];
   document.getElementById('num').textContent = s.num;
   document.getElementById('name').textContent = s.name;
+  document.getElementById('station-display').textContent = `${s.num} - ${s.name}`;
+  document.getElementById('dial').value = i;
   playSync();
-  
-  document.querySelectorAll('.btn').forEach((b,x) => {
-    if(x >= 3 && x <= 16) b.classList.toggle('active', x-3 === i);
-  });
 }
 
 function next(){
@@ -387,38 +603,61 @@ document.getElementById('vol').oninput = function(){
   p.volume = this.value / 100;
 };
 
+document.getElementById('dial').oninput = function(){
+  const stationIndex = parseInt(this.value);
+  document.getElementById('station-display').textContent = `${STATIONS[stationIndex].num} - ${STATIONS[stationIndex].name}`;
+  go(stationIndex);
+};
+
 p.addEventListener('ended', () => {
   if(on){
-    // When track ends, move to NEXT track in the collection, don't resync to same track
-    setTimeout(async () => {
-      const ch = STATIONS[cur];
-      const showList = ch.networkShows || [];
-      if(showList.length === 0) return;
-      
-      const blockDuration = 180;
-      const now = Date.now();
-      const secondsSinceMidnight = Math.floor(now / 1000) % 86400;
-      const totalBlocks = Math.floor(secondsSinceMidnight / blockDuration);
-      const showIndex = totalBlocks % showList.length;
-      
-      const today = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
-      const episodeSeed = (today + totalBlocks) % 1000;
-      
-      const currentShow = showList[showIndex];
-      const files = await fetchFiles(currentShow);
-      if(files.length === 0) return;
-      
-      // Get NEXT track (not same track)
-      const currentTrackIndex = episodeSeed % files.length;
-      const nextTrackIndex = (currentTrackIndex + 1) % files.length;
-      const track = files[nextTrackIndex];
-      
-      p.src = track.u;
-      p.currentTime = 0; // Start from beginning
-      p.play().catch(e => console.log('Play blocked:', e));
-    }, 100);
+    nextTrack();
   }
 });
+
+// Track skip functions
+function nextTrack(){
+  if(!on || currentFiles.length === 0) return;
+  
+  currentTrackIndex = (currentTrackIndex + 1) % currentFiles.length;
+  const track = currentFiles[currentTrackIndex];
+  
+  p.src = track.u;
+  p.currentTime = 0;
+  p.play().catch(e => console.log('Play blocked:', e));
+}
+
+function prevTrack(){
+  if(!on || currentFiles.length === 0) return;
+  
+  currentTrackIndex = (currentTrackIndex - 1 + currentFiles.length) % currentFiles.length;
+  const track = currentFiles[currentTrackIndex];
+  
+  p.src = track.u;
+  p.currentTime = 0;
+  p.play().catch(e => console.log('Play blocked:', e));
+}
+
+// Theme switcher
+function toggleThemeMenu(){
+  const menu = document.getElementById('theme-menu');
+  menu.classList.toggle('open');
+}
+
+function changeTheme(theme){
+  const root = document.documentElement;
+  root.className = theme;
+  localStorage.setItem('radioTheme', theme);
+  // Close menu after selection
+  const menu = document.getElementById('theme-menu');
+  menu.classList.remove('open');
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem('radioTheme');
+if(savedTheme){
+  document.documentElement.className = savedTheme;
+}
 
 // Don't auto-resync - let tracks play naturally and only sync on station change
 
