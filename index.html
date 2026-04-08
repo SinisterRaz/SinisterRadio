@@ -591,12 +591,25 @@ function power(){
     pwr.textContent = 'POWER';
     pwr.classList.remove('active');
     go(cur);
+    // Tell Second Life radio is ON
+    sendToSL('RADIO_ON');
   } else {
     pwr.textContent = 'OFF';
     pwr.classList.add('active');
     p.pause();
     p.src = '';
+    // Tell Second Life radio is OFF
+    sendToSL('RADIO_OFF');
   }
+}
+
+// Send messages to Second Life
+function sendToSL(message){
+  // Try to communicate with SL via console (LSL can read this)
+  if(window.parent){
+    window.parent.postMessage(message, '*');
+  }
+  console.log('SL_MESSAGE:', message);
 }
 
 document.getElementById('vol').oninput = function(){
