@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Archive Radio - Synchronized</title>
+<title>Sinister Division's Dead Archive Radio</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -57,6 +57,461 @@
   --cnt-color:#a878e8;--gc-bg:#18082a;--gc-border:#24103d;
 }
 
+/* Cyan Theme */
+:root.cyan{
+  --bg:#021212;--frame:#205858;
+  --brand-bg:linear-gradient(90deg,#082a2a,#103d3d,#082a2a);--brand-border:#205858;
+  --logo-color:#43d4d4;--logo-glow:rgba(67,212,212,0.6);
+  --np-color:#78e8e8;--ch-color:#43d4d4;--ch-glow:#43d4d4;
+  --btn-bg:linear-gradient(145deg,#103d3d,#082a2a);--btn-border:#205858;--btn-color:#30a8a8;
+  --cnt-color:#78e8e8;--gc-bg:#082a2a;--gc-border:#103d3d;
+}
+
+/* Orange Theme */
+:root.orange{
+  --bg:#120802;--frame:#583820;
+  --brand-bg:linear-gradient(90deg,#2a1808,#3d2410,#2a1808);--brand-border:#583820;
+  --logo-color:#d47843;--logo-glow:rgba(212,120,67,0.6);
+  --np-color:#e8a878;--ch-color:#d47843;--ch-glow:#d47843;
+  --btn-bg:linear-gradient(145deg,#3d2410,#2a1808);--btn-border:#583820;--btn-color:#a86030;
+  --cnt-color:#e8a878;--gc-bg:#2a1808;--gc-border:#3d2410;
+}
+
+/* Pink Theme */
+:root.pink{
+  --bg:#120212;--frame:#582058;
+  --brand-bg:linear-gradient(90deg,#2a082a,#3d103d,#2a082a);--brand-border:#582058;
+  --logo-color:#d443a8;--logo-glow:rgba(212,67,168,0.6);
+  --np-color:#e878c8;--ch-color:#d443a8;--ch-glow:#d443a8;
+  --btn-bg:linear-gradient(145deg,#3d103d,#2a082a);--btn-border:#582058;--btn-color:#a83086;
+  --cnt-color:#e878c8;--gc-bg:#2a082a;--gc-border:#3d103d;
+}
+
+/* Yellow Theme */
+:root.yellow{
+  --bg:#120c02;--frame:#584820;
+  --brand-bg:linear-gradient(90deg,#2a2008,#3d3010,#2a2008);--brand-border:#584820;
+  --logo-color:#d4b843;--logo-glow:rgba(212,184,67,0.6);
+  --np-color:#e8d878;--ch-color:#d4b843;--ch-glow:#d4b843;
+  --btn-bg:linear-gradient(145deg,#3d3010,#2a2008);--btn-border:#584820;--btn-color:#a89030;
+  --cnt-color:#e8d878;--gc-bg:#2a2008;--gc-border:#3d3010;
+}
+
+/* Teal Theme */
+:root.teal{
+  --bg:#021210;--frame:#205848;
+  --brand-bg:linear-gradient(90deg,#082a20,#103d30,#082a20);--brand-border:#205848;
+  --logo-color:#43d4a8;--logo-glow:rgba(67,212,168,0.6);
+  --np-color:#78e8c8;--ch-color:#43d4a8;--ch-glow:#43d4a8;
+  --btn-bg:linear-gradient(145deg,#103d30,#082a20);--btn-border:#205848;--btn-color:#30a886;
+  --cnt-color:#78e8c8;--gc-bg:#082a20;--gc-border:#103d30;
+}
+
+/* Lime Theme */
+:root.lime{
+  --bg:#081202;--frame:#385820;
+  --brand-bg:linear-gradient(90deg,#182a08,#243d10,#182a08);--brand-border:#385820;
+  --logo-color:#87d443;--logo-glow:rgba(135,212,67,0.6);
+  --np-color:#a8e878;--ch-color:#87d443;--ch-glow:#87d443;
+  --btn-bg:linear-gradient(145deg,#243d10,#182a08);--btn-border:#385820;--btn-color:#68a830;
+  --cnt-color:#a8e878;--gc-bg:#182a08;--gc-border:#243d10;
+}
+
+/* Magenta Theme */
+:root.magenta{
+  --bg:#120a12;--frame:#583858;
+  --brand-bg:linear-gradient(90deg,#2a182a,#3d243d,#2a182a);--brand-border:#583858;
+  --logo-color:#d478d4;--logo-glow:rgba(212,120,212,0.6);
+  --np-color:#e8a8e8;--ch-color:#d478d4;--ch-glow:#d478d4;
+  --btn-bg:linear-gradient(145deg,#3d243d,#2a182a);--btn-border:#583858;--btn-color:#a860a8;
+  --cnt-color:#e8a8e8;--gc-bg:#2a182a;--gc-border:#3d243d;
+}
+
+/* Indigo Theme */
+:root.indigo{
+  --bg:#020212;--frame:#202058;
+  --brand-bg:linear-gradient(90deg,#080818,#101024,#080818);--brand-border:#202058;
+  --logo-color:#4343a8;--logo-glow:rgba(67,67,168,0.6);
+  --np-color:#7878c8;--ch-color:#4343a8;--ch-glow:#4343a8;
+  --btn-bg:linear-gradient(145deg,#101024,#080818);--btn-border:#202058;--btn-color:#303086;
+  --cnt-color:#7878c8;--gc-bg:#080818;--gc-border:#101024;
+}
+
+/* Amber Theme */
+:root.amber{
+  --bg:#120a00;--frame:#584020;
+  --brand-bg:linear-gradient(90deg,#2a1800,#3d2400,#2a1800);--brand-border:#584020;
+  --logo-color:#d49043;--logo-glow:rgba(212,144,67,0.6);
+  --np-color:#e8b878;--ch-color:#d49043;--ch-glow:#d49043;
+  --btn-bg:linear-gradient(145deg,#3d2400,#2a1800);--btn-border:#584020;--btn-color:#a87030;
+  --cnt-color:#e8b878;--gc-bg:#2a1800;--gc-border:#3d2400;
+}
+
+/* Mint Theme */
+:root.mint{
+  --bg:#021208;--frame:#204838;
+  --brand-bg:linear-gradient(90deg,#082418,#103624,#082418);--brand-border:#204838;
+  --logo-color:#43d49a;--logo-glow:rgba(67,212,154,0.6);
+  --np-color:#78e8ba;--ch-color:#43d49a;--ch-glow:#43d49a;
+  --btn-bg:linear-gradient(145deg,#103624,#082418);--btn-border:#204838;--btn-color:#30a878;
+  --cnt-color:#78e8ba;--gc-bg:#082418;--gc-border:#103624;
+}
+
+/* Coral Theme */
+:root.coral{
+  --bg:#120604;--frame:#583028;
+  --brand-bg:linear-gradient(90deg,#2a100c,#3d1812,#2a100c);--brand-border:#583028;
+  --logo-color:#d46050;--logo-glow:rgba(212,96,80,0.6);
+  --np-color:#e89080;--ch-color:#d46050;--ch-glow:#d46050;
+  --btn-bg:linear-gradient(145deg,#3d1812,#2a100c);--btn-border:#583028;--btn-color:#a84838;
+  --cnt-color:#e89080;--gc-bg:#2a100c;--gc-border:#3d1812;
+}
+
+/* Lavender Theme */
+:root.lavender{
+  --bg:#0a0812;--frame:#382858;
+  --brand-bg:linear-gradient(90deg,#18102a,#24183d,#18102a);--brand-border:#382858;
+  --logo-color:#9068d4;--logo-glow:rgba(144,104,212,0.6);
+  --np-color:#b090e8;--ch-color:#9068d4;--ch-glow:#9068d4;
+  --btn-bg:linear-gradient(145deg,#24183d,#18102a);--btn-border:#382858;--btn-color:#7050a8;
+  --cnt-color:#b090e8;--gc-bg:#18102a;--gc-border:#24183d;
+}
+
+/* Turquoise Theme */
+:root.turquoise{
+  --bg:#021210;--frame:#205850;
+  --brand-bg:linear-gradient(90deg,#082a28,#103d3c,#082a28);--brand-border:#205850;
+  --logo-color:#43d4c0;--logo-glow:rgba(67,212,192,0.6);
+  --np-color:#78e8d8;--ch-color:#43d4c0;--ch-glow:#43d4c0;
+  --btn-bg:linear-gradient(145deg,#103d3c,#082a28);--btn-border:#205850;--btn-color:#30a890;
+  --cnt-color:#78e8d8;--gc-bg:#082a28;--gc-border:#103d3c;
+}
+
+/* Crimson Theme */
+:root.crimson{
+  --bg:#120004;--frame:#580820;
+  --brand-bg:linear-gradient(90deg,#2a0010,#3d0018,#2a0010);--brand-border:#580820;
+  --logo-color:#d43060;--logo-glow:rgba(212,48,96,0.6);
+  --np-color:#e86090;--ch-color:#d43060;--ch-glow:#d43060;
+  --btn-bg:linear-gradient(145deg,#3d0018,#2a0010);--btn-border:#580820;--btn-color:#a82048;
+  --cnt-color:#e86090;--gc-bg:#2a0010;--gc-border:#3d0018;
+}
+
+/* Navy Theme */
+:root.navy{
+  --bg:#000812;--frame:#102840;
+  --brand-bg:linear-gradient(90deg,#041020,#081830,#041020);--brand-border:#102840;
+  --logo-color:#3060a8;--logo-glow:rgba(48,96,168,0.6);
+  --np-color:#6090c8;--ch-color:#3060a8;--ch-glow:#3060a8;
+  --btn-bg:linear-gradient(145deg,#081830,#041020);--btn-border:#102840;--btn-color:#204880;
+  --cnt-color:#6090c8;--gc-bg:#041020;--gc-border:#081830;
+}
+
+/* Olive Theme */
+:root.olive{
+  --bg:#0a0c02;--frame:#485820;
+  --brand-bg:linear-gradient(90deg,#202a08,#303d10,#202a08);--brand-border:#485820;
+  --logo-color:#a0b843;--logo-glow:rgba(160,184,67,0.6);
+  --np-color:#c0d878;--ch-color:#a0b843;--ch-glow:#a0b843;
+  --btn-bg:linear-gradient(145deg,#303d10,#202a08);--btn-border:#485820;--btn-color:#809030;
+  --cnt-color:#c0d878;--gc-bg:#202a08;--gc-border:#303d10;
+}
+
+/* Gold Theme */
+:root.gold{
+  --bg:#120e02;--frame:#584c20;
+  --brand-bg:linear-gradient(90deg,#2a2408,#3d3610,#2a2408);--brand-border:#584c20;
+  --logo-color:#d4c043;--logo-glow:rgba(212,192,67,0.6);
+  --np-color:#e8dc78;--ch-color:#d4c043;--ch-glow:#d4c043;
+  --btn-bg:linear-gradient(145deg,#3d3610,#2a2408);--btn-border:#584c20;--btn-color:#a89830;
+  --cnt-color:#e8dc78;--gc-bg:#2a2408;--gc-border:#3d3610;
+}
+
+/* Silver Theme */
+:root.silver{
+  --bg:#0a0a0a;--frame:#404040;
+  --brand-bg:linear-gradient(90deg,#1a1a1a,#282828,#1a1a1a);--brand-border:#404040;
+  --logo-color:#b0b0b0;--logo-glow:rgba(176,176,176,0.6);
+  --np-color:#d0d0d0;--ch-color:#b0b0b0;--ch-glow:#b0b0b0;
+  --btn-bg:linear-gradient(145deg,#282828,#1a1a1a);--btn-border:#404040;--btn-color:#888888;
+  --cnt-color:#d0d0d0;--gc-bg:#1a1a1a;--gc-border:#282828;
+}
+
+/* Rose Theme */
+:root.rose{
+  --bg:#120408;--frame:#582030;
+  --brand-bg:linear-gradient(90deg,#2a0818,#3d1024,#2a0818);--brand-border:#582030;
+  --logo-color:#d44360;--logo-glow:rgba(212,67,96,0.6);
+  --np-color:#e87890;--ch-color:#d44360;--ch-glow:#d44360;
+  --btn-bg:linear-gradient(145deg,#3d1024,#2a0818);--btn-border:#582030;--btn-color:#a83048;
+  --cnt-color:#e87890;--gc-bg:#2a0818;--gc-border:#3d1024;
+}
+
+/* Slate Theme */
+:root.slate{
+  --bg:#060808;--frame:#303838;
+  --brand-bg:linear-gradient(90deg,#101818,#182020,#101818);--brand-border:#303838;
+  --logo-color:#708090;--logo-glow:rgba(112,128,144,0.6);
+  --np-color:#90a0b0;--ch-color:#708090;--ch-glow:#708090;
+  --btn-bg:linear-gradient(145deg,#182020,#101818);--btn-border:#303838;--btn-color:#586068;
+  --cnt-color:#90a0b0;--gc-bg:#101818;--gc-border:#182020;
+}
+
+/* Lakers Theme */
+:root.lakers{
+  --bg:#0a0212;--frame:#552583;
+  --brand-bg:linear-gradient(90deg,#2a1041,#3d1862,#2a1041);--brand-border:#552583;
+  --logo-color:#FDB927;--logo-glow:rgba(253,185,39,0.6);
+  --np-color:#FDB927;--ch-color:#FDB927;--ch-glow:#FDB927;
+  --btn-bg:linear-gradient(145deg,#3d1862,#2a1041);--btn-border:#552583;--btn-color:#b89320;
+  --cnt-color:#FDB927;--gc-bg:#2a1041;--gc-border:#3d1862;
+}
+
+/* Celtics Theme */
+:root.celtics{
+  --bg:#000a00;--frame:#007A33;
+  --brand-bg:linear-gradient(90deg,#003d1a,#005a26,#003d1a);--brand-border:#007A33;
+  --logo-color:#BA9653;--logo-glow:rgba(186,150,83,0.6);
+  --np-color:#ffffff;--ch-color:#BA9653;--ch-glow:#BA9653;
+  --btn-bg:linear-gradient(145deg,#005a26,#003d1a);--btn-border:#007A33;--btn-color:#8a7040;
+  --cnt-color:#ffffff;--gc-bg:#003d1a;--gc-border:#005a26;
+}
+
+/* Cowboys Theme */
+:root.cowboys{
+  --bg:#000408;--frame:#041E42;
+  --brand-bg:linear-gradient(90deg,#020f21,#031732,#020f21);--brand-border:#041E42;
+  --logo-color:#869397;--logo-glow:rgba(134,147,151,0.6);
+  --np-color:#B0B7BC;--ch-color:#869397;--ch-glow:#869397;
+  --btn-bg:linear-gradient(145deg,#031732,#020f21);--btn-border:#041E42;--btn-color:#66737a;
+  --cnt-color:#B0B7BC;--gc-bg:#020f21;--gc-border:#031732;
+}
+
+/* Steelers Theme */
+:root.steelers{
+  --bg:#000000;--frame:#FFB612;
+  --brand-bg:linear-gradient(90deg,#0a0a0a,#1a1a1a,#0a0a0a);--brand-border:#FFB612;
+  --logo-color:#FFB612;--logo-glow:rgba(255,182,18,0.6);
+  --np-color:#FFB612;--ch-color:#FFB612;--ch-glow:#FFB612;
+  --btn-bg:linear-gradient(145deg,#1a1a1a,#0a0a0a);--btn-border:#FFB612;--btn-color:#c98f0e;
+  --cnt-color:#FFB612;--gc-bg:#0a0a0a;--gc-border:#1a1a1a;
+}
+
+/* Yankees Theme */
+:root.yankees{
+  --bg:#000308;--frame:#0C2340;
+  --brand-bg:linear-gradient(90deg,#061120,#091a30,#061120);--brand-border:#0C2340;
+  --logo-color:#C4CED4;--logo-glow:rgba(196,206,212,0.6);
+  --np-color:#E4E8EB;--ch-color:#C4CED4;--ch-glow:#C4CED4;
+  --btn-bg:linear-gradient(145deg,#091a30,#061120);--btn-border:#0C2340;--btn-color:#9299a0;
+  --cnt-color:#E4E8EB;--gc-bg:#061120;--gc-border:#091a30;
+}
+
+/* Red Sox Theme */
+:root.redsox{
+  --bg:#0a0000;--frame:#0D2B56;
+  --brand-bg:#BD3039;--brand-border:#0D2B56;
+  --logo-color:#FFFFFF;--logo-glow:rgba(255,255,255,0.6);
+  --np-color:#FFFFFF;--ch-color:#BD3039;--ch-glow:#BD3039;
+  --btn-bg:#BD3039;--btn-border:#0D2B56;--btn-color:#FFFFFF;
+  --cnt-color:#FFFFFF;--gc-bg:#BD3039;--gc-border:#0D2B56;
+}
+
+:root.redsox .dial-slider::-webkit-slider-thumb,
+:root.redsox input[type="range"]::-webkit-slider-thumb{
+  background:#FFFFFF !important;
+  box-shadow:0 0 20px rgba(255,255,255,0.6),inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+:root.redsox .dial-slider::-moz-range-thumb,
+:root.redsox input[type="range"]::-moz-range-thumb{
+  background:#FFFFFF !important;
+  box-shadow:0 0 20px rgba(255,255,255,0.6),inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+
+/* Patriots Theme */
+:root.patriots{
+  --bg:#000308;--frame:#0C2340;
+  --brand-bg:linear-gradient(90deg,#061120,#091a30,#061120);--brand-border:#0C2340;
+  --logo-color:#C60C30;--logo-glow:rgba(198,12,48,0.6);
+  --np-color:#B0B7BC;--ch-color:#C60C30;--ch-glow:#C60C30;
+  --btn-bg:linear-gradient(145deg,#091a30,#061120);--btn-border:#0C2340;--btn-color:#930924;
+  --cnt-color:#B0B7BC;--gc-bg:#061120;--gc-border:#091a30;
+}
+
+/* Packers Theme */
+:root.packers{
+  --bg:#020a00;--frame:#203731;
+  --brand-bg:linear-gradient(90deg,#0a1c15,#102820,#0a1c15);--brand-border:#203731;
+  --logo-color:#FFB612;--logo-glow:rgba(255,182,18,0.6);
+  --np-color:#FFB612;--ch-color:#FFB612;--ch-glow:#FFB612;
+  --btn-bg:linear-gradient(145deg,#102820,#0a1c15);--btn-border:#203731;--btn-color:#c98f0e;
+  --cnt-color:#FFB612;--gc-bg:#0a1c15;--gc-border:#102820;
+}
+
+/* Bulls Theme */
+:root.bulls{
+  --bg:#000000;--frame:#7c0a02;
+  --brand-bg:#cc0000;--brand-border:#7c0a02;
+  --logo-color:#000000;--logo-glow:rgba(0,0,0,0.6);
+  --np-color:#ffffff;--ch-color:#7c0a02;--ch-glow:#7c0a02;
+  --btn-bg:#cc0000;--btn-border:#7c0a02;--btn-color:#ffffff;
+  --cnt-color:#ffffff;--gc-bg:#cc0000;--gc-border:#7c0a02;
+}
+
+/* Warriors Theme */
+:root.warriors{
+  --bg:#00020a;--frame:#1D428A;
+  --brand-bg:linear-gradient(90deg,#0e2145,#173268,#0e2145);--brand-border:#1D428A;
+  --logo-color:#FFC72C;--logo-glow:rgba(255,199,44,0.6);
+  --np-color:#FFC72C;--ch-color:#FFC72C;--ch-glow:#FFC72C;
+  --btn-bg:linear-gradient(145deg,#173268,#0e2145);--btn-border:#1D428A;--btn-color:#c99622;
+  --cnt-color:#FFC72C;--gc-bg:#0e2145;--gc-border:#173268;
+}
+
+/* Heat Theme */
+:root.heat{
+  --bg:#0a0000;--frame:#98002E;
+  --brand-bg:linear-gradient(90deg,#4c0017,#730022,#4c0017);--brand-border:#98002E;
+  --logo-color:#F9A01B;--logo-glow:rgba(249,160,27,0.6);
+  --np-color:#F9A01B;--ch-color:#F9A01B;--ch-glow:#F9A01B;
+  --btn-bg:linear-gradient(145deg,#730022,#4c0017);--btn-border:#98002E;--btn-color:#c97815;
+  --cnt-color:#F9A01B;--gc-bg:#4c0017;--gc-border:#730022;
+}
+
+/* Raiders Theme */
+:root.raiders{
+  --bg:#000000;--frame:#A5ACAF;
+  --brand-bg:linear-gradient(90deg,#0a0a0a,#1a1a1a,#0a0a0a);--brand-border:#A5ACAF;
+  --logo-color:#A5ACAF;--logo-glow:rgba(165,172,175,0.6);
+  --np-color:#ffffff;--ch-color:#A5ACAF;--ch-glow:#A5ACAF;
+  --btn-bg:linear-gradient(145deg,#1a1a1a,#0a0a0a);--btn-border:#A5ACAF;--btn-color:#7d8184;
+  --cnt-color:#ffffff;--gc-bg:#0a0a0a;--gc-border:#1a1a1a;
+}
+
+/* Christmas Theme */
+:root.christmas{
+  --bg:#0a0200;--frame:#C41E3A;
+  --brand-bg:linear-gradient(90deg,#620f1d,#93172c,#620f1d);--brand-border:#C41E3A;
+  --logo-color:#00843D;--logo-glow:rgba(0,132,61,0.6);
+  --np-color:#FFD700;--ch-color:#FFD700;--ch-glow:#FFD700;
+  --btn-bg:linear-gradient(145deg,#93172c,#620f1d);--btn-border:#C41E3A;--btn-color:#00632e;
+  --cnt-color:#FFD700;--gc-bg:#620f1d;--gc-border:#93172c;
+}
+
+/* Halloween Theme */
+:root.halloween{
+  --bg:#0a0600;--frame:#FF6600;
+  --brand-bg:linear-gradient(90deg,#803300,#bf4d00,#803300);--brand-border:#FF6600;
+  --logo-color:#FF6600;--logo-glow:rgba(255,102,0,0.6);
+  --np-color:#9D00FF;--ch-color:#9D00FF;--ch-glow:#9D00FF;
+  --btn-bg:linear-gradient(145deg,#bf4d00,#803300);--btn-border:#FF6600;--btn-color:#7500c0;
+  --cnt-color:#9D00FF;--gc-bg:#803300;--gc-border:#bf4d00;
+}
+
+/* Valentine's Theme */
+:root.valentines{
+  --bg:#120208;--frame:#FF1493;
+  --brand-bg:linear-gradient(90deg,#80064a,#bf0a6f,#80064a);--brand-border:#FF1493;
+  --logo-color:#FF69B4;--logo-glow:rgba(255,105,180,0.6);
+  --np-color:#FFB6C1;--ch-color:#FF69B4;--ch-glow:#FF69B4;
+  --btn-bg:linear-gradient(145deg,#bf0a6f,#80064a);--btn-border:#FF1493;--btn-color:#c95087;
+  --cnt-color:#FFB6C1;--gc-bg:#80064a;--gc-border:#bf0a6f;
+}
+
+/* St. Patrick's Theme */
+:root.stpatricks{
+  --bg:#000a00;--frame:#009B48;
+  --brand-bg:linear-gradient(90deg,#004d24,#007436,#004d24);--brand-border:#009B48;
+  --logo-color:#FFD700;--logo-glow:rgba(255,215,0,0.6);
+  --np-color:#FFD700;--ch-color:#FFD700;--ch-glow:#FFD700;
+  --btn-bg:linear-gradient(145deg,#007436,#004d24);--btn-border:#009B48;--btn-color:#c9a900;
+  --cnt-color:#FFD700;--gc-bg:#004d24;--gc-border:#007436;
+}
+
+/* Easter Theme */
+:root.easter{
+  --bg:#0a0810;--frame:#E0BBE4;
+  --brand-bg:linear-gradient(90deg,#705e72,#a88db2,#705e72);--brand-border:#E0BBE4;
+  --logo-color:#FFDFD3;--logo-glow:rgba(255,223,211,0.6);
+  --np-color:#FEC8D8;--ch-color:#FFDFD3;--ch-glow:#FFDFD3;
+  --btn-bg:linear-gradient(145deg,#a88db2,#705e72);--btn-border:#E0BBE4;--btn-color:#c9a9a0;
+  --cnt-color:#FEC8D8;--gc-bg:#705e72;--gc-border:#a88db2;
+}
+
+/* 4th of July Theme */
+:root.july4th{
+  --bg:#000308;--frame:#B22234;
+  --brand-bg:linear-gradient(90deg,#59111a,#851a27,#59111a);--brand-border:#B22234;
+  --logo-color:#3C3B6E;--logo-glow:rgba(60,59,110,0.6);
+  --np-color:#ffffff;--ch-color:#ffffff;--ch-glow:#ffffff;
+  --btn-bg:linear-gradient(145deg,#851a27,#59111a);--btn-border:#B22234;--btn-color:#2d2c52;
+  --cnt-color:#ffffff;--gc-bg:#59111a;--gc-border:#851a27;
+}
+
+/* Thanksgiving Theme */
+:root.thanksgiving{
+  --bg:#0a0400;--frame:#D2691E;
+  --brand-bg:linear-gradient(90deg,#69340f,#9f4e16,#69340f);--brand-border:#D2691E;
+  --logo-color:#FF8C00;--logo-glow:rgba(255,140,0,0.6);
+  --np-color:#FFD700;--ch-color:#FF8C00;--ch-glow:#FF8C00;
+  --btn-bg:linear-gradient(145deg,#9f4e16,#69340f);--btn-border:#D2691E;--btn-color:#c96900;
+  --cnt-color:#FFD700;--gc-bg:#69340f;--gc-border:#9f4e16;
+}
+
+/* New Year's Theme */
+:root.newyear{
+  --bg:#000000;--frame:#FFD700;
+  --brand-bg:linear-gradient(90deg,#806b00,#bfa100,#806b00);--brand-border:#FFD700;
+  --logo-color:#C0C0C0;--logo-glow:rgba(192,192,192,0.6);
+  --np-color:#ffffff;--ch-color:#FFD700;--ch-glow:#FFD700;
+  --btn-bg:linear-gradient(145deg,#bfa100,#806b00);--btn-border:#FFD700;--btn-color:#909090;
+  --cnt-color:#ffffff;--gc-bg:#806b00;--gc-border:#bfa100;
+}
+
+/* Summer Theme */
+:root.summer{
+  --bg:#0a0c02;--frame:#FFB347;
+  --brand-bg:linear-gradient(90deg,#805923,#bf8735,#805923);--brand-border:#FFB347;
+  --logo-color:#87CEEB;--logo-glow:rgba(135,206,235,0.6);
+  --np-color:#FFD700;--ch-color:#FFD700;--ch-glow:#FFD700;
+  --btn-bg:linear-gradient(145deg,#bf8735,#805923);--btn-border:#FFB347;--btn-color:#679bb0;
+  --cnt-color:#FFD700;--gc-bg:#805923;--gc-border:#bf8735;
+}
+
+/* Autumn Theme */
+:root.autumn{
+  --bg:#0a0400;--frame:#8B4513;
+  --brand-bg:linear-gradient(90deg,#45220a,#68340f,#45220a);--brand-border:#8B4513;
+  --logo-color:#FF8C00;--logo-glow:rgba(255,140,0,0.6);
+  --np-color:#DAA520;--ch-color:#FF8C00;--ch-glow:#FF8C00;
+  --btn-bg:linear-gradient(145deg,#68340f,#45220a);--btn-border:#8B4513;--btn-color:#c96900;
+  --cnt-color:#DAA520;--gc-bg:#45220a;--gc-border:#68340f;
+}
+
+/* Winter Theme */
+:root.winter{
+  --bg:#020408;--frame:#4682B4;
+  --brand-bg:linear-gradient(90deg,#23415a,#36628a,#23415a);--brand-border:#4682B4;
+  --logo-color:#E0FFFF;--logo-glow:rgba(224,255,255,0.6);
+  --np-color:#ffffff;--ch-color:#E0FFFF;--ch-glow:#E0FFFF;
+  --btn-bg:linear-gradient(145deg,#36628a,#23415a);--btn-border:#4682B4;--btn-color:#b0c9c9;
+  --cnt-color:#ffffff;--gc-bg:#23415a;--gc-border:#36628a;
+}
+
+/* Spring Theme */
+:root.spring{
+  --bg:#020a04;--frame:#98D8C8;
+  --brand-bg:linear-gradient(90deg,#4c6c64,#72a296,#4c6c64);--brand-border:#98D8C8;
+  --logo-color:#FFB7D5;--logo-glow:rgba(255,183,213,0.6);
+  --np-color:#C9E4CA;--ch-color:#FFB7D5;--ch-glow:#FFB7D5;
+  --btn-bg:linear-gradient(145deg,#72a296,#4c6c64);--btn-border:#98D8C8;--btn-color:#c989a0;
+  --cnt-color:#C9E4CA;--gc-bg:#4c6c64;--gc-border:#72a296;
+}
+
+
+
 body{
   background:var(--bg);
   color:#eee;
@@ -96,11 +551,42 @@ body{
 }
 
 .display{
-  background:var(--gc-bg);
+  background:#000000;
   border:2px solid var(--gc-border);
   border-radius:4px;
   padding:20px;
   margin-bottom:25px;
+  position:relative;
+  overflow:hidden;
+}
+
+.visualizer{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-around;
+  padding:10px;
+  gap:4px;
+  opacity:0.15;
+  pointer-events:none;
+}
+
+.vis-bar{
+  flex:1;
+  background:var(--ch-color);
+  border-radius:2px;
+  min-height:10%;
+  transition:height 0.1s ease;
+  box-shadow:0 0 10px var(--ch-glow);
+}
+
+.display-content{
+  position:relative;
+  z-index:1;
 }
 
 .station-num{
@@ -120,6 +606,11 @@ body{
   font-weight:600;
   text-align:center;
   margin-bottom:10px;
+  text-shadow:
+    0 0 10px var(--ch-glow),
+    0 0 20px var(--ch-glow),
+    0 0 30px var(--ch-glow),
+    0 0 40px var(--ch-glow);
 }
 
 .now-playing{
@@ -140,6 +631,12 @@ audio{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
+  margin-bottom:20px;
+}
+
+.controls-single{
+  display:flex;
+  justify-content:center;
   margin-bottom:20px;
 }
 
@@ -362,30 +859,149 @@ input[type="range"]::-moz-range-thumb{
   box-shadow:0 0 10px var(--ch-glow);
   border:none;
 }
+
+/* Smooth Theme Menu Animation */
+.theme-menu{
+  display:block;
+  max-height:0;
+  opacity:0;
+  transform:translateY(-10px);
+  transition:all 0.3s ease;
+  overflow:hidden;
+}
+
+.theme-menu.open{
+  max-height:500px;
+  opacity:1;
+  transform:translateY(0);
+}
+
+.theme-options{
+  max-height:400px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+.theme-options::-webkit-scrollbar{
+  width:8px;
+}
+
+.theme-options::-webkit-scrollbar-track{
+  background:var(--gc-bg);
+  border-radius:4px;
+}
+
+.theme-options::-webkit-scrollbar-thumb{
+  background:var(--ch-color);
+  border-radius:4px;
+}
+
+.theme-options::-webkit-scrollbar-thumb:hover{
+  background:var(--logo-color);
+}
+
+.theme-category{
+  font-family:'Rajdhani',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  color:var(--logo-color);
+  letter-spacing:2px;
+  padding:15px 15px 8px 15px;
+  margin-top:10px;
+  border-top:1px solid var(--gc-border);
+  text-transform:uppercase;
+}
+
+.theme-category:first-child{
+  margin-top:0;
+  border-top:none;
+  padding-top:8px;
+}
+
+/* Better close button feel */
+.close-btn{
+  transition:all 0.2s;
+}
+.close-btn:hover{
+  transform:scale(1.2);
+}
+
+/* Global Neon Glow */
+.radio{
+  position:relative;
+}
+
+.radio::before{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius:10px;
+  background:linear-gradient(45deg,var(--ch-color),transparent,var(--logo-color));
+  opacity:0.2;
+  filter:blur(10px);
+  z-index:-1;
+}
+
+@keyframes logoFlicker{
+  0%,100%{opacity:1;}
+  50%{opacity:0.85;}
+}
+
+.logo{
+  animation:logoFlicker 3s infinite;
+}
 </style>
 </head>
 <body>
 
 <div class="radio">
   <div class="brand">
-    <div class="logo">ARCHIVE RADIO</div>
+    <div class="logo">SINISTER DIVISION'S DEAD ARCHIVE RADIO</div>
   </div>
 
   <div class="display">
-    <div class="station-num" id="num">950</div>
-    <div class="station-name" id="name">🔥 Classic Rap Radio</div>
-    <div class="now-playing" id="now-playing">Initializing synchronized broadcast...</div>
-    <audio id="player" controls></audio>
+    <div class="visualizer">
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+      <div class="vis-bar"></div>
+    </div>
+    <div class="display-content">
+      <div class="station-num" id="num">950</div>
+      <div class="station-name" id="name">🔥 Classic Rap Radio</div>
+      <div class="now-playing" id="now-playing">Radio is OFF - Press POWER to start</div>
+      <audio id="player" controls></audio>
+    </div>
+  </div>
+
+  <div class="controls-single">
+    <button class="btn" onclick="power()" id="pwr">POWER</button>
   </div>
 
   <div class="controls">
     <button class="btn" onclick="prevTrack()">⏮️ PREV TRACK</button>
-    <button class="btn" onclick="power()" id="pwr">POWER</button>
+    <button class="btn" onclick="toggleThemeMenu()">🎨 THEMES</button>
     <button class="btn" onclick="nextTrack()">NEXT TRACK ⏭️</button>
   </div>
 
-  <div class="controls">
-    <button class="btn" onclick="toggleThemeMenu()">🎨 THEMES</button>
+  <div class="controls-single">
+    <button class="btn active" onclick="toggleLiveMode()" id="liveBtn">🔴 LIVE</button>
   </div>
 
   <div class="theme-menu" id="theme-menu">
@@ -394,6 +1010,7 @@ input[type="range"]::-moz-range-thumb{
       <button class="close-btn" onclick="toggleThemeMenu()">✕</button>
     </div>
     <div class="theme-options">
+      <div class="theme-category">CLASSIC COLORS</div>
       <button class="theme-btn" onclick="changeTheme('brown')">
         <span class="theme-icon">🟤</span>
         <span class="theme-name">Brown Classic</span>
@@ -414,6 +1031,186 @@ input[type="range"]::-moz-range-thumb{
         <span class="theme-icon">🟣</span>
         <span class="theme-name">Purple Night</span>
       </button>
+      <button class="theme-btn" onclick="changeTheme('cyan')">
+        <span class="theme-icon">🩵</span>
+        <span class="theme-name">Cyan Wave</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('orange')">
+        <span class="theme-icon">🟠</span>
+        <span class="theme-name">Orange Sunset</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('pink')">
+        <span class="theme-icon">🩷</span>
+        <span class="theme-name">Pink Dream</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('yellow')">
+        <span class="theme-icon">🟡</span>
+        <span class="theme-name">Yellow Sun</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('teal')">
+        <span class="theme-icon">🫧</span>
+        <span class="theme-name">Teal Breeze</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('lime')">
+        <span class="theme-icon">💚</span>
+        <span class="theme-name">Lime Splash</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('magenta')">
+        <span class="theme-icon">🌸</span>
+        <span class="theme-name">Magenta Glow</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('indigo')">
+        <span class="theme-icon">💙</span>
+        <span class="theme-name">Indigo Deep</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('amber')">
+        <span class="theme-icon">🧡</span>
+        <span class="theme-name">Amber Warm</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('mint')">
+        <span class="theme-icon">🍃</span>
+        <span class="theme-name">Mint Fresh</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('coral')">
+        <span class="theme-icon">🪸</span>
+        <span class="theme-name">Coral Reef</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('lavender')">
+        <span class="theme-icon">💜</span>
+        <span class="theme-name">Lavender Haze</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('turquoise')">
+        <span class="theme-icon">🌊</span>
+        <span class="theme-name">Turquoise Sea</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('crimson')">
+        <span class="theme-icon">❤️</span>
+        <span class="theme-name">Crimson Rage</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('navy')">
+        <span class="theme-icon">🌌</span>
+        <span class="theme-name">Navy Midnight</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('olive')">
+        <span class="theme-icon">🫒</span>
+        <span class="theme-name">Olive Drab</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('gold')">
+        <span class="theme-icon">⭐</span>
+        <span class="theme-name">Gold Shine</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('silver')">
+        <span class="theme-icon">🌙</span>
+        <span class="theme-name">Silver Moon</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('rose')">
+        <span class="theme-icon">🌹</span>
+        <span class="theme-name">Rose Petal</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('slate')">
+        <span class="theme-icon">🪨</span>
+        <span class="theme-name">Slate Gray</span>
+      </button>
+      
+      <div class="theme-category">SPORTS TEAMS</div>
+      <button class="theme-btn" onclick="changeTheme('lakers')">
+        <span class="theme-icon">🏀</span>
+        <span class="theme-name">Lakers Purple/Gold</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('celtics')">
+        <span class="theme-icon">☘️</span>
+        <span class="theme-name">Celtics Green</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('cowboys')">
+        <span class="theme-icon">🏈</span>
+        <span class="theme-name">Cowboys Blue/Silver</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('steelers')">
+        <span class="theme-icon">⚫</span>
+        <span class="theme-name">Steelers Black/Gold</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('yankees')">
+        <span class="theme-icon">⚾</span>
+        <span class="theme-name">Yankees Navy</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('redsox')">
+        <span class="theme-icon">🧦</span>
+        <span class="theme-name">Red Sox</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('patriots')">
+        <span class="theme-icon">🦅</span>
+        <span class="theme-name">Patriots Red/Navy</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('packers')">
+        <span class="theme-icon">🧀</span>
+        <span class="theme-name">Packers Green/Gold</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('bulls')">
+        <span class="theme-icon">🐂</span>
+        <span class="theme-name">Bulls Red/Black</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('warriors')">
+        <span class="theme-icon">⚡</span>
+        <span class="theme-name">Warriors Blue/Gold</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('heat')">
+        <span class="theme-icon">🔥</span>
+        <span class="theme-name">Miami Heat</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('raiders')">
+        <span class="theme-icon">☠️</span>
+        <span class="theme-name">Raiders Silver/Black</span>
+      </button>
+      
+      <div class="theme-category">HOLIDAYS & SEASONS</div>
+      <button class="theme-btn" onclick="changeTheme('christmas')">
+        <span class="theme-icon">🎄</span>
+        <span class="theme-name">Christmas</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('halloween')">
+        <span class="theme-icon">🎃</span>
+        <span class="theme-name">Halloween</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('valentines')">
+        <span class="theme-icon">💝</span>
+        <span class="theme-name">Valentine's Day</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('stpatricks')">
+        <span class="theme-icon">🍀</span>
+        <span class="theme-name">St. Patrick's Day</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('easter')">
+        <span class="theme-icon">🐰</span>
+        <span class="theme-name">Easter Pastels</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('july4th')">
+        <span class="theme-icon">🎆</span>
+        <span class="theme-name">4th of July</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('thanksgiving')">
+        <span class="theme-icon">🦃</span>
+        <span class="theme-name">Thanksgiving</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('newyear')">
+        <span class="theme-icon">🎊</span>
+        <span class="theme-name">New Year's Eve</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('summer')">
+        <span class="theme-icon">☀️</span>
+        <span class="theme-name">Summer Vibes</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('autumn')">
+        <span class="theme-icon">🍂</span>
+        <span class="theme-name">Autumn Leaves</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('winter')">
+        <span class="theme-icon">❄️</span>
+        <span class="theme-name">Winter Frost</span>
+      </button>
+      <button class="theme-btn" onclick="changeTheme('spring')">
+        <span class="theme-icon">🌸</span>
+        <span class="theme-name">Spring Bloom</span>
+      </button>
     </div>
   </div>
 
@@ -427,14 +1224,6 @@ input[type="range"]::-moz-range-thumb{
       <span>960</span>
       <span>966</span>
     </div>
-  </div>
-
-  <div class="controls">
-    <button class="btn" onclick="changeTheme('brown')">🟤</button>
-    <button class="btn" onclick="changeTheme('blue')">🔵</button>
-    <button class="btn" onclick="changeTheme('red')">🔴</button>
-    <button class="btn" onclick="changeTheme('green')">🟢</button>
-    <button class="btn" onclick="changeTheme('purple')">🟣</button>
   </div>
 
   <div class="volume">
@@ -466,13 +1255,105 @@ const STATIONS = [
 ];
 
 let cur = 0;
-let on = true;
+let on = false; // Start in OFF state
 let currentShowIndex = 0;
 let currentTrackIndex = 0;
 let currentFiles = [];
 const p = document.getElementById('player');
 const pwr = document.getElementById('pwr');
 const metaCache = {};
+
+// LIVE BROADCAST SYSTEM
+let isLiveMode = true; // Start in LIVE mode
+let weeklySchedule = null;
+
+// Get ISO week number (same for everyone worldwide)
+function getWeekNumber(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+// Seeded random number generator (same seed = same sequence)
+function seededRandom(seed) {
+  let x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
+// Generate weekly schedule for all stations
+function generateWeeklySchedule(weekNumber) {
+  const schedule = {};
+  let seedCounter = weekNumber * 10000; // Base seed for this week
+  
+  STATIONS.forEach((station, stationIdx) => {
+    schedule[station.num] = [];
+    
+    // Generate 7 days of programming (168 hours)
+    let currentTime = 0; // Seconds from start of week
+    const weekDuration = 7 * 24 * 60 * 60; // 1 week in seconds
+    
+    while(currentTime < weekDuration) {
+      // Pick a random show from this station
+      const showIndex = Math.floor(seededRandom(seedCounter++) * station.networkShows.length);
+      const showName = station.networkShows[showIndex];
+      
+      schedule[station.num].push({
+        show: showName,
+        startTime: currentTime,
+        station: station.num
+      });
+      
+      // Each show lasts roughly 40-60 minutes (2400-3600 seconds)
+      const showDuration = 2400 + Math.floor(seededRandom(seedCounter++) * 1200);
+      currentTime += showDuration;
+    }
+  });
+  
+  return schedule;
+}
+
+// Get current show/track based on time
+function getCurrentBroadcast(schedule, stationNum) {
+  const now = new Date();
+  const dayOfWeek = now.getUTCDay(); // 0 = Sunday, 6 = Saturday
+  const hourOfDay = now.getUTCHours();
+  const minuteOfHour = now.getUTCMinutes();
+  const secondOfMinute = now.getUTCSeconds();
+  
+  // Calculate seconds elapsed since start of week (Sunday 00:00:00 UTC)
+  const secondsIntoWeek = (dayOfWeek * 24 * 60 * 60) + 
+                          (hourOfDay * 60 * 60) + 
+                          (minuteOfHour * 60) + 
+                          secondOfMinute;
+  
+  const stationSchedule = schedule[stationNum];
+  if(!stationSchedule) return null;
+  
+  // Find which show should be playing right now
+  for(let i = 0; i < stationSchedule.length; i++) {
+    const currentShow = stationSchedule[i];
+    const nextShow = stationSchedule[i + 1];
+    
+    if(nextShow && secondsIntoWeek >= currentShow.startTime && secondsIntoWeek < nextShow.startTime) {
+      return {
+        show: currentShow.show,
+        elapsedTime: secondsIntoWeek - currentShow.startTime
+      };
+    }
+    
+    // Last show of the week wraps around
+    if(!nextShow && secondsIntoWeek >= currentShow.startTime) {
+      return {
+        show: currentShow.show,
+        elapsedTime: secondsIntoWeek - currentShow.startTime
+      };
+    }
+  }
+  
+  return stationSchedule[0]; // Fallback to first show
+}
 
 // EXACT TV SYNC LOGIC
 async function fetchFiles(identifier){
@@ -532,14 +1413,42 @@ async function playSync(){
   const showList = ch.networkShows || [];
   if(showList.length === 0) return;
   
-  // Random show selection
-  currentShowIndex = Math.floor(Math.random() * showList.length);
-  const currentShow = showList[currentShowIndex];
-  const nextShow = showList[(currentShowIndex + 1) % showList.length];
+  let currentShow, nextShow, elapsedTime = 0;
   
-  console.log('Playing:', currentShow, 'on station:', ch.name);
-  
-  document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}... | Next: ${nextShow.substring(0,20)}...`;
+  // LIVE MODE: Use scheduled broadcast
+  if(isLiveMode && weeklySchedule) {
+    const broadcast = getCurrentBroadcast(weeklySchedule, ch.num);
+    
+    if(broadcast) {
+      currentShow = broadcast.show;
+      elapsedTime = broadcast.elapsedTime || 0; // Seconds into the show
+      
+      // Find next show in schedule
+      const stationSchedule = weeklySchedule[ch.num];
+      const currentIndex = stationSchedule.findIndex(s => s.show === currentShow);
+      if(currentIndex >= 0 && currentIndex < stationSchedule.length - 1) {
+        nextShow = stationSchedule[currentIndex + 1].show;
+      } else {
+        nextShow = stationSchedule[0].show; // Wrap to start
+      }
+      
+      console.log('LIVE MODE - Playing scheduled:', currentShow, 'at', elapsedTime, 'seconds in');
+      document.getElementById('now-playing').textContent = `🔴 LIVE: ${currentShow.substring(0,25)}... | Next: ${nextShow.substring(0,15)}...`;
+    } else {
+      // Fallback if broadcast lookup fails
+      currentShow = showList[0];
+      nextShow = showList[1] || showList[0];
+    }
+  } 
+  // OFFLINE MODE: Random selection
+  else {
+    currentShowIndex = Math.floor(Math.random() * showList.length);
+    currentShow = showList[currentShowIndex];
+    nextShow = showList[(currentShowIndex + 1) % showList.length];
+    
+    console.log('OFFLINE MODE - Playing random:', currentShow);
+    document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}... | Next: ${nextShow.substring(0,20)}...`;
+  }
   
   // Fetch tracks
   const files = await fetchFiles(currentShow);
@@ -550,13 +1459,46 @@ async function playSync(){
   
   currentFiles = files;
   
-  // Random track selection
-  currentTrackIndex = Math.floor(Math.random() * files.length);
-  const track = files[currentTrackIndex];
-  
-  p.src = track.u;
-  p.currentTime = 0;
-  p.play().catch(e => console.log('Play blocked:', e));
+  // In LIVE mode, calculate which track should be playing based on elapsed time
+  if(isLiveMode && elapsedTime > 0) {
+    let timeAccumulator = 0;
+    let targetTrackIndex = 0;
+    let offsetIntoTrack = 0;
+    
+    // Walk through tracks to find which one should be playing
+    for(let i = 0; i < files.length; i++) {
+      const trackDuration = parseFloat(files[i].length) || 180; // Default 3 min if unknown
+      
+      if(timeAccumulator + trackDuration > elapsedTime) {
+        // This is the track that should be playing
+        targetTrackIndex = i;
+        offsetIntoTrack = elapsedTime - timeAccumulator;
+        break;
+      }
+      
+      timeAccumulator += trackDuration;
+    }
+    
+    currentTrackIndex = targetTrackIndex;
+    const track = files[currentTrackIndex];
+    
+    p.src = track.u;
+    p.currentTime = offsetIntoTrack; // Jump to correct position
+    p.volume = currentVolume;
+    p.play().catch(e => console.log('Play blocked:', e));
+    
+    console.log('LIVE: Jumped to track', targetTrackIndex, 'at', Math.floor(offsetIntoTrack), 'seconds');
+  } 
+  // OFFLINE mode: random track from beginning
+  else {
+    currentTrackIndex = Math.floor(Math.random() * files.length);
+    const track = files[currentTrackIndex];
+    
+    p.src = track.u;
+    p.currentTime = 0;
+    p.volume = currentVolume;
+    p.play().catch(e => console.log('Play blocked:', e));
+  }
 }
 
 function go(i){
@@ -593,13 +1535,16 @@ function power(){
     go(cur);
     // Tell Second Life radio is ON
     sendToSL('RADIO_ON');
+    startVisualizer(); // Start visualizer
   } else {
     pwr.textContent = 'OFF';
     pwr.classList.add('active');
     p.pause();
     p.src = '';
+    document.getElementById('now-playing').textContent = 'Radio is OFF';
     // Tell Second Life radio is OFF
     sendToSL('RADIO_OFF');
+    stopVisualizer(); // Stop visualizer
   }
 }
 
@@ -612,9 +1557,32 @@ function sendToSL(message){
   console.log('SL_MESSAGE:', message);
 }
 
+// Volume control with persistence
+let currentVolume = 0.75; // Default 75%
+
+// Set initial volume from localStorage or default
+const savedVolume = localStorage.getItem('radioVolume');
+if(savedVolume){
+  currentVolume = parseFloat(savedVolume);
+}
+document.getElementById('vol').value = currentVolume * 100;
+p.volume = currentVolume;
+
 document.getElementById('vol').oninput = function(){
-  p.volume = this.value / 100;
+  currentVolume = this.value / 100;
+  p.volume = currentVolume;
+  localStorage.setItem('radioVolume', currentVolume);
 };
+
+// Apply volume normalization whenever a new track loads
+p.addEventListener('loadedmetadata', () => {
+  p.volume = currentVolume; // Force volume to user's setting
+});
+
+// Also apply on canplay event for extra safety
+p.addEventListener('canplay', () => {
+  p.volume = currentVolume; // Force volume to user's setting
+});
 
 document.getElementById('dial').oninput = function(){
   const stationIndex = parseInt(this.value);
@@ -632,23 +1600,59 @@ p.addEventListener('ended', () => {
 function nextTrack(){
   if(!on || currentFiles.length === 0) return;
   
+  // Skipping track exits LIVE mode
+  if(isLiveMode){
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Random Playback';
+  }
+  
   currentTrackIndex = (currentTrackIndex + 1) % currentFiles.length;
   const track = currentFiles[currentTrackIndex];
   
   p.src = track.u;
   p.currentTime = 0;
+  p.volume = currentVolume; // Apply saved volume
   p.play().catch(e => console.log('Play blocked:', e));
 }
 
 function prevTrack(){
   if(!on || currentFiles.length === 0) return;
   
+  // Skipping track exits LIVE mode
+  if(isLiveMode){
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Random Playback';
+  }
+  
   currentTrackIndex = (currentTrackIndex - 1 + currentFiles.length) % currentFiles.length;
   const track = currentFiles[currentTrackIndex];
   
   p.src = track.u;
   p.currentTime = 0;
+  p.volume = currentVolume; // Apply saved volume
   p.play().catch(e => console.log('Play blocked:', e));
+}
+
+// LIVE mode toggle
+function toggleLiveMode(){
+  if(!on) return; // Can't toggle if radio is off
+  
+  isLiveMode = !isLiveMode;
+  
+  if(isLiveMode){
+    // Entering LIVE mode - rejoin broadcast
+    document.getElementById('liveBtn').classList.add('active');
+    console.log('LIVE MODE: ON - Rejoining broadcast');
+    // Reload the current station with LIVE schedule
+    playSync();
+  } else {
+    // Exiting LIVE mode - switch to random
+    document.getElementById('liveBtn').classList.remove('active');
+    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Random Playback';
+    console.log('LIVE MODE: OFF');
+  }
 }
 
 // Theme switcher
@@ -672,9 +1676,52 @@ if(savedTheme){
   document.documentElement.className = savedTheme;
 }
 
-// Don't auto-resync - let tracks play naturally and only sync on station change
+// Initialize in OFF state
+document.getElementById('pwr').textContent = 'OFF';
+document.getElementById('pwr').classList.add('active');
+document.getElementById('now-playing').textContent = 'Radio is OFF - Press POWER to start';
 
-go(0);
+// Fake Visualizer Animation
+const visBars = document.querySelectorAll('.vis-bar');
+let visualizerInterval = null;
+
+function startVisualizer() {
+  if(visualizerInterval) return; // Already running
+  
+  visualizerInterval = setInterval(() => {
+    if(!on) {
+      stopVisualizer();
+      return;
+    }
+    
+    visBars.forEach(bar => {
+      // Random height between 10% and 90%
+      const height = Math.random() * 80 + 10;
+      bar.style.height = height + '%';
+    });
+  }, 100);
+}
+
+function stopVisualizer() {
+  if(visualizerInterval) {
+    clearInterval(visualizerInterval);
+    visualizerInterval = null;
+  }
+  // Reset all bars to minimum
+  visBars.forEach(bar => {
+    bar.style.height = '10%';
+  });
+}
+
+// Initialize weekly schedule
+const currentWeek = getWeekNumber(new Date());
+const currentYear = new Date().getFullYear();
+console.log('Initializing Week', currentWeek, 'of', currentYear);
+
+weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
+console.log('Weekly schedule generated for all stations');
+
+// Don't auto-start - user must press POWER
 </script>
 </body>
 </html>
