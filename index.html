@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sinister Division's Dead Archive Radio</title>
+<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -950,6 +951,996 @@ input[type="range"]::-moz-range-thumb{
 .logo{
   animation:logoFlicker 3s infinite;
 }
+
+/* PHASE 1 FEATURES - FAVORITES, PLAYLISTS, LIBRARY */
+
+/* Favorite Heart Button */
+.favorite-btn{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:15px;
+  cursor:pointer;
+  font-size:24px;
+  transition:all 0.3s ease;
+  border-radius:4px;
+}
+
+.favorite-btn:hover{
+  transform:scale(1.1);
+  border-color:var(--ch-color);
+}
+
+.favorite-btn.active{
+  color:#ff4444;
+  text-shadow:0 0 10px #ff4444;
+  border-color:#ff4444;
+}
+
+/* Modal Overlays */
+.modal-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.85);
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  backdrop-filter:blur(5px);
+}
+
+.modal-content{
+  background:var(--gc-bg);
+  border:3px solid var(--gc-border);
+  padding:30px;
+  border-radius:10px;
+  z-index:1000;
+  min-width:400px;
+  max-width:600px;
+  max-height:80vh;
+  overflow-y:auto;
+  box-shadow:0 10px 50px rgba(0,0,0,0.8);
+}
+
+.modal-content h2{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  margin-bottom:20px;
+  text-shadow:0 0 20px var(--logo-glow);
+}
+
+.modal-content input{
+  width:100%;
+  padding:12px;
+  margin:10px 0 20px 0;
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  color:var(--cnt-color);
+  font-family:'VT323',monospace;
+  font-size:18px;
+  border-radius:4px;
+}
+
+.modal-content input:focus{
+  outline:none;
+  border-color:var(--ch-color);
+  box-shadow:0 0 10px var(--ch-glow);
+}
+
+.modal-content button{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:12px 24px;
+  margin:5px;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  border-radius:4px;
+  transition:all 0.2s;
+}
+
+.modal-content button:hover{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+  transform:translateY(-2px);
+}
+
+.playlist-item{
+  padding:15px;
+  margin:8px 0;
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  color:var(--cnt-color);
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-radius:4px;
+  transition:all 0.2s;
+  font-family:'VT323',monospace;
+  font-size:18px;
+}
+
+.playlist-item:hover{
+  border-color:var(--ch-color);
+  transform:translateX(5px);
+  box-shadow:0 4px 15px rgba(0,0,0,0.4);
+}
+
+.playlist-track-count{
+  font-size:14px;
+  opacity:0.7;
+  font-family:'Rajdhani',sans-serif;
+}
+
+/* Library View */
+.library{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:var(--bg);
+  z-index:500;
+  overflow-y:auto;
+  padding:20px;
+  display:none;
+}
+
+.library.open{
+  display:block;
+}
+
+.library-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  padding-bottom:15px;
+  border-bottom:2px solid var(--frame);
+}
+
+.library-header h2{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:28px;
+  text-shadow:0 0 20px var(--logo-glow);
+}
+
+.library-tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:25px;
+}
+
+.tab-btn{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:12px 24px;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  flex:1;
+  border-radius:4px;
+  transition:all 0.2s;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.tab-btn:hover{
+  border-color:var(--ch-color);
+  transform:translateY(-2px);
+}
+
+.tab-btn.active{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+  box-shadow:0 0 20px var(--ch-glow);
+}
+
+.library-content{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:15px;
+}
+
+.track-card{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  padding:15px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  border-radius:6px;
+}
+
+.track-card:hover{
+  border-color:var(--ch-color);
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 8px 25px rgba(0,0,0,0.6);
+}
+
+.track-card-name{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:18px;
+  margin-bottom:8px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.track-card-info{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--btn-color);
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.playlist-card{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  padding:20px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  border-radius:6px;
+}
+
+.playlist-card:hover{
+  border-color:var(--ch-color);
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 8px 25px rgba(0,0,0,0.6);
+}
+
+.playlist-card-name{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:20px;
+  margin-bottom:10px;
+  text-shadow:0 0 10px var(--logo-glow);
+}
+
+.playlist-card-info{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--btn-color);
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.playlist-card button{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:8px 16px;
+  margin:10px 5px 0 0;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:14px;
+  border-radius:4px;
+  transition:all 0.2s;
+}
+
+.playlist-card button:hover{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+}
+
+.empty-state{
+  grid-column:1/-1;
+  text-align:center;
+  padding:60px 20px;
+  color:var(--cnt-color);
+  font-family:'Rajdhani',sans-serif;
+  font-size:18px;
+  opacity:0.7;
+}
+
+/* Playlist List in Modal */
+.playlist-list{
+  max-height:300px;
+  overflow-y:auto;
+  margin-bottom:15px;
+}
+
+.playlist-list::-webkit-scrollbar{
+  width:8px;
+}
+
+.playlist-list::-webkit-scrollbar-track{
+  background:var(--gc-bg);
+  border-radius:4px;
+}
+
+.playlist-list::-webkit-scrollbar-thumb{
+  background:var(--ch-color);
+  border-radius:4px;
+}
+
+/* PHASE 2 FEATURES - QUEUE, SHUFFLE, REPEAT, PROGRESS */
+
+/* Queue Panel */
+.queue-panel{
+  position:fixed;
+  right:-400px;
+  top:0;
+  bottom:0;
+  width:400px;
+  background:var(--gc-bg);
+  border-left:3px solid var(--gc-border);
+  transition:right 0.3s ease;
+  z-index:600;
+  display:flex;
+  flex-direction:column;
+  box-shadow:-5px 0 20px rgba(0,0,0,0.5);
+}
+
+.queue-panel.open{
+  right:0;
+}
+
+.queue-header{
+  background:var(--brand-bg);
+  border-bottom:2px solid var(--brand-border);
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.queue-header h3{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:20px;
+  text-shadow:0 0 10px var(--logo-glow);
+}
+
+.queue-content{
+  flex:1;
+  overflow-y:auto;
+  padding:15px;
+}
+
+.queue-item{
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:4px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:all 0.2s;
+  cursor:grab;
+}
+
+.queue-item:hover{
+  border-color:var(--ch-color);
+  transform:translateX(-5px);
+}
+
+.queue-item.playing{
+  border-color:var(--ch-color);
+  background:linear-gradient(90deg,var(--bg),var(--gc-bg));
+}
+
+.queue-item-info{
+  flex:1;
+  overflow:hidden;
+}
+
+.queue-item-name{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:16px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-bottom:4px;
+}
+
+.queue-item-station{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--btn-color);
+  font-size:12px;
+}
+
+.queue-item-remove{
+  background:transparent;
+  border:none;
+  color:var(--btn-color);
+  cursor:pointer;
+  font-size:18px;
+  padding:5px;
+  transition:all 0.2s;
+}
+
+.queue-item-remove:hover{
+  color:#ff4444;
+  transform:scale(1.2);
+}
+
+.queue-empty{
+  text-align:center;
+  padding:40px 20px;
+  color:var(--cnt-color);
+  font-family:'Rajdhani',sans-serif;
+  opacity:0.6;
+}
+
+.queue-actions{
+  padding:15px;
+  border-top:2px solid var(--gc-border);
+  display:flex;
+  gap:10px;
+}
+
+.queue-actions button{
+  flex:1;
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:10px;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:14px;
+  border-radius:4px;
+  transition:all 0.2s;
+}
+
+.queue-actions button:hover{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+}
+
+/* Shuffle and Repeat Buttons */
+.btn.shuffle-active,
+.btn.repeat-active{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+  box-shadow:0 0 15px var(--ch-glow);
+}
+
+/* Progress Bar */
+.progress-container{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  border-radius:4px;
+  padding:15px;
+  margin-bottom:20px;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  font-family:'VT323',monospace;
+  font-size:14px;
+  color:var(--cnt-color);
+}
+
+.progress-bar-wrapper{
+  position:relative;
+  height:8px;
+  background:#000;
+  border-radius:4px;
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  background:var(--ch-color);
+  width:0%;
+  transition:width 0.1s linear;
+  box-shadow:0 0 10px var(--ch-glow);
+}
+
+.progress-bar-wrapper:hover .progress-bar{
+  box-shadow:0 0 20px var(--ch-glow);
+}
+
+/* Playback Mode Indicators */
+.mode-indicator{
+  font-size:12px;
+  opacity:0.8;
+  margin-left:5px;
+}
+
+/* PHASE 3 FEATURES - SEARCH & STATISTICS */
+
+/* Search Panel */
+.search-panel{
+  position:fixed;
+  left:-450px;
+  top:0;
+  bottom:0;
+  width:450px;
+  background:var(--gc-bg);
+  border-right:3px solid var(--gc-border);
+  transition:left 0.3s ease;
+  z-index:600;
+  display:flex;
+  flex-direction:column;
+  box-shadow:5px 0 20px rgba(0,0,0,0.5);
+}
+
+.search-panel.open{
+  left:0;
+}
+
+.search-header{
+  background:var(--brand-bg);
+  border-bottom:2px solid var(--brand-border);
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.search-header h3{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:20px;
+  text-shadow:0 0 10px var(--logo-glow);
+}
+
+.search-input-container{
+  padding:15px 20px;
+  border-bottom:2px solid var(--gc-border);
+}
+
+.search-input{
+  width:100%;
+  padding:12px;
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  color:var(--cnt-color);
+  font-family:'VT323',monospace;
+  font-size:18px;
+  border-radius:4px;
+  transition:all 0.2s;
+}
+
+.search-input:focus{
+  outline:none;
+  border-color:var(--ch-color);
+  box-shadow:0 0 15px var(--ch-glow);
+}
+
+.search-filters{
+  padding:10px 20px;
+  border-bottom:2px solid var(--gc-border);
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.filter-chip{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:6px 12px;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:12px;
+  border-radius:15px;
+  transition:all 0.2s;
+}
+
+.filter-chip:hover,
+.filter-chip.active{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+}
+
+.search-results{
+  flex:1;
+  overflow-y:auto;
+  padding:15px 20px;
+}
+
+.search-result-item{
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+
+.search-result-item:hover{
+  border-color:var(--ch-color);
+  transform:translateX(5px);
+}
+
+.search-result-name{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.search-result-info{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--btn-color);
+  font-size:12px;
+}
+
+.search-no-results{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--cnt-color);
+  font-family:'Rajdhani',sans-serif;
+  opacity:0.7;
+}
+
+/* Search Toggle Button */
+.search-toggle{
+  position:fixed;
+  bottom:140px;
+  right:20px;
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:15px 25px;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:18px;
+  font-weight:600;
+  z-index:100;
+  border-radius:5px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+  transition:all 0.3s ease;
+}
+
+.search-toggle:hover{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+  transform:translateY(-2px);
+}
+
+/* Statistics Dashboard */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.stat-card{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  padding:20px;
+  border-radius:6px;
+  transition:all 0.3s ease;
+}
+
+.stat-card:hover{
+  border-color:var(--ch-color);
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.6);
+}
+
+.stat-card-title{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--logo-color);
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.stat-card-value{
+  font-family:'Orbitron',monospace;
+  color:var(--ch-color);
+  font-size:36px;
+  font-weight:700;
+  text-shadow:0 0 15px var(--ch-glow);
+  margin-bottom:8px;
+}
+
+.stat-card-label{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:16px;
+  opacity:0.8;
+}
+
+.top-tracks-list,
+.top-stations-list{
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  padding:20px;
+  border-radius:6px;
+  margin-bottom:20px;
+}
+
+.top-list-title{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:18px;
+  margin-bottom:15px;
+  text-shadow:0 0 10px var(--logo-glow);
+}
+
+.top-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px;
+  margin-bottom:8px;
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  border-radius:4px;
+  transition:all 0.2s;
+  cursor:pointer;
+}
+
+.top-item:hover{
+  border-color:var(--ch-color);
+  transform:translateX(5px);
+}
+
+.top-item-rank{
+  font-family:'Orbitron',monospace;
+  color:var(--ch-color);
+  font-size:20px;
+  font-weight:700;
+  min-width:35px;
+  text-align:center;
+}
+
+.top-item-info{
+  flex:1;
+  margin:0 15px;
+}
+
+.top-item-name{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:16px;
+  margin-bottom:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.top-item-detail{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--btn-color);
+  font-size:12px;
+}
+
+.top-item-count{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--ch-color);
+  font-size:14px;
+  font-weight:600;
+  min-width:60px;
+  text-align:right;
+}
+
+.stats-section-title{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:22px;
+  margin:30px 0 20px 0;
+  text-shadow:0 0 15px var(--logo-glow);
+  border-bottom:2px solid var(--frame);
+  padding-bottom:10px;
+}
+
+/* LISTENING PARTY SYSTEM */
+
+.party-panel{
+  position:fixed;
+  right:-400px;
+  top:0;
+  bottom:0;
+  width:400px;
+  background:var(--gc-bg);
+  border-left:3px solid var(--gc-border);
+  transition:right 0.3s ease;
+  z-index:700;
+  display:flex;
+  flex-direction:column;
+  box-shadow:-5px 0 20px rgba(0,0,0,0.5);
+  overflow:hidden;
+}
+
+.party-panel.open{
+  right:0;
+}
+
+.party-header{
+  background:var(--brand-bg);
+  border-bottom:2px solid var(--brand-border);
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-shrink:0;
+}
+
+.party-header h3{
+  font-family:'Orbitron',monospace;
+  color:var(--logo-color);
+  font-size:20px;
+  text-shadow:0 0 10px var(--logo-glow);
+}
+
+.party-content{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:20px;
+}
+
+.party-code-display{
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  padding:20px;
+  text-align:center;
+  border-radius:6px;
+  margin-bottom:20px;
+}
+
+.party-code-label{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--cnt-color);
+  font-size:14px;
+  margin-bottom:10px;
+  opacity:0.8;
+}
+
+.party-code-value{
+  font-family:'Orbitron',monospace;
+  color:var(--ch-color);
+  font-size:32px;
+  font-weight:700;
+  letter-spacing:4px;
+  text-shadow:0 0 15px var(--ch-glow);
+  user-select:all;
+}
+
+.party-join-input{
+  width:100%;
+  padding:15px;
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  color:var(--cnt-color);
+  font-family:'Orbitron',monospace;
+  font-size:24px;
+  text-align:center;
+  letter-spacing:4px;
+  border-radius:6px;
+  margin-bottom:15px;
+  text-transform:uppercase;
+}
+
+.party-join-input:focus{
+  outline:none;
+  border-color:var(--ch-color);
+  box-shadow:0 0 15px var(--ch-glow);
+}
+
+.party-members{
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  padding:15px;
+  border-radius:6px;
+  margin-bottom:20px;
+  max-height:300px;
+  overflow-y:auto;
+}
+
+.party-members-title{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--logo-color);
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.party-member{
+  display:flex;
+  align-items:center;
+  padding:10px;
+  margin-bottom:8px;
+  background:var(--gc-bg);
+  border:2px solid var(--gc-border);
+  border-radius:4px;
+}
+
+.party-member-icon{
+  font-size:20px;
+  margin-right:10px;
+}
+
+.party-member-name{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:18px;
+  flex:1;
+}
+
+.party-member-role{
+  font-family:'Rajdhani',sans-serif;
+  color:var(--ch-color);
+  font-size:12px;
+  font-weight:600;
+  text-transform:uppercase;
+  background:var(--btn-bg);
+  padding:4px 10px;
+  border-radius:10px;
+  border:1px solid var(--btn-border);
+}
+
+.party-status{
+  background:var(--bg);
+  border:2px solid var(--btn-border);
+  padding:15px;
+  border-radius:6px;
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.party-status-text{
+  font-family:'VT323',monospace;
+  color:var(--cnt-color);
+  font-size:16px;
+  line-height:1.5;
+}
+
+.party-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.party-btn{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  color:var(--btn-color);
+  padding:15px;
+  cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  border-radius:5px;
+  transition:all 0.3s ease;
+}
+
+.party-btn:hover{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+  transform:translateY(-2px);
+  box-shadow:0 4px 15px rgba(0,0,0,0.4);
+}
+
+.party-btn.danger{
+  border-color:#aa3333;
+  color:#ff5555;
+}
+
+.party-btn.danger:hover{
+  border-color:#ff5555;
+  background:linear-gradient(145deg,#3d1010,#2a0808);
+}
+
+
 </style>
 </head>
 <body>
@@ -990,18 +1981,31 @@ input[type="range"]::-moz-range-thumb{
     </div>
   </div>
 
-  <div class="controls-single">
-    <button class="btn" onclick="power()" id="pwr">POWER</button>
-  </div>
-
-  <div class="controls">
-    <button class="btn" onclick="prevTrack()">⏮️ PREV TRACK</button>
-    <button class="btn" onclick="toggleThemeMenu()">🎨 THEMES</button>
-    <button class="btn" onclick="nextTrack()">NEXT TRACK ⏭️</button>
+  <!-- PHASE 2: Progress Bar -->
+  <div class="progress-container" id="progressContainer" style="display:none;">
+    <div class="progress-info">
+      <span id="currentTime">0:00</span>
+      <span id="trackDuration">0:00</span>
+    </div>
+    <div class="progress-bar-wrapper" onclick="seekTrack(event)">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
   </div>
 
   <div class="controls-single">
     <button class="btn active" onclick="toggleLiveMode()" id="liveBtn">🔴 LIVE</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="prevTrack()">⏮️ PREV TRACK</button>
+    <button class="btn" onclick="power()" id="pwr">⚡ POWER</button>
+    <button class="btn" onclick="nextTrack()">NEXT TRACK ⏭️</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="toggleThemeMenu()">🎨 THEMES</button>
+    <button class="btn" onclick="toggleShuffle()" id="shuffleBtn" title="Shuffle">🔀 SHUFFLE</button>
+    <button class="btn" onclick="toggleRepeat()" id="repeatBtn" title="Repeat">🔁 REPEAT</button>
   </div>
 
   <div class="theme-menu" id="theme-menu">
@@ -1217,7 +2221,7 @@ input[type="range"]::-moz-range-thumb{
   <div class="dial-container">
     <div class="dial-label">STATION TUNER</div>
     <div class="station-display" id="station-display">950 - 🔥 Classic Rap Radio</div>
-    <input type="range" id="dial" min="0" max="16" value="0" class="dial-slider">
+    <input type="range" id="dial" min="0" max="17" value="0" class="dial-slider">
     <div class="dial-markers">
       <span>950</span>
       <span>955</span>
@@ -1232,10 +2236,11 @@ input[type="range"]::-moz-range-thumb{
   </div>
 </div>
 
+
 <script>
 // EXACT COPY OF TV MUSIC CHANNELS
 const STATIONS = [
-  {num:950, name:"🔥 Classic Rap Radio", cat:"Music", master:true, networkShows:["RicNuttIse-bPresentsWelcomeToSyndiegoMixtapes","dedication-2-lil-wayne","tdolapt1bykazeloon","Hiphop-farwest_-_lil_d_-_liveFast_die_young","the-drive-in-theatre-currensy","kiz-mixtapes","Pastor_Troy_-_Crown_Royal_Legend-2013","14yogottiigotemftlilwayneandthebirdman","2-09-i-wanna-disc-2-east-coast-edition-kurupt_202305","from-me-to-u-juelz","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_3-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","DJ_Ty_Boogie_-_The_Greatest_Whoever_Done_It_13_-MixFiend-2007","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_73-2011","cole-world-sideline-story-jcole-itunes","lil-peep-live-forever_202503","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_86-2011","va-dj-chuck-t-down-south-slangin-vol.-51-bootleg-2008-fpuo","va-dj-chuck-t-down-south-slangin-vol.-48-bootleg-2008-fpuo","dj-lindo_20251212_2301","Gangsta_Grillz_The_Whole_Series__Covers","VA-Superstar_Jay_-_I_Am_Mixtapes_197-2017","RonaldBigMacdonaldKazeLoon","VA-Superstar_Jay_-_I_Am_Mixtapes_208-2018","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes-2014","FlexinNReppin2DatPiff.com","VA-Superstar_Jay_-_I_Am_Mixtapes_207-2018","mixtapes_202212","VA-Superstar_Jay_-_I_Am_Mixtapes_194-2016","VA-Superstar_Jay_-_I_Am_Mixtapes_186-2016","DJ_Stretch_-_Mixtapes_For_Dummyz_Vol_1_Feat._Project_Pat_and_Three_6_Mafia-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_200-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_147-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_199-2017"], avgDur:2400},
+  {num:950, name:"🔥 Classic Rap Radio", cat:"Music", master:true, networkShows:["RicNuttIse-bPresentsWelcomeToSyndiegoMixtapes","dedication-2-lil-wayne","tdolapt1bykazeloon","Hiphop-farwest_-_lil_d_-_liveFast_die_young","the-drive-in-theatre-currensy","kiz-mixtapes","Pastor_Troy_-_Crown_Royal_Legend-2013","14yogottiigotemftlilwayneandthebirdman","2-09-i-wanna-disc-2-east-coast-edition-kurupt_202305","from-me-to-u-juelz","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_3-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","DJ_Ty_Boogie_-_The_Greatest_Whoever_Done_It_13_-MixFiend-2007","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_73-2011","cole-world-sideline-story-jcole-itunes","lil-peep-live-forever_202503","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_86-2011","va-dj-chuck-t-down-south-slangin-vol.-51-bootleg-2008-fpuo","va-dj-chuck-t-down-south-slangin-vol.-48-bootleg-2008-fpuo","dj-lindo_20251212_2301","Gangsta_Grillz_The_Whole_Series__Covers","VA-Superstar_Jay_-_I_Am_Mixtapes_197-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_208-2018","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes-2014","FlexinNReppin2DatPiff.com","VA-Superstar_Jay_-_I_Am_Mixtapes_207-2018","mixtapes_202212","VA-Superstar_Jay_-_I_Am_Mixtapes_194-2016","VA-Superstar_Jay_-_I_Am_Mixtapes_186-2016","DJ_Stretch_-_Mixtapes_For_Dummyz_Vol_1_Feat._Project_Pat_and_Three_6_Mafia-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_200-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_147-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_199-2017"], avgDur:2400},
   {num:951, name:"💎 Superstar Jay Radio", cat:"Music", master:true, networkShows:["hiphopmixtapes2032","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_6-2014","Exclusive_Tunes_100_-_Biggy_Jiggy_Mixtapes","lil-wayne-da-drought-2","VA-Superstar_Jay_-_I_Am_Mixtapes_100-2011","Exclusive_Tunes_S.G._15_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_2-2012","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_4-2014","Exclusive_Tunes_41_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes_2-2014","Exclusive_Tunes_S.G._6_-_Biggy_Jiggy_Mixtapes","king-of-the-mischievous-south-vol.-2","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_3-2012","Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._47-2011","VA-DJ_Red_Skull__DJ_ASAP_and_DJ_Suspence_-_5_Star_Mixtapes-2018","DJ_Messiah_and_Lloyd_Banks-I_Am_Mixtapes_2_Punchline_King_Edition-2008-MF","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_2-2011","Exclusive_Tunes_S.G._16_-_Biggy_Jiggy_Mixtapes","DJ_Ant-Lo_-_Radio_Play_7-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_211-2019","VA-Superstar_Jay_-_I_Am_Mixtapes_148-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_185-2015","VA-Superstar_Jay_-_I_Am_Mixtapes_77-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_74-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_209_Mixtape_Creed-2018","VA-Superstar_Jay_-_I_Am_Mixtapes_183-2015","VA-Superstar_Jay_-_I_Am_Mixtapes_150-2013","Exclusive_Tunes_S.G._7_-_Biggy_Jiggy_Mixtapes","VA-Superstar_Jay_-_I_Am_Mixtapes_76-2011","Superstar_Jay_-_I_Am_Mixtapes_71-2011","Exclusive_Tunes_S.G._13_-_Biggy_Jiggy_Mixtapes","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_98-2009","Obie_Trice_-_The_Fifth-2019","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_6-2012"], avgDur:2400},
   {num:952, name:"🌊 DJ Masters Radio", cat:"Music", master:true, networkShows:["VA-Superstar_Jay_-_I_Am_Mixtapes_132-2012","Superstar_Jay_-_I_Am_Mixtapes_85-2011","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_63-2010","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D-2012","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","Superstar_Jay_-_I_Am_Mixtapes_92-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_161-2014","VA-BIggy_Jiggy_Mixtapes_-_Exclusive_Tunes_97-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_93-2011","VA-Superstar_Jay_-_I_Am_Mixtapes_138-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_126-2012","VA-DJ_Messiah-I_Am_Mixtapes_Lil_Wayne_Freestyle_Edition-Bootleg-2008-GT4","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_95-2009","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_96-2009","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_3D_4-2012","Superstar_Jay_-_I_Am_Mixtapes_68_Hosted_By_Lil_Kim-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_54_Hosted_By_Lamar_Odom-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_149-2013","VA-Biggy_Jiggy_Mixtapes_-_Exclusives_Tunes_S.G._23-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_104-2011","Superstar_Jay_-_I_Am_Mixtapes_94-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._30-2010","VA-Superstar_Jay_-_I_Am_Mixtapes_118_Hosted_By_Waka_Flocka-2012","Papoose_collection","Redman_-_Funk_From_Hell-2010","DJ_Critical_Hype_-_The_Art_Of_Kendrick_Lamar_Blends-2012","DJ_Green_Lantern_and_Jadakiss_-_Kiss_My_Ass_The_Champ_Is_Here_Pt.2","VA-Kochece_and_Jim_Jones_-_One_Eyed_Willy_Vol.2Bootleg-2006","VA-DJ_Hektik_-_Inspired_By_The_Streets_43-2019","Royce_Da_5_9_-_The_Bar_Exam_4_Hosted_By_DJ_Green_Lantern-2017","VA-J._Armz-How_To_Be_An_Mc_Vol.612009","N.O.R.E._-_Crack_on_Steroids_Hosted_By_DJ_Green_Lantern-2012","Method_Man_And_Redman_-_Lights_Out_Mixed_By_DJ_Green_Lantern-2009","Tape_Kingz_15th_Anniversary_Mixtape","VA-Tony_Touch-Hip_Hop_88-Bootleg-2009"], avgDur:2400},
   {num:953, name:"🎤 Hip Hop Classics", cat:"Music", master:true, networkShows:["DJ_Green_Lantern_and_Don_Cannon_Present_B.o.B._-_B.o.B._Vs._Bobby_Ray_No_DJ_Versi","DJ_Green_Lantern_-_Master_Class-2011","Suge_White_Presents_Jadakiss_and_Styles_P_-_Brothers-2012","Royce_Da_59-Bar_Exam_2_Mixed_By_DJ_Green_Lantern-2008","Nature-N-Noreaga_-_Queensbridge_2_Lefrak-2008","VA-DJ_Hood_and_DJ_Whiteowl_-_Kiss_That_Ass_Goodbye_Pt._1","DJ_Green_Lantern_And_Jay-Z_-_Creative_Control-2010","DJ_007_and_Jim_Jones-Pray_For_A_HustlaBootleg2010-","VA-DJ_Green_Lantern_-_Invasion_Radio_2K10-2010","the-champ-is-here-jadakiss","Capone-N-Noreaga_and_DJ_Green_Lantern-_Camouflage_Season-2010","VA-DJ_Holiday__DJ_Kutt_Throat_and_DJ_Green_Lantern_-_BET_Hip_Hop_Awards_2010_Invas","VA-DJ_Green_Lantern-I_Produced_That-Bootleg-2007_Bootleg_mixfiend","VA-DJ_Big_Mike_-_Soundtrack_To_The_Streets_2K20_Pt._3-2020","DJ_Mystery_-_L.O.X._Classics-2021","Kodak_Black_-_Unreleased-2016","01-rhymin-stealin","me-against-the-world_202510","stankonia_202511","1993-wu-tang-clan-enter-the-wu-tang-36-chambers","Boss_Hogg_Outlawz_-_Still_On_Da_Grind_2K10_2CD-2010","likefatherlikeson_202403","bad-vibes-forever_202409","liquid-swords-gza-wu-tang","doctors-advocate_202406","curtis_20240624","the-inspiration","Lil_Wayne_and_DJ_Drama_-_Dedication_5-2013","exclusive_202405","kings-of-crunk","timbaland-presents-shock-value","rolling-papers","bobs-04.-ms.-fat-booty","thug-pound-_-thug-pound_202501","the-infamous-mobb-deep_202409","the-blue-carpet-treatment","11.-emerica-feat.-young-life-and-chink-santana_202401","VA-Striclty_4_Traps_N_Trunks_Christmas_2022_Edition-2022","VA-DJ_S.R._-_Arrogant_Music_51-2022","VA-DJ_Triple_Exe-The_Passion_Of_RandB_152","VA-DJ_S.R._-_Good_Muziikk_19-2022","VA-DJ_S.R._-_Faloos_15-2022","VA-DJ_S.R._-_Dont_Kill_Our_Vibe_14-2022","VA-DJ_S.R._and_DJ_Spinatik_-_History_In_The_Making_53-2022","VA-Strictly_4_The_Traps_N_Trunks_Halloween_Edition_2022-2022","VA-DJ_S.R._-_Backwood_Music_28-2022","VA-DJ_S.R._-_No_Friends_In_The_Industry_12-2022","VA-DJ_Slim_K__OG_Ron_C_and_The_Chopstars_-_Chop_Apocalypse_X-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_65-2022","VA-DJ_Red_Skull_and_DJ_ASAP_-_Sex_and_Hip-Hop-2022","VA-DJ_Red_Skull_and_DJ_ASAP_-_Trap_Club_Music_2-2022","VA-DJ_Ben_Frank_-_Only_For_The_Plugs_32-2022","VA-Strictly_4_The_Traps_N_Trunks_182-2022","VA-DJ_Trigga_-_New_World_Order_2-2022","VA-DJ_Tokars_-_Street_Sorority-2022","VA-DJ_S.R._-_Street_imoney_41-2022","VA-DJ_S.R._-_Faloos_14-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_64-2022","VA-DJ_Konvict_-_Texas_Street_Kings_and_Queens_8-2022","VA-DJ_Immature_-_Ratchet_Azz_Friends-2022","VA-DJ_E-Dub_-_Takeoff_Season_12-2022","VA-Strictly_4_The_Traps_N_Trunks_Real_Radio_Edition_Pt._2-2022","VA-DJ_S.R._-_Only_Good_Vibes_32-2022","VA-DJ_S.R._-_History_In_The_Making_51-2022","VA-DJ_S.R._-_Backwood_Music_27-2022","VA-DJ_S.R._-_No_Friends_In_The_Industry_10-2022","VA-DJ_Konvict_-_Trap_Bangers_5-2022","VA-Strictly_4_The_Traps_N_Trunks_long_Live_Trouble_Edition-2022","VA-DJ_S.R._-_No_Foreplay_Needed_7-2022","VA-DJ_S.R._-_Faloos_12-2022","VA-Strictly_4_The_Traps_N_Trunks_180-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_63-2022","VA-Strictly_4_The_Traps_N_Trunks_Dopeboy_Edition_Pt._2-2022","VA-Strictly_4_The_Traps_N_Trunks_Memorial_Day_2022-2022","VA-Strictly_4_The_Traps_N_Trunks_179-2022","VA-DJ_S.R._-_Only_Good_Vibes_30-2022","VA-DJ_S.R._-_Smooth_Operator_9-2022","VA-DJ_S.R._-_Faloos_11-2022","VA-DJ_S.R._-_Dont_Kill_Our_Vibe_9-2022","VA-DJ_S.R._-_Backwood_Music_26-2022","VA-DJ_Smooth_Montana_-_Teflon_Don_40-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_62-2022","VA-DJ_Konvict_-_Plug_4-2022","VA-DJ_Kenny_Mac_-_Trappin_After_Dark_25-2022","VA-DJ_DES_-_The_Block_Never_Sleeps_187-2022","VA-DJ_Cinemax_-_Take_Risks_And_Prosper-2022","VA-Strictly_4_The_Traps_N_Trunks_420_Edition-2022","VA-DJ_S.R._-_Arrogant_Music_46-2022","VA-DJ_Mellz_-_March_Madness_2K22-2022","Kevin_Gates_-_Arm_and_Hammer-2016","Kevin_Gates_-_Bismillah-2017","YFN_Lucci_-_Wish_Me_Well_2-2016","Lil_Boosie_Lil-Boosie-Ana_Best_of_Boosie","Young_Thug_and_Migos_-_Migos_Thuggin-2015","VA-DJ_New_Era_-_Mood_Musiq_14-2016","Kevin_Gates_-_Gold_Paradise-2017","Lil_Uzi_Vert_-_Luv_Is_Rage_1.5-2017","Kodak_Black_-_Lil_B-I-G-_Pac-2016","Yelawolf_-_Trunk_Muzik_Returns","NBA_Young_Boy_-_Never_Broke_Again_Untouchable-2017","Drake_Vs._Tory_Lanez","Kodak_Black_-_Project_Baby_2-2017","Lil_Uzi_Vert_-_The_Rare_Uzi-2016","VA-DJ_Cortez__DJ_Wats_and_DJ_Suspence_-_Codeine_Overdose_Vol._5-2016","VA-DJ_Slick10_and_2Pair_Tate_-_Winter_Classic_2K16-2016","VA-DJ_Diggz_and_DJ_Arab_-_Press_Play_3-2016","VA-DJ_S.R._-_Arrogant_Music_10-2016","VA-DJ_Amanda_Blaze_-_Flee_God_South_Trap_Miami_2-2015","VA-DJ_Whiteowl_-_Whiteowl_Drop_That_249-2015"], avgDur:2400},
@@ -1251,8 +2256,63 @@ const STATIONS = [
   {num:963, name:"🌌 Ambient Radio", cat:"Music", master:true, networkShows:["rz123","rz016","matrix-soundtrack-collection","new-emotions-vol.1-15","v-a-adismal-music-collection","final-fantasy-vii-1997-ost","the-legend-of-zelda-ocarina-of-time-original-soundtrack"], avgDur:2400},
   {num:964, name:"🎧 Deejay Dan", cat:"Music", master:true, networkShows:["DeeJayDanHALLOWEENDUBSTEP2017","DeeJayDanComplextro22017","DeeJayDanBurnTheFire2013","DeeJayDanThisIsMOOMBAHCORE2013","DeeJayDanBurnTheFire22014","DeeJayDanBurnTheFire32014","dee-jay-dan-e-motion-39-2025","DeeJayDanMelodicFullOn62017","DeeJayDanMelodicFullOn112017","DeeJayDanMelodicFullOn132018","DeeJayDanMelodicFullOn162018","DeeJayDanMelodicFullOn122018","DeeJayDanMelodicFullOn72017","DeeJayDanMelodicFullOn102017","DeeJayDanEuromixSarov2352018","dee-jay-dan-capricorn-2025","dee-jay-dan-halloween-house-2025","dee-jay-dan-acid-breaks-13-2024","dee-jay-dan-acid-breaks-11-2024","dee-jay-dan-aquarius-2024","dee-jay-dan-libra-2024","deejaydanemotion342019","deejaydanwinteredm2020","deejaydanwinteredm22020","deejaydaneasternedm2020","deejaydanwinteredm32020","DeeJayDanWhiteNights92019","DeeJayDanWhiteNights32015","DeeJayDanEMotion202018","DeeJayDanKnockout2017","deejaydanstereolove2020","DeeJayDanThisIsMELODICDUBSTEP42014","DeeJayDanThisIsMELODICDUBSTEP102017","DeeJayDanThisIsMELODICDUBSTEP82015","DeeJayDanThisIsMELODICDUBSTEP112018","DeeJayDanThisIsMELODICDUBSTEP72015","DeeJayDanArabianDubstep22018","DeeJayDanThisIsMELODICDUBSTEP122018","DeeJayDanTropicalHouse2015","DeeJayDanMakeYouHappy2014","DeeJayDanFutureHouse2015","DeeJayDanHalloweenDubstep2019","DeeJayDanJapanTrance22018","deejaydanclubnights52019","DeeJayDanArabianDubstep2017","deejaydansummermegamix22019","DeeJayDanHALLOWEENTRAPDUBSTEP2017","DeeJayDanTropicalHouse22015","DeeJayDanTropicalHouse32015","deejaydansummermegamix32019","DeeJayDanHiTech2017","DeeJayDanTropicalHouse42015","deejaydan1001arabiannights2020","DeeJayDanDeepInMySoul1002019","DeeJayDanSpaceJam32016","DeeJayDanSpaceJam22015","DeeJayDanLionsHeart32016","DeeJayDanLionsHeart52016","DeeJayDanLionsHeart42016","DeeJayDanSummerIsBack32015","DeeJayDanSummerIsCalling32015","DeeJayDanSummerIsBack42017","DeeJayDanMakeYouMove2015","DeeJayDanTheWeekendStartsHere22015","DeeJayDanDieselPower2017","DeeJayDanUppercut2018","DeeJayDanComplextro52018","DeeJayDanComplextro32018","DeeJayDanImTheLaw2017","DeeJayDanBurnTheFire52016","DeeJayDanBurnTheFire42016","DeeJayDanMadness2015","DeeJayDanKnockdown2017","DeeJayDanWaitingForTheSummer22015","DeeJayDanSunriseSunset22015","DeeJayDanZeroGravity22015"], avgDur:2400},
   {num:965, name:"🎙️ DJ Clue Radio", cat:"Music", master:true, networkShows:["VA-DJ_Clue_-_Banned_From_CD_Pt._1-2015","VA-DJ_Clue-Where_Ya_Hood_At_Pt.3-2003-WCR","DJ_clue_where_ya_hood_at_pt.1-mf-","DJ_Clue-_Hes_A_Hustler_Pt.1-mf-","DJ_Clue-_Desert_Storm_98-mf-","DJ_Clue_-_Best_of_Freestyles_vol._1--mf--","Fabolous_and_DJ_Clue_-_Friday_Night_Freestyles-2015","Fabolous_and_DJ_Clue_-_Live_From_The_718_Freestyles-2015","DJ_Clue_Best_Of_Clue_Freestyles_Pt_II","DJ_CLUE_-_STADIUM_SERIES_2-mf-","DJ_Clue_-_Hate_Me_Now_Part_2_2002-mf-","DJ_Clue_Show_Me_The_Money_2002-mf-","DJ_Clue-_Clue_For_President_PT.2-mf-","VA-DJ_Clue-Clue_Manatti-The_Clue_World_Order-1997-4HM","DJ_Clue-_Queens_Day_Pt.1_-mf-1999","DJ_Clue-_The_Curse_Of_Clue--mf--_1997","dj_clue-_clue_for_president_1-mf-1997","VA-DJ_Clue-When_Animals_Attack-2004-WCR","VA-DJ_Clue_And_Desert_Storm_Present-The_Mixtape_After_Tomorrow_-2004-mf-","DJ_Clue-DJ_Envy_Desert_Storm_Mixtape_Vol.4_-mf-_2002","DJClueSpringtymeStickup1996","Dj_Clue_Clue_For_President_Pt._3_new_Acuzations_1998-mf-"], avgDur:2400},
-  {num:966, name:"💿 Funkmaster Flex Radio", cat:"Music", master:true, networkShows:["VA-Funkmaster_Flex_-_Who_You_Mad_At_Me_Or_Yourself-2013","funkmaster-flex-hot-97-2002-side-b","FunkmasterFlex-19940709","ChuckChilloutShow-199008","FunkmasterFlex-BestOf1995-199512","ChuckChilloutShow-April1990","funkmaster-flex-hot-97-4-9-04","FunkmasterFlex-199709","FunkmasterFlex-FridayNightStreetJams-Hot97-19930130","FunkmasterFlexPeteRockHot971994","ChuckChilloutShow-withFunkmasterFlex-1989","funkmaster-flex-friday-night-street-jam-hot-97-9-26-97","funkmaster-flex-friday-night-street-jam-hot-97-7-19-96","funkmaster-flex-radio-1-rap-exchange-w-fat-joe-big-pun-flipmode-squad-missy-elli","funkmaster-flex-saturday-night-street-jam-hot-97-7-4-98","Funkmaster_Flex_-_Special_Delivery_3","Funkmaster_Flex_and_Roc-A-Fella_Presents_-_Live_Hot_97_Freestyles_Hosted_By_Jay-Z","FunkmasterFlexHot97StreetJams-19950728","djrizhot97streetjams1994"], avgDur:2400}
+  {num:966, name:"💿 Funkmaster Flex Radio", cat:"Music", master:true, networkShows:["VA-Funkmaster_Flex_-_Who_You_Mad_At_Me_Or_Yourself-2013","funkmaster-flex-hot-97-2002-side-b","FunkmasterFlex-19940709","ChuckChilloutShow-199008","FunkmasterFlex-BestOf1995-199512","ChuckChilloutShow-April1990","funkmaster-flex-hot-97-4-9-04","FunkmasterFlex-199709","FunkmasterFlex-FridayNightStreetJams-Hot97-19930130","FunkmasterFlexPeteRockHot971994","ChuckChilloutShow-withFunkmasterFlex-1989","funkmaster-flex-friday-night-street-jam-hot-97-9-26-97","funkmaster-flex-friday-night-street-jam-hot-97-7-19-96","funkmaster-flex-radio-1-rap-exchange-w-fat-joe-big-pun-flipmode-squad-missy-elli","funkmaster-flex-saturday-night-street-jam-hot-97-7-4-98","Funkmaster_Flex_-_Special_Delivery_3","Funkmaster_Flex_and_Roc-A-Fella_Presents_-_Live_Hot_97_Freestyles_Hosted_By_Jay-Z","FunkmasterFlexHot97StreetJams-19950728","djrizhot97streetjams1994"], avgDur:2400},
+  {num:967, name:"🔥 DatPiff Mega Mixtapes", cat:"Music", master:true, networkShows:[], avgDur:2400, dynamicLoader: 'datpiff'}
 ];
+
+// DatPiff Dynamic Loader - Fetches thousands of mixtapes from Archive.org
+let datpiffMixtapes = [];
+let datpiffLoaded = false;
+
+async function loadDatPiffMixtapes() {
+  if (datpiffLoaded) return datpiffMixtapes;
+  
+  console.log('Loading DatPiff mixtapes from Archive.org...');
+  
+  try {
+    // Search Archive.org for all DatPiff mixtapes
+    // Using Archive.org's advanced search API
+    const searchUrl = 'https://archive.org/advancedsearch.php?q=collection:datpiffarchives&fl=identifier&rows=10000&output=json';
+    
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+    
+    if (data.response && data.response.docs) {
+      datpiffMixtapes = data.response.docs
+        .map(doc => doc.identifier)
+        .filter(id => id && id.startsWith('datpiff-mixtape-'));
+      
+      console.log(`Loaded ${datpiffMixtapes.length} DatPiff mixtapes!`);
+      
+      // Update the DatPiff station with the loaded mixtapes
+      const datpiffStation = STATIONS.find(s => s.num === 967);
+      if (datpiffStation) {
+        datpiffStation.networkShows = datpiffMixtapes;
+      }
+      
+      datpiffLoaded = true;
+      return datpiffMixtapes;
+    }
+  } catch(e) {
+    console.error('Error loading DatPiff mixtapes:', e);
+    // Fallback: Use some known mixtapes
+    datpiffMixtapes = [
+      'datpiff-mixtape-maa5f90c',
+      'datpiff-mixtape-m3a7d6df',
+      'datpiff-mixtape-meb48d30',
+      'datpiff-mixtape-mdf262c0',
+      'datpiff-mixtape-ma9d8be7',
+      'datpiff-mixtape-me99d2af'
+    ];
+  }
+  
+  datpiffLoaded = true;
+  return datpiffMixtapes;
+}
+
+// Load DatPiff mixtapes when page loads
+loadDatPiffMixtapes();
+
 
 let cur = 0;
 let on = false; // Start in OFF state
@@ -1357,6 +2417,13 @@ function getCurrentBroadcast(schedule, stationNum) {
 
 // EXACT TV SYNC LOGIC
 async function fetchFiles(identifier){
+  // Block specific unwanted shows completely
+  const blockedShows = ['RonaldBigMacdonaldKazeLoon', 'RonaldBigMcdonaldKaze'];
+  if(blockedShows.includes(identifier)) {
+    console.log('Blocked show:', identifier);
+    return [];
+  }
+  
   if(metaCache[identifier]) return metaCache[identifier];
   
   try{
@@ -1378,6 +2445,10 @@ async function fetchFiles(identifier){
       if(nameLower.includes('intro')) return false;
       if(nameLower.includes('outro')) return false;
       if(nameLower.includes('interlude')) return false;
+      
+      // Block specific artist names in filenames
+      if(nameLower.includes('ronaldbigmac')) return false;
+      if(nameLower.includes('kaze')) return false;
       
       const length = parseFloat(f.length);
       if(!isNaN(length) && length > 0 && length < 90) return false;
@@ -1488,6 +2559,9 @@ async function playSync(){
     p.play().catch(e => console.log('Play blocked:', e));
     
     console.log('LIVE: Jumped to track', targetTrackIndex, 'at', Math.floor(offsetIntoTrack), 'seconds');
+    
+    // PHASE 1: Track change callback
+    setTimeout(() => onTrackChange(), 100);
   } 
   // OFFLINE mode: random track from beginning
   else {
@@ -1498,6 +2572,9 @@ async function playSync(){
     p.currentTime = 0;
     p.volume = currentVolume;
     p.play().catch(e => console.log('Play blocked:', e));
+    
+    // PHASE 1: Track change callback
+    setTimeout(() => onTrackChange(), 100);
   }
 }
 
@@ -1590,12 +2667,6 @@ document.getElementById('dial').oninput = function(){
   go(stationIndex);
 };
 
-p.addEventListener('ended', () => {
-  if(on){
-    nextTrack();
-  }
-});
-
 // Track skip functions
 function nextTrack(){
   if(!on || currentFiles.length === 0) return;
@@ -1614,6 +2685,9 @@ function nextTrack(){
   p.currentTime = 0;
   p.volume = currentVolume; // Apply saved volume
   p.play().catch(e => console.log('Play blocked:', e));
+  
+  // PHASE 1: Track change callback
+  setTimeout(() => onTrackChange(), 100);
 }
 
 function prevTrack(){
@@ -1633,6 +2707,9 @@ function prevTrack(){
   p.currentTime = 0;
   p.volume = currentVolume; // Apply saved volume
   p.play().catch(e => console.log('Play blocked:', e));
+  
+  // PHASE 1: Track change callback
+  setTimeout(() => onTrackChange(), 100);
 }
 
 // LIVE mode toggle
@@ -1721,7 +2798,2065 @@ console.log('Initializing Week', currentWeek, 'of', currentYear);
 weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
 console.log('Weekly schedule generated for all stations');
 
+// ============================================
+// PHASE 1: FAVORITES, PLAYLISTS, HISTORY, LIBRARY
+// ============================================
+
+// FAVORITES SYSTEM
+let favorites = [];
+
+function loadFavorites() {
+  const saved = localStorage.getItem('radioFavorites');
+  if (saved) {
+    try {
+      favorites = JSON.parse(saved);
+    } catch(e) {
+      console.error('Error loading favorites:', e);
+      favorites = [];
+    }
+  }
+}
+
+function saveFavorites() {
+  localStorage.setItem('radioFavorites', JSON.stringify(favorites));
+}
+
+function getCurrentTrackInfo() {
+  if (!on || currentFiles.length === 0) return null;
+  
+  const track = currentFiles[currentTrackIndex];
+  const station = STATIONS[cur];
+  
+  // Extract album/artist from the current show name (archive identifier)
+  const currentShow = station.networkShows ? station.networkShows[currentShowIndex % station.networkShows.length] : '';
+  
+  // Clean up track name
+  const trackName = track.n || track.u.split('/').pop().replace(/\.[^/.]+$/, "");
+  
+  // SMART PARSING for hip-hop/rap mixtapes
+  const parsedShow = parseShowIdentifier(currentShow);
+  
+  // Create searchable text that includes show name and parsed artists
+  const searchableText = `${trackName} ${parsedShow.artists.join(' ')} ${parsedShow.title} ${currentShow}`.toLowerCase();
+  
+  return {
+    id: track.u,
+    name: trackName,
+    url: track.u,
+    station: station.name,
+    stationNum: station.num,
+    stationIndex: cur,
+    timestamp: Date.now(),
+    albumShow: currentShow,
+    parsedArtists: parsedShow.artists, // Array of artist names
+    parsedTitle: parsedShow.title, // Cleaned title
+    searchText: searchableText
+  };
+}
+
+// Parse archive identifier to extract artist names and clean title
+function parseShowIdentifier(identifier) {
+  if (!identifier) return { artists: [], title: '' };
+  
+  let artists = [];
+  let title = identifier;
+  
+  // Common patterns in hip-hop mixtapes
+  // Pattern 1: "Artist_-_Title" or "Artist - Title"
+  const dashPattern = identifier.match(/^([^_-]+?)[-_]+(.+)$/);
+  if (dashPattern) {
+    const potentialArtist = dashPattern[1];
+    title = dashPattern[2];
+    
+    // Extract artists from first part
+    // Handle "VA-DJ_Name" (Various Artists with DJ)
+    if (potentialArtist.match(/^VA[-_]?(.+)/i)) {
+      const djMatch = potentialArtist.match(/DJ[-_](.+)/i);
+      if (djMatch) {
+        artists.push('DJ ' + cleanName(djMatch[1]));
+      }
+    } else if (potentialArtist.match(/^DJ[-_]/i)) {
+      artists.push('DJ ' + cleanName(potentialArtist.replace(/^DJ[-_]/i, '')));
+    } else {
+      artists.push(cleanName(potentialArtist));
+    }
+  }
+  
+  // Extract additional artist names from anywhere in the identifier
+  // Common artist name patterns
+  const artistPatterns = [
+    /(?:ft|feat|featuring)[-_\s]+([a-z0-9-_]+)/gi,
+    /(?:and|&)[-_\s]+([a-z0-9-_]+)/gi,
+    /(?:with|w\/)[-_\s]+([a-z0-9-_]+)/gi
+  ];
+  
+  artistPatterns.forEach(pattern => {
+    let match;
+    while ((match = pattern.exec(identifier)) !== null) {
+      const artist = cleanName(match[1]);
+      if (artist && !artists.includes(artist)) {
+        artists.push(artist);
+      }
+    }
+  });
+  
+  // Look for well-known artist names in the identifier
+  const knownArtists = extractKnownArtists(identifier);
+  knownArtists.forEach(artist => {
+    if (!artists.includes(artist)) {
+      artists.push(artist);
+    }
+  });
+  
+  // Clean up title
+  title = cleanName(title);
+  
+  return { artists, title };
+}
+
+// Clean up names - replace underscores, remove dates, clean separators
+function cleanName(name) {
+  if (!name) return '';
+  
+  return name
+    .replace(/[-_]+/g, ' ') // Replace dashes/underscores with spaces
+    .replace(/\s+/g, ' ') // Normalize spaces
+    .replace(/\d{4,}$/g, '') // Remove trailing years/dates
+    .replace(/\b(vol|pt|part|mixtape|bootleg|feat|ft)\b\.?\s*\d*/gi, '') // Remove common suffixes
+    .trim();
+}
+
+// Extract known artist names from identifier
+function extractKnownArtists(identifier) {
+  const artists = [];
+  const lower = identifier.toLowerCase();
+  
+  // Common hip-hop/rap artists (expandable list)
+  const knownNames = [
+    'lil wayne', 'wayne', 'weezy',
+    'drake', 'drizzy',
+    'kanye', 'ye', 'kanye west',
+    'jay-z', 'jay z', 'hov',
+    'kendrick', 'kendrick lamar',
+    'j cole', 'jcole', 'cole',
+    'nicki minaj', 'nicki',
+    'travis scott', 'travis',
+    'future',
+    'migos',
+    'offset',
+    'quavo',
+    'takeoff',
+    'cardi b', 'cardi',
+    'meek mill', 'meek',
+    '21 savage',
+    'lil baby',
+    'dababy',
+    'pop smoke',
+    'juice wrld', 'juice',
+    'xxxtentacion',
+    'lil uzi', 'uzi vert',
+    'playboi carti', 'carti',
+    'tyler the creator', 'tyler',
+    'asap rocky', 'rocky',
+    'young thug', 'thugger',
+    'gunna',
+    'lil durk',
+    'polo g',
+    'roddy ricch',
+    'lil tjay',
+    'nle choppa',
+    'trippie redd',
+    'ski mask',
+    'denzel curry',
+    'jid',
+    'joey badass', 'joey',
+    'logic',
+    'joyner lucas',
+    'eminem', 'em', 'slim shady',
+    'snoop dogg', 'snoop',
+    'dr dre', 'dre',
+    '2pac', 'tupac',
+    'biggie', 'notorious big',
+    'nas',
+    'rakim',
+    'wu tang', 'wutang',
+    'method man',
+    'ghostface',
+    'raekwon',
+    'outkast',
+    'andre 3000',
+    'big boi',
+    'ti',
+    'jeezy',
+    'gucci mane', 'gucci',
+    'rick ross',
+    'waka flocka',
+    'chief keef',
+    'lil peep',
+    'xxx',
+    'post malone',
+    'machine gun kelly', 'mgk',
+    'kid cudi', 'cudi',
+    'asap ferg',
+    'schoolboy q',
+    'ab soul',
+    'jay rock',
+    'isaiah rashad',
+    'vince staples',
+    'earl sweatshirt',
+    'mac miller',
+    'anderson paak',
+    'chance the rapper', 'chance',
+    'childish gambino', 'gambino',
+    'frank ocean',
+    'the weeknd', 'weeknd',
+    'bryson tiller',
+    'partynextdoor',
+    'tory lanez',
+    'dj khaled', 'khaled',
+    'dj drama',
+    'dj clue',
+    'funkmaster flex',
+    'dj whoo kid',
+    'dj envy',
+    'dj mustard',
+    'metro boomin',
+    'zaytoven',
+    'mike will',
+    'southside',
+    'tm88',
+    'pierre bourne'
+  ];
+  
+  knownNames.forEach(name => {
+    // Look for artist name with word boundaries
+    const pattern = new RegExp('\\b' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '[-_\\s]+') + '\\b', 'i');
+    if (pattern.test(lower)) {
+      // Capitalize properly
+      const capitalizedName = name.split(' ').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(' ');
+      artists.push(capitalizedName);
+    }
+  });
+  
+  return artists;
+}
+
+function isCurrentTrackFavorited() {
+  const current = getCurrentTrackInfo();
+  if (!current) return false;
+  return favorites.some(fav => fav.id === current.id);
+}
+
+function updateFavoriteButton() {
+  const btn = document.getElementById('favoriteBtn');
+  const icon = document.getElementById('heartIcon');
+  
+  if (isCurrentTrackFavorited()) {
+    btn.classList.add('active');
+    icon.textContent = '♥';
+  } else {
+    btn.classList.remove('active');
+    icon.textContent = '♡';
+  }
+}
+
+function toggleFavorite() {
+  if (!on) {
+    alert('Turn on the radio first!');
+    return;
+  }
+  
+  const current = getCurrentTrackInfo();
+  if (!current) return;
+  
+  const index = favorites.findIndex(fav => fav.id === current.id);
+  
+  if (index >= 0) {
+    favorites.splice(index, 1);
+    console.log('Removed from favorites:', current.name);
+  } else {
+    favorites.push(current);
+    console.log('Added to favorites:', current.name);
+  }
+  
+  saveFavorites();
+  updateFavoriteButton();
+}
+
+// HISTORY SYSTEM
+let playHistory = [];
+const MAX_HISTORY = 50;
+
+function loadHistory() {
+  const saved = localStorage.getItem('radioHistory');
+  if (saved) {
+    try {
+      playHistory = JSON.parse(saved);
+    } catch(e) {
+      console.error('Error loading history:', e);
+      playHistory = [];
+    }
+  }
+}
+
+function saveHistory() {
+  localStorage.setItem('radioHistory', JSON.stringify(playHistory));
+}
+
+function addToHistory() {
+  const current = getCurrentTrackInfo();
+  if (!current) return;
+  
+  // Don't add duplicates in a row
+  if (playHistory.length > 0 && playHistory[0].id === current.id) return;
+  
+  playHistory.unshift(current);
+  
+  if (playHistory.length > MAX_HISTORY) {
+    playHistory = playHistory.slice(0, MAX_HISTORY);
+  }
+  
+  saveHistory();
+}
+
+function formatTimestamp(timestamp) {
+  const now = Date.now();
+  const diff = now - timestamp;
+  
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes} min ago`;
+  if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  return `${days} day${days > 1 ? 's' : ''} ago`;
+}
+
+// PLAYLIST SYSTEM
+let playlists = {};
+
+function loadPlaylists() {
+  const saved = localStorage.getItem('radioPlaylists');
+  if (saved) {
+    try {
+      playlists = JSON.parse(saved);
+    } catch(e) {
+      console.error('Error loading playlists:', e);
+      playlists = {};
+    }
+  }
+}
+
+function savePlaylists() {
+  localStorage.setItem('radioPlaylists', JSON.stringify(playlists));
+}
+
+function createPlaylist() {
+  const input = document.getElementById('playlistNameInput');
+  const name = input.value.trim();
+  
+  if (!name) {
+    alert('Please enter a playlist name');
+    return;
+  }
+  
+  if (playlists[name]) {
+    alert('A playlist with this name already exists');
+    return;
+  }
+  
+  playlists[name] = {
+    name: name,
+    tracks: [],
+    created: Date.now()
+  };
+  
+  savePlaylists();
+  input.value = '';
+  closeCreatePlaylistModal();
+  console.log('Created playlist:', name);
+  
+  // Show success message
+  alert(`Playlist "${name}" created!`);
+}
+
+function showAddToPlaylist() {
+  if (!on) {
+    alert('Turn on the radio first!');
+    return;
+  }
+  
+  const modal = document.getElementById('playlistModal');
+  const list = document.getElementById('playlistList');
+  
+  list.innerHTML = '';
+  
+  const playlistNames = Object.keys(playlists);
+  
+  if (playlistNames.length === 0) {
+    list.innerHTML = '<p class="empty-state">No playlists yet. Create one below!</p>';
+  } else {
+    playlistNames.forEach(name => {
+      const playlist = playlists[name];
+      const item = document.createElement('div');
+      item.className = 'playlist-item';
+      item.innerHTML = `
+        <span>${name}</span>
+        <span class="playlist-track-count">${playlist.tracks.length} tracks</span>
+      `;
+      item.onclick = () => addToPlaylist(name);
+      list.appendChild(item);
+    });
+  }
+  
+  modal.style.display = 'block';
+}
+
+function addToPlaylist(playlistName) {
+  const current = getCurrentTrackInfo();
+  if (!current) return;
+  
+  const playlist = playlists[playlistName];
+  
+  if (playlist.tracks.some(track => track.id === current.id)) {
+    alert('This track is already in the playlist!');
+    return;
+  }
+  
+  playlist.tracks.push(current);
+  savePlaylists();
+  closePlaylistModal();
+  
+  console.log(`Added "${current.name}" to "${playlistName}"`);
+  alert(`Added to "${playlistName}"!`);
+}
+
+function removeFromPlaylist(playlistName, trackId) {
+  const playlist = playlists[playlistName];
+  playlist.tracks = playlist.tracks.filter(track => track.id !== trackId);
+  savePlaylists();
+  
+  // Refresh library view if open
+  const library = document.getElementById('library');
+  if (library.classList.contains('open')) {
+    renderPlaylists(document.getElementById('library-content'));
+  }
+}
+
+function deletePlaylist(playlistName) {
+  if (confirm(`Delete playlist "${playlistName}"?`)) {
+    delete playlists[playlistName];
+    savePlaylists();
+    console.log('Deleted playlist:', playlistName);
+    
+    // Refresh library view
+    const library = document.getElementById('library');
+    if (library.classList.contains('open')) {
+      renderPlaylists(document.getElementById('library-content'));
+    }
+  }
+}
+
+function closePlaylistModal() {
+  document.getElementById('playlistModal').style.display = 'none';
+}
+
+function showCreatePlaylist() {
+  closePlaylistModal();
+  document.getElementById('createPlaylistModal').style.display = 'block';
+}
+
+function closeCreatePlaylistModal() {
+  document.getElementById('createPlaylistModal').style.display = 'none';
+  document.getElementById('playlistNameInput').value = '';
+}
+
+// LIBRARY VIEW SYSTEM
+let currentLibraryTab = 'playlists';
+
+function toggleLibrary() {
+  const library = document.getElementById('library');
+  
+  if (library.classList.contains('open')) {
+    library.classList.remove('open');
+  } else {
+    library.classList.add('open');
+    showLibraryTab(null, currentLibraryTab);
+  }
+}
+
+function showLibraryTab(event, tab) {
+  currentLibraryTab = tab;
+  
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (event && event.target) {
+    event.target.classList.add('active');
+  } else {
+    // Find and activate the correct tab button
+    const tabs = document.querySelectorAll('.tab-btn');
+    if (tab === 'playlists') tabs[0].classList.add('active');
+    else if (tab === 'favorites') tabs[1].classList.add('active');
+    else if (tab === 'history') tabs[2].classList.add('active');
+  }
+  
+  const content = document.getElementById('library-content');
+  
+  if (tab === 'playlists') {
+    renderPlaylists(content);
+  } else if (tab === 'favorites') {
+    renderFavorites(content);
+  } else if (tab === 'history') {
+    renderHistory(content);
+  }
+}
+
+function renderPlaylists(container) {
+  container.innerHTML = '';
+  
+  const playlistNames = Object.keys(playlists);
+  
+  if (playlistNames.length === 0) {
+    container.innerHTML = '<div class="empty-state">No playlists yet.<br>Add songs to playlists while listening!</div>';
+    return;
+  }
+  
+  playlistNames.forEach(name => {
+    const playlist = playlists[name];
+    const card = document.createElement('div');
+    card.className = 'playlist-card';
+    
+    const tracksText = playlist.tracks.length === 1 ? '1 track' : `${playlist.tracks.length} tracks`;
+    
+    card.innerHTML = `
+      <div class="playlist-card-name">${name}</div>
+      <div class="playlist-card-info">${tracksText}</div>
+      <div class="playlist-card-info">Created ${formatTimestamp(playlist.created)}</div>
+      <div>
+        <button onclick="event.stopPropagation(); viewPlaylistTracks('${name}');">View Tracks</button>
+        <button onclick="event.stopPropagation(); deletePlaylist('${name}');">Delete</button>
+      </div>
+    `;
+    
+    card.onclick = () => playPlaylist(name);
+    container.appendChild(card);
+  });
+}
+
+function renderFavorites(container) {
+  container.innerHTML = '';
+  
+  if (favorites.length === 0) {
+    container.innerHTML = '<div class="empty-state">No favorites yet.<br>Click the ♡ button while listening!</div>';
+    return;
+  }
+  
+  favorites.forEach(track => {
+    const card = document.createElement('div');
+    card.className = 'track-card';
+    card.innerHTML = `
+      <div class="track-card-name" title="${track.name}">${track.name}</div>
+      <div class="track-card-info">${track.station}</div>
+      <div class="track-card-info">Station ${track.stationNum}</div>
+    `;
+    card.onclick = () => playTrackFromInfo(track);
+    container.appendChild(card);
+  });
+}
+
+function renderHistory(container) {
+  container.innerHTML = '';
+  
+  if (playHistory.length === 0) {
+    container.innerHTML = '<div class="empty-state">No history yet.<br>Start listening to build your history!</div>';
+    return;
+  }
+  
+  playHistory.forEach(track => {
+    const card = document.createElement('div');
+    card.className = 'track-card';
+    card.innerHTML = `
+      <div class="track-card-name" title="${track.name}">${track.name}</div>
+      <div class="track-card-info">${track.station}</div>
+      <div class="track-card-info">${formatTimestamp(track.timestamp)}</div>
+    `;
+    card.onclick = () => playTrackFromInfo(track);
+    container.appendChild(card);
+  });
+}
+
+async function playTrackFromInfo(trackInfo) {
+  // Exit LIVE mode when playing from search/library
+  if (isLiveMode) {
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Playing from Library';
+  }
+  
+  if (!on) {
+    power(); // Turn on radio
+  }
+  
+  toggleLibrary(); // Close library immediately for better UX
+  
+  // Switch to the station and load proper track list
+  if (trackInfo.stationIndex !== undefined && trackInfo.stationIndex >= 0) {
+    cur = trackInfo.stationIndex;
+    const s = STATIONS[cur];
+    document.getElementById('num').textContent = s.num;
+    document.getElementById('name').textContent = s.name;
+    document.getElementById('station-display').textContent = `${s.num} - ${s.name}`;
+    document.getElementById('dial').value = cur;
+    
+    // Try to get the show ID from multiple sources
+    let showToLoad = trackInfo.showId || trackInfo.albumShow;
+    
+    // If no showId, try to extract from URL
+    // URL format: https://archive.org/download/SHOW_ID/filename.mp3
+    if (!showToLoad && trackInfo.url) {
+      const urlParts = trackInfo.url.split('/');
+      if (urlParts.length >= 5 && urlParts[3] === 'download') {
+        showToLoad = decodeURIComponent(urlParts[4]);
+        console.log('Extracted showId from URL:', showToLoad);
+      }
+    }
+    
+    // If we have the show ID, load those files
+    if (showToLoad) {
+      try {
+        const files = await fetchFiles(showToLoad);
+        currentFiles = files;
+        
+        // Find the exact track
+        const trackIndex = files.findIndex(t => t.u === trackInfo.url);
+        
+        if (trackIndex >= 0) {
+          currentTrackIndex = trackIndex;
+          p.src = trackInfo.url;
+          p.currentTime = 0;
+          p.volume = currentVolume;
+          p.play().catch(e => console.log('Play blocked:', e));
+          
+          // Update now playing
+          document.getElementById('now-playing').textContent = `OFFLINE: ${trackInfo.name}`;
+          
+          setTimeout(() => onTrackChange(), 100);
+          
+          console.log('Playing from library:', trackInfo.name, 'from show:', showToLoad);
+          return;
+        } else {
+          console.warn('Track not found in loaded files, URL:', trackInfo.url);
+        }
+      } catch(e) {
+        console.error('Error loading album files:', e);
+      }
+    } else {
+      console.warn('No show ID available for track:', trackInfo.name);
+    }
+    
+    // Fallback: use station's default playback
+    console.log('Using fallback playback');
+    playSync();
+  }
+}
+
+function playPlaylist(playlistName) {
+  const playlist = playlists[playlistName];
+  if (!playlist || playlist.tracks.length === 0) {
+    alert('This playlist is empty!');
+    return;
+  }
+  
+  // Exit LIVE mode when playing a playlist
+  if (isLiveMode) {
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+  }
+  
+  // Play first track
+  playTrackFromInfo(playlist.tracks[0]);
+  
+  // Queue the rest of the playlist
+  if (playlist.tracks.length > 1) {
+    for (let i = 1; i < playlist.tracks.length; i++) {
+      playQueue.push(playlist.tracks[i]);
+    }
+    updateQueueDisplay();
+    console.log(`Queued ${playlist.tracks.length - 1} tracks from playlist: ${playlistName}`);
+  }
+  
+  console.log(`Playing playlist: ${playlistName}`);
+}
+
+function viewPlaylistTracks(playlistName) {
+  const playlist = playlists[playlistName];
+  if (!playlist) return;
+  
+  const trackList = playlist.tracks.map((t, i) => `${i + 1}. ${t.name}`).join('\n');
+  alert(`Playlist: ${playlistName}\n\nTracks:\n${trackList || 'Empty'}`);
+}
+
+// TRACK CHANGE CALLBACK
+function onTrackChange() {
+  updateFavoriteButton();
+  addToHistory();
+}
+
+// Initialize all Phase 1 systems
+loadFavorites();
+loadHistory();
+loadPlaylists();
+updateFavoriteButton();
+
+// ============================================
+// PHASE 2: QUEUE, SHUFFLE, REPEAT, PROGRESS
+// ============================================
+
+// QUEUE SYSTEM
+let playQueue = [];
+let isQueueMode = false;
+
+function addToQueue() {
+  if (!on) {
+    alert('Turn on the radio first!');
+    return;
+  }
+  
+  const current = getCurrentTrackInfo();
+  if (!current) return;
+  
+  playQueue.push(current);
+  updateQueueDisplay();
+  
+  console.log('Added to queue:', current.name);
+  alert(`Added to queue!\nQueue now has ${playQueue.length} track${playQueue.length > 1 ? 's' : ''}`);
+}
+
+function removeFromQueue(index) {
+  playQueue.splice(index, 1);
+  updateQueueDisplay();
+}
+
+function clearQueue() {
+  if (playQueue.length === 0) return;
+  
+  if (confirm(`Clear all ${playQueue.length} tracks from queue?`)) {
+    playQueue = [];
+    isQueueMode = false;
+    updateQueueDisplay();
+  }
+}
+
+function updateQueueDisplay() {
+  const content = document.getElementById('queueContent');
+  
+  if (playQueue.length === 0) {
+    content.innerHTML = '<div class="queue-empty">Queue is empty<br>Add songs while listening!</div>';
+    return;
+  }
+  
+  content.innerHTML = '';
+  
+  playQueue.forEach((track, index) => {
+    const item = document.createElement('div');
+    item.className = 'queue-item';
+    if (index === 0 && isQueueMode) {
+      item.classList.add('playing');
+    }
+    
+    item.innerHTML = `
+      <div class="queue-item-info">
+        <div class="queue-item-name" title="${track.name}">${index + 1}. ${track.name}</div>
+        <div class="queue-item-station">${track.station}</div>
+      </div>
+      <button class="queue-item-remove" onclick="removeFromQueue(${index})" title="Remove">✕</button>
+    `;
+    
+    content.appendChild(item);
+  });
+}
+
+function toggleQueue() {
+  const panel = document.getElementById('queuePanel');
+  panel.classList.toggle('open');
+}
+
+function playNextInQueue() {
+  if (playQueue.length === 0) {
+    isQueueMode = false;
+    return false;
+  }
+  
+  const nextTrack = playQueue.shift(); // Remove first item
+  isQueueMode = true;
+  
+  playTrackFromInfo(nextTrack);
+  updateQueueDisplay();
+  
+  return true;
+}
+
+// SHUFFLE SYSTEM
+let isShuffleMode = false;
+let originalFilesOrder = [];
+
+function toggleShuffle() {
+  if (!on) {
+    alert('Turn on the radio first!');
+    return;
+  }
+  
+  // Can't use shuffle and repeat at the same time
+  if (!isShuffleMode && repeatMode !== 'off') {
+    alert('Cannot use Shuffle and Repeat at the same time!\nTurning off Repeat mode.');
+    repeatMode = 'off';
+    const repeatBtn = document.getElementById('repeatBtn');
+    repeatBtn.classList.remove('repeat-active');
+    repeatBtn.innerHTML = '🔁 REPEAT';
+  }
+  
+  // Exit LIVE mode when shuffle is activated
+  if (!isShuffleMode && isLiveMode) {
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Shuffle Active';
+  }
+  
+  isShuffleMode = !isShuffleMode;
+  const btn = document.getElementById('shuffleBtn');
+  
+  if (isShuffleMode) {
+    btn.classList.add('shuffle-active');
+    btn.innerHTML = '🔀 SHUFFLE <span class="mode-indicator">ON</span>';
+    
+    // Save original order and shuffle
+    if (currentFiles.length > 0) {
+      originalFilesOrder = [...currentFiles];
+      currentFiles = shuffleArray(currentFiles);
+      currentTrackIndex = 0; // Start from beginning of shuffled list
+    }
+    
+    console.log('Shuffle mode: ON - Shuffled', currentFiles.length, 'tracks');
+  } else {
+    btn.classList.remove('shuffle-active');
+    btn.innerHTML = '🔀 SHUFFLE';
+    
+    // Restore original order
+    if (originalFilesOrder.length > 0) {
+      currentFiles = [...originalFilesOrder];
+      currentTrackIndex = 0;
+      originalFilesOrder = [];
+    }
+    
+    console.log('Shuffle mode: OFF - Restored original order');
+  }
+}
+
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+// REPEAT SYSTEM
+let repeatMode = 'off'; // 'off', 'one', 'all'
+
+function toggleRepeat() {
+  if (!on) {
+    alert('Turn on the radio first!');
+    return;
+  }
+  
+  const btn = document.getElementById('repeatBtn');
+  
+  // Can't use repeat and shuffle at the same time
+  if (repeatMode === 'off' && isShuffleMode) {
+    alert('Cannot use Repeat and Shuffle at the same time!\nTurning off Shuffle mode.');
+    isShuffleMode = false;
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    shuffleBtn.classList.remove('shuffle-active');
+    shuffleBtn.innerHTML = '🔀 SHUFFLE';
+    
+    // Restore original order if shuffled
+    if (originalFilesOrder.length > 0) {
+      currentFiles = [...originalFilesOrder];
+      originalFilesOrder = [];
+    }
+  }
+  
+  // Exit LIVE mode when repeat is activated
+  if (repeatMode === 'off' && isLiveMode) {
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Repeat Active';
+  }
+  
+  if (repeatMode === 'off') {
+    repeatMode = 'one';
+    btn.classList.add('repeat-active');
+    btn.innerHTML = '🔂 REPEAT <span class="mode-indicator">ONE</span>';
+  } else if (repeatMode === 'one') {
+    repeatMode = 'all';
+    btn.innerHTML = '🔁 REPEAT <span class="mode-indicator">ALL</span>';
+  } else {
+    repeatMode = 'off';
+    btn.classList.remove('repeat-active');
+    btn.innerHTML = '🔁 REPEAT';
+  }
+  
+  console.log('Repeat mode:', repeatMode);
+}
+
+// PROGRESS BAR SYSTEM
+let progressInterval = null;
+
+function updateProgress() {
+  if (!on || p.paused) return;
+  
+  const container = document.getElementById('progressContainer');
+  const currentTimeSpan = document.getElementById('currentTime');
+  const durationSpan = document.getElementById('trackDuration');
+  const progressBar = document.getElementById('progressBar');
+  
+  if (p.duration && !isNaN(p.duration) && p.duration > 0) {
+    container.style.display = 'block';
+    
+    const current = p.currentTime;
+    const duration = p.duration;
+    const percent = (current / duration) * 100;
+    
+    progressBar.style.width = percent + '%';
+    currentTimeSpan.textContent = formatTime(current);
+    durationSpan.textContent = formatTime(duration);
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+function formatTime(seconds) {
+  if (isNaN(seconds)) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+function seekTrack(event) {
+  if (!on || !p.duration) return;
+  
+  const wrapper = event.currentTarget;
+  const rect = wrapper.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const percent = x / rect.width;
+  const newTime = percent * p.duration;
+  
+  p.currentTime = newTime;
+}
+
+function startProgressTracking() {
+  if (progressInterval) return;
+  
+  progressInterval = setInterval(updateProgress, 100);
+}
+
+function stopProgressTracking() {
+  if (progressInterval) {
+    clearInterval(progressInterval);
+    progressInterval = null;
+  }
+  
+  const container = document.getElementById('progressContainer');
+  container.style.display = 'none';
+}
+
+// Enhanced track ended handler
+p.addEventListener('ended', () => {
+  if (!on) return;
+  
+  // Check repeat mode first
+  if (repeatMode === 'one') {
+    // Repeat current track - restart immediately
+    p.currentTime = 0;
+    p.play().catch(e => console.log('Play blocked:', e));
+    // Update history for the repeat play
+    setTimeout(() => onTrackChange(), 100);
+    console.log('REPEAT ONE: Restarting track');
+    return;
+  }
+  
+  // Check if queue has items
+  if (playQueue.length > 0) {
+    playNextInQueue();
+    return;
+  }
+  
+  // Normal next track (handles REPEAT ALL via modulo in nextTrack)
+  nextTrack();
+});
+
+// Track when audio starts playing
+p.addEventListener('play', () => {
+  startProgressTracking();
+});
+
+p.addEventListener('pause', () => {
+  stopProgressTracking();
+});
+
 // Don't auto-start - user must press POWER
+
+// ============================================
+// PHASE 3: SEARCH & STATISTICS
+// ============================================
+
+// STATISTICS SYSTEM
+let listeningStats = {
+  trackPlays: {}, // {trackId: count}
+  stationPlays: {}, // {stationNum: count}
+  totalListeningTime: 0, // seconds
+  sessionStart: null
+};
+
+function loadStats() {
+  const saved = localStorage.getItem('radioStats');
+  if (saved) {
+    try {
+      listeningStats = JSON.parse(saved);
+    } catch(e) {
+      console.error('Error loading stats:', e);
+    }
+  }
+}
+
+function saveStats() {
+  localStorage.setItem('radioStats', JSON.stringify(listeningStats));
+}
+
+function recordTrackPlay(trackInfo) {
+  if (!trackInfo) return;
+  
+  // Count track play
+  if (!listeningStats.trackPlays[trackInfo.id]) {
+    listeningStats.trackPlays[trackInfo.id] = {
+      count: 0,
+      name: trackInfo.name,
+      station: trackInfo.station,
+      stationNum: trackInfo.stationNum,
+      stationIndex: trackInfo.stationIndex,
+      url: trackInfo.url
+    };
+  }
+  listeningStats.trackPlays[trackInfo.id].count++;
+  
+  // Count station play
+  const stationKey = trackInfo.stationNum;
+  if (!listeningStats.stationPlays[stationKey]) {
+    listeningStats.stationPlays[stationKey] = {
+      count: 0,
+      name: trackInfo.station,
+      num: trackInfo.stationNum,
+      index: trackInfo.stationIndex
+    };
+  }
+  listeningStats.stationPlays[stationKey].count++;
+  
+  saveStats();
+}
+
+function startListeningSession() {
+  listeningStats.sessionStart = Date.now();
+}
+
+function updateListeningTime() {
+  if (on && listeningStats.sessionStart && !p.paused) {
+    const now = Date.now();
+    const elapsed = Math.floor((now - listeningStats.sessionStart) / 1000);
+    listeningStats.totalListeningTime += elapsed;
+    listeningStats.sessionStart = now;
+    saveStats();
+  }
+}
+
+// Update listening time every 30 seconds
+setInterval(updateListeningTime, 30000);
+
+function renderStatistics(container) {
+  container.innerHTML = '';
+  
+  // Calculate stats
+  const totalTracks = Object.keys(listeningStats.trackPlays).length;
+  const totalPlays = Object.values(listeningStats.trackPlays).reduce((sum, t) => sum + t.count, 0);
+  const totalHours = Math.floor(listeningStats.totalListeningTime / 3600);
+  const totalMinutes = Math.floor((listeningStats.totalListeningTime % 3600) / 60);
+  
+  // Stats grid
+  const statsGrid = document.createElement('div');
+  statsGrid.className = 'stats-grid';
+  statsGrid.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-card-title">Total Plays</div>
+      <div class="stat-card-value">${totalPlays}</div>
+      <div class="stat-card-label">tracks played</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Unique Tracks</div>
+      <div class="stat-card-value">${totalTracks}</div>
+      <div class="stat-card-label">different songs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Listening Time</div>
+      <div class="stat-card-value">${totalHours}h ${totalMinutes}m</div>
+      <div class="stat-card-label">total time</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">Favorites</div>
+      <div class="stat-card-value">${favorites.length}</div>
+      <div class="stat-card-label">liked songs</div>
+    </div>
+  `;
+  container.appendChild(statsGrid);
+  
+  // Top Tracks
+  const topTracks = Object.values(listeningStats.trackPlays)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+  
+  if (topTracks.length > 0) {
+    const topTracksSection = document.createElement('div');
+    topTracksSection.innerHTML = '<h3 class="stats-section-title">🎵 Top 10 Tracks</h3>';
+    
+    const topTracksList = document.createElement('div');
+    topTracksList.className = 'top-tracks-list';
+    
+    topTracks.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = 'top-item';
+      item.innerHTML = `
+        <div class="top-item-rank">#${index + 1}</div>
+        <div class="top-item-info">
+          <div class="top-item-name" title="${track.name}">${track.name}</div>
+          <div class="top-item-detail">${track.station}</div>
+        </div>
+        <div class="top-item-count">${track.count} plays</div>
+      `;
+      item.onclick = () => {
+        playTrackFromInfo({
+          name: track.name,
+          url: track.url,
+          station: track.station,
+          stationNum: track.stationNum,
+          stationIndex: track.stationIndex
+        });
+        toggleLibrary();
+      };
+      topTracksList.appendChild(item);
+    });
+    
+    topTracksSection.appendChild(topTracksList);
+    container.appendChild(topTracksSection);
+  }
+  
+  // Top Stations
+  const topStations = Object.values(listeningStats.stationPlays)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+  
+  if (topStations.length > 0) {
+    const topStationsSection = document.createElement('div');
+    topStationsSection.innerHTML = '<h3 class="stats-section-title">📻 Top 10 Stations</h3>';
+    
+    const topStationsList = document.createElement('div');
+    topStationsList.className = 'top-stations-list';
+    
+    topStations.forEach((station, index) => {
+      const item = document.createElement('div');
+      item.className = 'top-item';
+      item.innerHTML = `
+        <div class="top-item-rank">#${index + 1}</div>
+        <div class="top-item-info">
+          <div class="top-item-name">${station.name}</div>
+          <div class="top-item-detail">Station ${station.num}</div>
+        </div>
+        <div class="top-item-count">${station.count} plays</div>
+      `;
+      item.onclick = () => {
+        if (!on) power();
+        go(station.index);
+        toggleLibrary();
+      };
+      topStationsList.appendChild(item);
+    });
+    
+    topStationsSection.appendChild(topStationsList);
+    container.appendChild(topStationsSection);
+  }
+  
+  if (topTracks.length === 0 && topStations.length === 0) {
+    container.innerHTML += '<div class="empty-state">No statistics yet.<br>Start listening to build your stats!</div>';
+  }
+}
+
+// Update showLibraryTab to include stats
+const originalShowLibraryTab = showLibraryTab;
+showLibraryTab = function(event, tab) {
+  currentLibraryTab = tab;
+  
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (event && event.target) {
+    event.target.classList.add('active');
+  } else {
+    const tabs = document.querySelectorAll('.tab-btn');
+    if (tab === 'playlists') tabs[0].classList.add('active');
+    else if (tab === 'favorites') tabs[1].classList.add('active');
+    else if (tab === 'history') tabs[2].classList.add('active');
+    else if (tab === 'stats') tabs[3].classList.add('active');
+  }
+  
+  const content = document.getElementById('library-content');
+  
+  if (tab === 'playlists') {
+    renderPlaylists(content);
+  } else if (tab === 'favorites') {
+    renderFavorites(content);
+  } else if (tab === 'history') {
+    renderHistory(content);
+  } else if (tab === 'stats') {
+    renderStatistics(content);
+  }
+};
+
+// Update onTrackChange to record stats
+const originalOnTrackChange = onTrackChange;
+onTrackChange = function() {
+  originalOnTrackChange();
+  const current = getCurrentTrackInfo();
+  if (current) {
+    recordTrackPlay(current);
+  }
+  // Also broadcast to party guests if hosting
+  if (isHost) {
+    setTimeout(() => broadcastState(), 100);
+  }
+};
+
+// SEARCH SYSTEM
+let currentSearchFilter = 'all';
+
+function toggleSearch() {
+  const panel = document.getElementById('searchPanel');
+  panel.classList.toggle('open');
+  
+  if (panel.classList.contains('open')) {
+    document.getElementById('searchInput').focus();
+  }
+}
+
+function setSearchFilter(filter) {
+  currentSearchFilter = filter;
+  
+  // Update filter chips
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  // Re-run search
+  performSearch();
+}
+
+async function performSearch() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const results = document.getElementById('searchResults');
+  
+  if (!query) {
+    results.innerHTML = '<div class="search-no-results">Type to search by artist, song title, or genre...</div>';
+    return;
+  }
+  
+  // Show loading message
+  results.innerHTML = '<div class="search-no-results">Searching artists, songs, and genres...</div>';
+  
+  let searchResults = [];
+  
+  // Create search terms - split by spaces for multi-word matching
+  const searchTerms = query.split(/\s+/).filter(term => term.length > 0);
+  
+  // Helper function to check if all search terms match in the text
+  function matchesSearch(text) {
+    const lowerText = text.toLowerCase();
+    // All search terms must be present as whole words or parts of words
+    return searchTerms.every(term => {
+      // Create word boundary regex for more precise matching
+      // Matches if term appears as a complete word or as part of a hyphenated/compound word
+      const regex = new RegExp('\\b' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      return regex.test(text);
+    });
+  }
+  
+  // Search all stations and load their actual track files
+  if (currentSearchFilter === 'all' || currentSearchFilter === 'stations') {
+    for (const station of STATIONS) {
+      if (!station.networkShows) continue;
+      
+      // Check if searching by genre/category
+      const stationGenre = station.cat || '';
+      const stationNameMatch = matchesSearch(station.name);
+      const genreMatch = matchesSearch(stationGenre);
+      
+      for (const showId of station.networkShows) {
+        // Parse the show identifier
+        const parsed = parseShowIdentifier(showId);
+        const artistText = parsed.artists.join(' ');
+        const albumText = parsed.title;
+        
+        // Check if artist or album matches
+        const artistMatch = matchesSearch(artistText);
+        const albumMatch = matchesSearch(albumText);
+        const showIdMatch = matchesSearch(showId);
+        
+        // If station genre matches OR artist matches OR album matches, load tracks
+        if (genreMatch || stationNameMatch || artistMatch || albumMatch || showIdMatch) {
+          // Fetch actual tracks from this show
+          try {
+            const tracks = await fetchFiles(showId);
+            
+            // Add each track as a searchable result
+            tracks.forEach(track => {
+              const trackName = track.n || '';
+              const trackSearchText = `${trackName} ${artistText} ${albumText} ${stationGenre} ${station.name}`;
+              
+              // Check if the track name itself matches OR if artist/genre matched
+              // This allows finding by: song title, artist, album, or genre
+              if (matchesSearch(trackSearchText) || genreMatch) {
+                searchResults.push({
+                  type: 'station-track',
+                  data: {
+                    name: trackName,
+                    url: track.u,
+                    duration: track.dur,
+                    showId: showId,
+                    stationName: station.name,
+                    stationNum: station.num,
+                    stationIndex: STATIONS.indexOf(station),
+                    artists: parsed.artists,
+                    albumTitle: parsed.title,
+                    genre: stationGenre
+                  }
+                });
+              }
+            });
+          } catch(e) {
+            console.error('Error loading tracks from', showId, e);
+          }
+          
+          // Limit to prevent too many requests
+          if (searchResults.length > 100) break;
+        }
+      }
+      
+      if (searchResults.length > 100) break;
+    }
+  }
+  
+  // Search favorites
+  if (currentSearchFilter === 'all' || currentSearchFilter === 'favorites') {
+    favorites.forEach(track => {
+      const searchText = `${track.name} ${(track.parsedArtists || []).join(' ')} ${track.parsedTitle || ''} ${track.albumShow || ''} ${track.station}`;
+      if (matchesSearch(searchText)) {
+        searchResults.push({
+          type: 'favorite',
+          data: track
+        });
+      }
+    });
+  }
+  
+  // Search playlists
+  if (currentSearchFilter === 'all' || currentSearchFilter === 'playlists') {
+    Object.values(playlists).forEach(playlist => {
+      if (matchesSearch(playlist.name)) {
+        searchResults.push({
+          type: 'playlist',
+          data: playlist
+        });
+      }
+      // Also search tracks within playlists
+      playlist.tracks.forEach(track => {
+        const searchText = `${track.name} ${(track.parsedArtists || []).join(' ')} ${track.parsedTitle || ''} ${track.albumShow || ''} ${track.station}`;
+        if (matchesSearch(searchText)) {
+          searchResults.push({
+            type: 'playlist-track',
+            data: track,
+            playlistName: playlist.name
+          });
+        }
+      });
+    });
+  }
+  
+  // Search history
+  if (currentSearchFilter === 'all' || currentSearchFilter === 'history') {
+    playHistory.forEach(track => {
+      const searchText = `${track.name} ${(track.parsedArtists || []).join(' ')} ${track.parsedTitle || ''} ${track.albumShow || ''} ${track.station}`;
+      if (matchesSearch(searchText)) {
+        searchResults.push({
+          type: 'history',
+          data: track
+        });
+      }
+    });
+  }
+  
+  // Remove duplicates based on URL
+  const seen = new Set();
+  searchResults = searchResults.filter(result => {
+    const id = result.data.url || result.data.id;
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+  
+  // Limit results to prevent lag
+  searchResults = searchResults.slice(0, 100);
+  
+  // Render results
+  if (searchResults.length === 0) {
+    results.innerHTML = '<div class="search-no-results">No results found for "' + query + '"<br><br>Try searching by:<br>• Artist name (lil wayne, drake)<br>• Song title (a milli, hotline bling)<br>• Genre (rock, electronic, rap)</div>';
+    return;
+  }
+  
+  results.innerHTML = '';
+  
+  searchResults.forEach(result => {
+    const item = document.createElement('div');
+    item.className = 'search-result-item';
+    
+    if (result.type === 'station-track') {
+      // Actual track from station
+      let artistDisplay = '';
+      if (result.data.artists && result.data.artists.length > 0) {
+        artistDisplay = `<div class="search-result-info" style="color:var(--ch-color); font-weight:600; margin-bottom:2px;">🎤 ${result.data.artists.join(', ')}</div>`;
+      }
+      
+      // Add genre badge if available
+      let genreBadge = '';
+      if (result.data.genre) {
+        genreBadge = `<span style="background:var(--btn-bg); border:1px solid var(--btn-border); padding:2px 8px; border-radius:10px; font-size:10px; margin-left:8px;">${result.data.genre}</span>`;
+      }
+      
+      item.innerHTML = `
+        <div class="search-result-name">${result.data.name}</div>
+        ${artistDisplay}
+        <div class="search-result-info">📻 ${result.data.stationName} ${genreBadge}</div>
+        <div class="search-result-info" style="font-size:11px; opacity:0.7;">📀 ${result.data.albumTitle || result.data.showId}</div>
+      `;
+      item.onclick = () => {
+        playSearchedTrack(result.data);
+        toggleSearch();
+      };
+    } else {
+      // Build artist display for tracks
+      let artistDisplay = '';
+      if (result.data.parsedArtists && result.data.parsedArtists.length > 0) {
+        artistDisplay = `<div class="search-result-info" style="color:var(--ch-color); font-weight:600; margin-bottom:2px;">🎤 ${result.data.parsedArtists.join(', ')}</div>`;
+      }
+      
+      // Show album/show info
+      const albumInfo = result.data.parsedTitle || result.data.albumShow;
+      const albumDisplay = albumInfo ? `<div class="search-result-info" style="font-size:11px; opacity:0.7;">📀 ${albumInfo}</div>` : '';
+      
+      if (result.type === 'favorite') {
+        item.innerHTML = `
+          <div class="search-result-name">${result.data.name}</div>
+          ${artistDisplay}
+          <div class="search-result-info">❤️ Favorite • ${result.data.station}</div>
+          ${albumDisplay}
+        `;
+        item.onclick = () => {
+          playTrackFromInfo(result.data);
+          toggleSearch();
+        };
+      } else if (result.type === 'playlist') {
+        item.innerHTML = `
+          <div class="search-result-name">${result.data.name}</div>
+          <div class="search-result-info">📝 Playlist • ${result.data.tracks.length} tracks</div>
+        `;
+        item.onclick = () => {
+          playPlaylist(result.data.name);
+          toggleSearch();
+        };
+      } else if (result.type === 'playlist-track') {
+        item.innerHTML = `
+          <div class="search-result-name">${result.data.name}</div>
+          ${artistDisplay}
+          <div class="search-result-info">📝 In "${result.playlistName}" • ${result.data.station}</div>
+          ${albumDisplay}
+        `;
+        item.onclick = () => {
+          playTrackFromInfo(result.data);
+          toggleSearch();
+        };
+      } else if (result.type === 'history') {
+        item.innerHTML = `
+          <div class="search-result-name">${result.data.name}</div>
+          ${artistDisplay}
+          <div class="search-result-info">🕐 Played ${formatTimestamp(result.data.timestamp)} • ${result.data.station}</div>
+          ${albumDisplay}
+        `;
+        item.onclick = () => {
+          playTrackFromInfo(result.data);
+          toggleSearch();
+        };
+      }
+    }
+    
+    results.appendChild(item);
+  });
+  
+  // Add helpful message
+  if (searchResults.length > 0) {
+    const hint = document.createElement('div');
+    hint.style.cssText = 'text-align:center; padding:15px; color:var(--cnt-color); opacity:0.6; font-size:12px; font-family:Rajdhani,sans-serif;';
+    hint.textContent = `Showing ${searchResults.length} results. Click any track to play in OFFLINE mode.`;
+    results.appendChild(hint);
+  }
+}
+
+// Play a track found in search - exits LIVE mode and plays directly
+async function playSearchedTrack(trackData) {
+  // Exit LIVE mode
+  if (isLiveMode) {
+    isLiveMode = false;
+    document.getElementById('liveBtn').classList.remove('active');
+  }
+  
+  // Turn on radio if off
+  if (!on) {
+    power();
+  }
+  
+  // Switch to the correct station first
+  cur = trackData.stationIndex;
+  const s = STATIONS[cur];
+  document.getElementById('num').textContent = s.num;
+  document.getElementById('name').textContent = s.name;
+  document.getElementById('station-display').textContent = `${s.num} - ${s.name}`;
+  document.getElementById('dial').value = cur;
+  
+  // Load the tracks from the show that contains this track
+  try {
+    const files = await fetchFiles(trackData.showId);
+    currentFiles = files;
+    
+    // Find the index of the track we want to play
+    const trackIndex = files.findIndex(t => t.u === trackData.url);
+    
+    if (trackIndex >= 0) {
+      currentTrackIndex = trackIndex;
+      
+      // Play the track
+      p.src = trackData.url;
+      p.currentTime = 0;
+      p.volume = currentVolume;
+      p.play().catch(e => console.log('Play blocked:', e));
+      
+      // Update display
+      document.getElementById('now-playing').textContent = `OFFLINE: ${trackData.name}`;
+      
+      // Trigger track change callback
+      setTimeout(() => onTrackChange(), 100);
+      
+      console.log('Playing searched track:', trackData.name, 'from', trackData.showId);
+    } else {
+      console.error('Track not found in loaded files');
+      // Fallback: just play first track from the show
+      currentTrackIndex = 0;
+      p.src = files[0].u;
+      p.currentTime = 0;
+      p.volume = currentVolume;
+      p.play().catch(e => console.log('Play blocked:', e));
+    }
+  } catch(e) {
+    console.error('Error loading tracks for searched song:', e);
+    // Ultimate fallback: use playSync
+    playSync();
+  }
+}
+
+// Initialize stats
+loadStats();
+startListeningSession();
+
+// Start listening session on power on
+const originalPower = power;
+power = function() {
+  const wasOff = !on;
+  originalPower();
+  if (wasOff && on) {
+    startListeningSession();
+  }
+};
+
+// ============================================
+// LISTENING PARTY SYSTEM (PeerJS)
+// ============================================
+
+let peer = null;
+let partyConnections = [];
+let isHost = false;
+let isGuest = false;
+let hostConnection = null;
+let partyCode = null;
+let partyMembers = new Map(); // Map of peerId -> memberInfo
+
+function toggleParty() {
+  const panel = document.getElementById('partyPanel');
+  const btn = document.getElementById('partyToggleBtn');
+  panel.classList.toggle('open');
+  btn.classList.toggle('active');
+}
+
+function generatePartyCode() {
+  // Generate 6-character party code
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed confusing chars
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+function createParty() {
+  if (peer) {
+    alert('You are already in a party! Leave first.');
+    return;
+  }
+  
+  partyCode = generatePartyCode();
+  
+  // Initialize PeerJS
+  peer = new Peer(partyCode, {
+    config: {
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:global.stun.twilio.com:3478' }
+      ]
+    }
+  });
+  
+  peer.on('open', (id) => {
+    console.log('Party created with code:', partyCode);
+    isHost = true;
+    isGuest = false;
+    partyMembers.set(peer.id, { name: 'You', role: 'host', peerId: peer.id });
+    updatePartyUI();
+  });
+  
+  peer.on('connection', (conn) => {
+    console.log('Guest connecting:', conn.peer);
+    partyConnections.push(conn);
+    
+    conn.on('open', () => {
+      console.log('Guest connected:', conn.peer);
+      
+      // Request guest info
+      conn.send({
+        type: 'requestInfo'
+      });
+      
+      // Send current state to new guest
+      broadcastState();
+    });
+    
+    conn.on('data', (data) => {
+      handleHostReceiveData(data, conn);
+    });
+    
+    conn.on('close', () => {
+      console.log('Guest disconnected:', conn.peer);
+      partyConnections = partyConnections.filter(c => c.peer !== conn.peer);
+      partyMembers.delete(conn.peer);
+      updatePartyUI();
+    });
+  });
+  
+  peer.on('error', (err) => {
+    console.error('PeerJS error:', err);
+    alert('Party error: ' + err.type);
+  });
+}
+
+function showJoinParty() {
+  const content = document.getElementById('partyContent');
+  content.innerHTML = `
+    <div class="party-status">
+      <div class="party-status-text">
+        Enter the party code from your friend
+      </div>
+    </div>
+    
+    <input type="text" class="party-join-input" id="joinCodeInput" placeholder="ENTER CODE" maxlength="6" />
+    
+    <div class="party-buttons">
+      <button class="party-btn" onclick="joinParty()">🎵 JOIN</button>
+      <button class="party-btn danger" onclick="cancelJoin()">✕ CANCEL</button>
+    </div>
+  `;
+  
+  document.getElementById('joinCodeInput').focus();
+}
+
+function cancelJoin() {
+  updatePartyUI();
+}
+
+function joinParty() {
+  const code = document.getElementById('joinCodeInput').value.trim().toUpperCase();
+  
+  if (!code || code.length !== 6) {
+    alert('Please enter a valid 6-character party code');
+    return;
+  }
+  
+  if (peer) {
+    alert('You are already in a party! Leave first.');
+    return;
+  }
+  
+  partyCode = code;
+  
+  // Initialize PeerJS with random ID
+  const guestId = 'guest_' + Math.random().toString(36).substring(7);
+  peer = new Peer(guestId, {
+    config: {
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:global.stun.twilio.com:3478' }
+      ]
+    }
+  });
+  
+  peer.on('open', (id) => {
+    console.log('Connecting to party:', partyCode);
+    
+    // Connect to host
+    hostConnection = peer.connect(partyCode, { reliable: true });
+    
+    hostConnection.on('open', () => {
+      console.log('Connected to host!');
+      isGuest = true;
+      isHost = false;
+      
+      // Send guest info
+      hostConnection.send({
+        type: 'guestInfo',
+        name: 'Guest ' + Math.floor(Math.random() * 1000)
+      });
+      
+      updatePartyUI();
+    });
+    
+    hostConnection.on('data', (data) => {
+      handleGuestReceiveData(data);
+    });
+    
+    hostConnection.on('close', () => {
+      console.log('Disconnected from host');
+      alert('Host ended the party or connection lost');
+      leaveParty();
+    });
+    
+    hostConnection.on('error', (err) => {
+      console.error('Connection error:', err);
+      alert('Failed to connect to party. Check the code and try again.');
+      leaveParty();
+    });
+  });
+  
+  peer.on('error', (err) => {
+    console.error('PeerJS error:', err);
+    alert('Connection error: ' + err.type);
+    leaveParty();
+  });
+}
+
+function handleHostReceiveData(data, conn) {
+  if (data.type === 'guestInfo') {
+    // Store guest info
+    partyMembers.set(conn.peer, {
+      name: data.name,
+      role: 'guest',
+      peerId: conn.peer
+    });
+    
+    // Broadcast updated member list to everyone
+    broadcastMemberList();
+    updatePartyUI();
+  }
+}
+
+function handleGuestReceiveData(data) {
+  if (data.type === 'state') {
+    // Sync to host's state
+    syncToHost(data);
+  } else if (data.type === 'members') {
+    // Update member list
+    partyMembers.clear();
+    data.members.forEach(m => {
+      partyMembers.set(m.peerId, m);
+    });
+    updatePartyUI();
+  } else if (data.type === 'requestInfo') {
+    // Host is requesting our info
+    hostConnection.send({
+      type: 'guestInfo',
+      name: 'Guest ' + Math.floor(Math.random() * 1000)
+    });
+  }
+}
+
+function broadcastState() {
+  if (!isHost) return;
+  
+  const state = {
+    type: 'state',
+    playing: !p.paused,
+    currentTime: p.currentTime,
+    src: p.src,
+    volume: currentVolume,
+    station: cur,
+    trackIndex: currentTrackIndex,
+    isLiveMode: isLiveMode,
+    nowPlaying: document.getElementById('now-playing').textContent
+  };
+  
+  partyConnections.forEach(conn => {
+    if (conn.open) {
+      conn.send(state);
+    }
+  });
+}
+
+function broadcastMemberList() {
+  if (!isHost) return;
+  
+  const members = Array.from(partyMembers.values());
+  
+  partyConnections.forEach(conn => {
+    if (conn.open) {
+      conn.send({
+        type: 'members',
+        members: members
+      });
+    }
+  });
+}
+
+function syncToHost(state) {
+  if (!isGuest) return;
+  
+  // Sync station
+  if (cur !== state.station) {
+    go(state.station);
+  }
+  
+  // Sync track
+  if (p.src !== state.src) {
+    p.src = state.src;
+  }
+  
+  // Sync playback position (within 2 second tolerance)
+  if (Math.abs(p.currentTime - state.currentTime) > 2) {
+    p.currentTime = state.currentTime;
+  }
+  
+  // Sync play/pause
+  if (state.playing && p.paused) {
+    p.play().catch(e => console.log('Play blocked:', e));
+  } else if (!state.playing && !p.paused) {
+    p.pause();
+  }
+  
+  // Update display
+  document.getElementById('now-playing').textContent = state.nowPlaying;
+}
+
+function leaveParty() {
+  if (hostConnection) {
+    hostConnection.close();
+    hostConnection = null;
+  }
+  
+  partyConnections.forEach(conn => conn.close());
+  partyConnections = [];
+  
+  if (peer) {
+    peer.destroy();
+    peer = null;
+  }
+  
+  isHost = false;
+  isGuest = false;
+  partyCode = null;
+  partyMembers.clear();
+  
+  updatePartyUI();
+}
+
+function updatePartyUI() {
+  const content = document.getElementById('partyContent');
+  const btn = document.getElementById('partyToggleBtn');
+  
+  if (isHost) {
+    // Host UI
+    btn.textContent = '🎧 HOSTING';
+    btn.classList.add('active');
+    
+    content.innerHTML = `
+      <div class="party-code-display">
+        <div class="party-code-label">PARTY CODE</div>
+        <div class="party-code-value">${partyCode}</div>
+      </div>
+      
+      <div class="party-members">
+        <div class="party-members-title">Party Members (${partyMembers.size})</div>
+        ${renderMemberList()}
+      </div>
+      
+      <div class="party-status">
+        <div class="party-status-text">
+          You are the host! 🎧<br>
+          Control the radio - everyone hears what you play
+        </div>
+      </div>
+      
+      <div class="party-buttons">
+        <button class="party-btn danger" onclick="leaveParty()">END PARTY</button>
+      </div>
+    `;
+  } else if (isGuest) {
+    // Guest UI
+    btn.textContent = '🎵 IN PARTY';
+    btn.classList.add('active');
+    
+    content.innerHTML = `
+      <div class="party-code-display">
+        <div class="party-code-label">CONNECTED TO</div>
+        <div class="party-code-value">${partyCode}</div>
+      </div>
+      
+      <div class="party-members">
+        <div class="party-members-title">Party Members (${partyMembers.size})</div>
+        ${renderMemberList()}
+      </div>
+      
+      <div class="party-status">
+        <div class="party-status-text">
+          You are listening to the host's radio 🎵<br>
+          The host controls what plays
+        </div>
+      </div>
+      
+      <div class="party-buttons">
+        <button class="party-btn danger" onclick="leaveParty()">LEAVE PARTY</button>
+      </div>
+    `;
+  } else {
+    // No party UI
+    btn.textContent = '🎉 PARTY';
+    btn.classList.remove('active');
+    
+    content.innerHTML = `
+      <div class="party-status">
+        <div class="party-status-text">
+          Create a party to DJ for friends<br>
+          or join someone else's party!
+        </div>
+      </div>
+      
+      <div class="party-buttons">
+        <button class="party-btn" onclick="createParty()">🎧 CREATE PARTY</button>
+        <button class="party-btn" onclick="showJoinParty()">🎵 JOIN PARTY</button>
+      </div>
+    `;
+  }
+}
+
+function renderMemberList() {
+  const members = Array.from(partyMembers.values());
+  
+  return members.map(member => `
+    <div class="party-member">
+      <div class="party-member-icon">${member.role === 'host' ? '🎧' : '🎵'}</div>
+      <div class="party-member-name">${member.name}</div>
+      <div class="party-member-role">${member.role}</div>
+    </div>
+  `).join('');
+}
+
+// Broadcast when play/pause
+p.addEventListener('play', () => {
+  if (isHost) broadcastState();
+});
+
+p.addEventListener('pause', () => {
+  if (isHost) broadcastState();
+});
+
+// Broadcast periodically to keep guests in sync
+setInterval(() => {
+  if (isHost && !p.paused) {
+    broadcastState();
+  }
+}, 5000); // Every 5 seconds
+
+// Disable controls for guests
+const originalGo = go;
+go = function(index) {
+  if (isGuest) {
+    console.log('Guest cannot change stations');
+    return;
+  }
+  originalGo(index);
+};
+
+const originalPlaySync = playSync;
+playSync = function() {
+  if (isGuest) {
+    console.log('Guest cannot control playback');
+    return;
+  }
+  originalPlaySync();
+};
+
+// BASIC VERSION: Stub functions for removed features
+function toggleFavorite() {}
+function showAddToPlaylist() {}
+function addToQueue() {}
+function toggleQueue() {}
+function toggleLibrary() {}
+function toggleSearch() {}
+function toggleParty() {}
+function performSearch() {}
+function setSearchFilter() {}
+function createParty() {}
+function showJoinParty() {}
+function clearQueue() {}
+function updateQueueDisplay() {}
+function onTrackChange() {}
+
 </script>
 </body>
 </html>
