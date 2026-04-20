@@ -2460,7 +2460,8 @@ Promise.all([datpiffPromise, reggaetonPromise]).then(() => {
   const currentWeek = getWeekNumber(new Date());
   const currentYear = new Date().getFullYear();
   weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
-  console.log('✓ Weekly schedule generated with ALL stations including DatPiff and Reggaeton!');
+  console.log('✓ Weekly schedule generated with ALL stations including DatPiff, Reggaeton, and The Plug Radio!');
+  console.log('✓ Station 968 (The Plug Radio) schedule:', weeklySchedule[968] ? `${weeklySchedule[968].length} shows` : 'NOT FOUND');
 });
 
 
@@ -2715,7 +2716,7 @@ async function playSync(){
   currentFiles = files;
   
   // In LIVE mode, calculate which track should be playing based on elapsed time
-  if(isLiveMode && elapsedTime > 0) {
+  if(isLiveMode) {
     console.log('🔴 LIVE MODE ACTIVE - elapsedTime:', elapsedTime, 'seconds');
     
     let timeAccumulator = 0;
@@ -2749,7 +2750,7 @@ async function playSync(){
     p.src = track.u;
     p.volume = currentVolume;
     
-    // Store the offset we need to seek to
+    // Store the offset we need to seek to (even if 0)
     p.dataset.pendingSeek = offsetIntoTrack;
     
     // Load and play - the canplay event will handle seeking
@@ -3658,7 +3659,7 @@ async function playTrackFromInfo(trackInfo) {
   // Exit LIVE mode when playing from search/library
   if (isLiveMode) {
     isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
+    const liveBtn = document.getElementById('liveBtn'); if(liveBtn) liveBtn.classList.remove('active');
     document.getElementById('now-playing').textContent = 'OFFLINE MODE - Playing from Library';
   }
   
@@ -3743,7 +3744,7 @@ function playPlaylist(playlistName) {
   // Exit LIVE mode when playing a playlist
   if (isLiveMode) {
     isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
+    const liveBtn = document.getElementById('liveBtn'); if(liveBtn) liveBtn.classList.remove('active');
   }
   
   // Play first track
@@ -3891,7 +3892,7 @@ function toggleShuffle() {
   // Exit LIVE mode when shuffle is activated
   if (!isShuffleMode && isLiveMode) {
     isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
+    const liveBtn = document.getElementById('liveBtn'); if(liveBtn) liveBtn.classList.remove('active');
     document.getElementById('now-playing').textContent = 'OFFLINE MODE - Shuffle Active';
   }
   
@@ -3963,7 +3964,7 @@ function toggleRepeat() {
   // Exit LIVE mode when repeat is activated
   if (repeatMode === 'off' && isLiveMode) {
     isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
+    const liveBtn = document.getElementById('liveBtn'); if(liveBtn) liveBtn.classList.remove('active');
     document.getElementById('now-playing').textContent = 'OFFLINE MODE - Repeat Active';
   }
   
@@ -4850,7 +4851,7 @@ async function playSearchedTrack(trackData) {
   // Exit LIVE mode
   if (isLiveMode) {
     isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
+    const liveBtn = document.getElementById('liveBtn'); if(liveBtn) liveBtn.classList.remove('active');
   }
   
   // Turn on radio if off
