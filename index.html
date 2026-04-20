@@ -512,6 +512,56 @@
   --cnt-color:#C9E4CA;--gc-bg:#4c6c64;--gc-border:#72a296;
 }
 
+/* 🇯🇵 Japan "Rising Sun" - Minimalist elegance with gradient sunrise */
+:root.japan{
+  --bg:#1a1a1a;--frame:#3a3a3a;
+  --brand-bg:linear-gradient(135deg,#ff6b6b 0%,#ee5a6f 50%,#c44569 100%);--brand-border:rgba(255,255,255,0.1);
+  --logo-color:#ffffff;--logo-glow:rgba(255,107,107,0.4);
+  --np-color:#f0f0f0;--ch-color:#ff6b6b;--ch-glow:rgba(255,107,107,0.6);
+  --btn-bg:linear-gradient(145deg,#2a2a2a,#1a1a1a);--btn-border:rgba(255,255,255,0.1);--btn-color:#ff6b6b;
+  --cnt-color:#ffffff;--gc-bg:#1a1a1a;--gc-border:#2a2a2a;
+}
+
+/* 💿 Vaporwave "A E S T H E T I C" - 80s/90s nostalgia, glitch art */
+:root.vaporwave{
+  --bg:#1a1a2e;--frame:#16213e;
+  --brand-bg:linear-gradient(135deg,#ff6bcb 0%,#a855f7 50%,#3b82f6 100%);--brand-border:#00d9ff;
+  --logo-color:#00d9ff;--logo-glow:rgba(168,85,247,0.7);
+  --np-color:#ff71ce;--ch-color:#00d9ff;--ch-glow:rgba(0,217,255,0.8);
+  --btn-bg:linear-gradient(145deg,#16213e,#0f3460);--btn-border:#00d9ff;--btn-color:#ff6bcb;
+  --cnt-color:#ffffff;--gc-bg:#0f3460;--gc-border:#16213e;
+}
+
+/* 🌌 Cyberpunk "Night City" - Neon-soaked dystopia, holographic UI */
+:root.cyberpunk{
+  --bg:#0a0e27;--frame:#1a1a2e;
+  --brand-bg:linear-gradient(135deg,#ff2a6d 0%,#d1167b 50%,#05d9e8 100%);--brand-border:#00ff9f;
+  --logo-color:#00ff9f;--logo-glow:rgba(0,255,159,0.8);
+  --np-color:#fcee21;--ch-color:#ff2a6d;--ch-glow:rgba(255,42,109,0.8);
+  --btn-bg:linear-gradient(145deg,#16213e,#0a0e27);--btn-border:#00ff9f;--btn-color:#05d9e8;
+  --cnt-color:#00ff9f;--gc-bg:#0a0e27;--gc-border:#1a1a2e;
+}
+
+/* 🇯🇲 Jamaica "Rasta Vibes" - Reggae culture with green/yellow/black harmony */
+:root.jamaica{
+  --bg:#0f1c0f;--frame:#1a2e1a;
+  --brand-bg:linear-gradient(135deg,#00a86b 0%,#00d97e 50%,#ffd700 100%);--brand-border:#00d97e;
+  --logo-color:#ffd700;--logo-glow:rgba(0,217,126,0.5);
+  --np-color:#ffffff;--ch-color:#00d97e;--ch-glow:rgba(0,217,126,0.6);
+  --btn-bg:linear-gradient(145deg,#1a2e1a,#0f1c0f);--btn-border:#00d97e;--btn-color:#ffd700;
+  --cnt-color:#ffffff;--gc-bg:#0f1c0f;--gc-border:#1a2e1a;
+}
+
+/* 👑 Trap "Gold & Purple Reign" - Luxury rap aesthetic, Atlanta nights */
+:root.trap{
+  --bg:#1a0033;--frame:#2d0052;
+  --brand-bg:linear-gradient(135deg,#ffd700 0%,#ffed4e 50%,#ffa500 100%);--brand-border:#9b59b6;
+  --logo-color:#ffd700;--logo-glow:rgba(255,215,0,0.6);
+  --np-color:#ffffff;--ch-color:#ffd700;--ch-glow:rgba(255,215,0,0.7);
+  --btn-bg:linear-gradient(145deg,#2d0052,#1a0033);--btn-border:#9b59b6;--btn-color:#ffd700;
+  --cnt-color:#ffd700;--gc-bg:#1a0033;--gc-border:#2d0052;
+}
+
 
 
 body{
@@ -2484,6 +2534,13 @@ let currentShowIndex = 0;
 let currentTrackIndex = 0;
 let currentScheduleIndex = 0; // NEW: Track position in weekly schedule
 let currentFiles = [];
+// Store position when powering off to resume exactly where we left off
+let pausedPosition = {
+  scheduleIndex: null,
+  trackCurrentTime: null,
+  show: null,
+  trackIndex: null
+};
 const p = document.getElementById('player');
 const pwr = document.getElementById('pwr');
 const metaCache = {};
@@ -2800,16 +2857,42 @@ function power(){
   if(on){
     pwr.textContent = 'POWER';
     pwr.classList.remove('active');
-    go(cur);
+    console.log('📻 POWER ON - Rejoining broadcast at Station', cur);
+    
+    // Check if we have a paused position to resume from
+    if(pausedPosition.scheduleIndex !== null && pausedPosition.trackCurrentTime !== null) {
+      console.log('▶️ RESUMING from paused position:', pausedPosition);
+      // Resume from exact same spot
+      currentScheduleIndex = pausedPosition.scheduleIndex;
+      
+      // Load the same show and track
+      resumeFromPausedPosition();
+    } else {
+      // Fresh power on - join live broadcast
+      go(cur);
+    }
+    
     // Tell Second Life radio is ON
     sendToSL('RADIO_ON');
     startVisualizer(); // Start visualizer
   } else {
     pwr.textContent = 'OFF';
     pwr.classList.add('active');
+    
+    // Store current position before pausing
+    pausedPosition = {
+      scheduleIndex: currentScheduleIndex,
+      trackCurrentTime: p.currentTime,
+      show: currentFiles.length > 0 ? currentFiles[currentTrackIndex] : null,
+      trackIndex: currentTrackIndex,
+      pausedAt: Date.now() // Store when we paused
+    };
+    console.log('⏸️ PAUSED at position:', pausedPosition);
+    
     p.pause();
     p.src = '';
     document.getElementById('now-playing').textContent = 'Radio is OFF';
+    console.log('📻 POWER OFF');
     // Tell Second Life radio is OFF
     sendToSL('RADIO_OFF');
     stopVisualizer(); // Stop visualizer
@@ -2823,6 +2906,58 @@ function sendToSL(message){
     window.parent.postMessage(message, '*');
   }
   console.log('SL_MESSAGE:', message);
+}
+
+// Resume playback from exactly where we paused
+async function resumeFromPausedPosition() {
+  if(!on || !pausedPosition.show) return;
+  
+  console.log('🔄 Resuming from paused position...');
+  
+  const ch = STATIONS[cur];
+  const stationSchedule = weeklySchedule[ch.num];
+  
+  if(!stationSchedule || currentScheduleIndex >= stationSchedule.length) {
+    console.error('❌ Invalid schedule position');
+    go(cur); // Fallback to live
+    return;
+  }
+  
+  const slot = stationSchedule[currentScheduleIndex];
+  
+  // Calculate how much time has passed since we paused
+  const now = Date.now();
+  const timePaused = pausedPosition.pausedAt ? (now - pausedPosition.pausedAt) / 1000 : 0;
+  const newPosition = pausedPosition.trackCurrentTime + timePaused;
+  
+  console.log(`   Was at ${pausedPosition.trackCurrentTime.toFixed(1)}s, paused for ${timePaused.toFixed(1)}s`);
+  console.log(`   Resuming at ${newPosition.toFixed(1)}s`);
+  
+  // Fetch the show files
+  const files = await fetchFiles(slot.show);
+  
+  if(files.length === 0) {
+    console.error('❌ No files in show');
+    go(cur);
+    return;
+  }
+  
+  currentFiles = files;
+  const targetTrackIndex = slot.trackIndex % files.length;
+  currentTrackIndex = targetTrackIndex;
+  const track = files[currentTrackIndex];
+  
+  // Play from the calculated position
+  p.src = track.u;
+  p.volume = currentVolume;
+  p.dataset.pendingSeek = newPosition;
+  p.load();
+  p.play().catch(e => console.error('❌ Play failed:', e));
+  
+  setTimeout(() => onTrackChange(), 100);
+  
+  // Clear paused position
+  pausedPosition = { scheduleIndex: null, trackCurrentTime: null, show: null, trackIndex: null };
 }
 
 // Volume control with persistence
