@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sinister Division's Dead Archive Radio</title>
+<!-- VERSION 2.0 - TRACK-BASED SCHEDULING (not album-based) -->
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap');
@@ -2441,7 +2442,7 @@ async function loadDatPiffMixtapes() {
       return datpiffMixtapes;
     }
   } catch(e) {
-    console.error('Error loading DatPiff mixtapes:', e);
+    console.warn('⚠️ DatPiff mixtapes unavailable (using defaults):', e.message);
   }
   
   datpiffLoaded = true;
@@ -2457,11 +2458,23 @@ const reggaetonPromise = loadReggaetonShows();
 // Wait for both to complete, then generate schedule
 Promise.all([datpiffPromise, reggaetonPromise]).then(() => {
   console.log('All dynamic content loaded, generating schedule...');
-  const currentWeek = getWeekNumber(new Date());
-  const currentYear = new Date().getFullYear();
-  weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
-  console.log('✓ Weekly schedule generated with ALL stations including DatPiff, Reggaeton, and The Plug Radio!');
-  console.log('✓ Station 968 (The Plug Radio) schedule:', weeklySchedule[968] ? `${weeklySchedule[968].length} shows` : 'NOT FOUND');
+  
+  function regenerateSchedule() {
+    const currentWeek = getWeekNumber(new Date());
+    const currentYear = new Date().getFullYear();
+    weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
+    console.log('✓ Weekly schedule generated with ALL stations including DatPiff, Reggaeton, and The Plug Radio!');
+    console.log('✓ Station 968 (The Plug Radio) schedule:', weeklySchedule[968] ? `${weeklySchedule[968].length} shows` : 'NOT FOUND');
+  }
+  
+  // Generate initial schedule
+  regenerateSchedule();
+  
+  // Regenerate schedule every 7 days (604800000 milliseconds)
+  setInterval(() => {
+    console.log('🔄 7 days passed - regenerating schedule...');
+    regenerateSchedule();
+  }, 604800000); // 7 days in milliseconds
 });
 
 
@@ -2469,6 +2482,7 @@ let cur = 0;
 let on = false; // Start in OFF state
 let currentShowIndex = 0;
 let currentTrackIndex = 0;
+let currentScheduleIndex = 0; // NEW: Track position in weekly schedule
 let currentFiles = [];
 const p = document.getElementById('player');
 const pwr = document.getElementById('pwr');
@@ -2493,7 +2507,7 @@ function seededRandom(seed) {
   return x - Math.floor(x);
 }
 
-// Generate weekly schedule for all stations
+// Generate weekly schedule for all stations - TRACK-BASED (not album-based)
 function generateWeeklySchedule(weekNumber) {
   const schedule = {};
   let seedCounter = weekNumber * 10000; // Base seed for this week
@@ -2506,19 +2520,24 @@ function generateWeeklySchedule(weekNumber) {
     const weekDuration = 7 * 24 * 60 * 60; // 1 week in seconds
     
     while(currentTime < weekDuration) {
-      // Pick a random show from this station
+      // Pick a random show/album from this station
       const showIndex = Math.floor(seededRandom(seedCounter++) * station.networkShows.length);
       const showName = station.networkShows[showIndex];
       
+      // Pick a random track NUMBER from that show (we'll resolve it later when we have the files)
+      // Assume most shows have 10-50 tracks, pick a track index
+      const trackIndex = Math.floor(seededRandom(seedCounter++) * 50);
+      
       schedule[station.num].push({
         show: showName,
+        trackIndex: trackIndex, // NEW: which track from this show
         startTime: currentTime,
         station: station.num
       });
       
-      // Each show lasts roughly 40-60 minutes (2400-3600 seconds)
-      const showDuration = 2400 + Math.floor(seededRandom(seedCounter++) * 1200);
-      currentTime += showDuration;
+      // Each TRACK lasts roughly 3-5 minutes (180-300 seconds) - like a real song
+      const trackDuration = 180 + Math.floor(seededRandom(seedCounter++) * 120);
+      currentTime += trackDuration;
     }
   });
   
@@ -2542,28 +2561,32 @@ function getCurrentBroadcast(schedule, stationNum) {
   const stationSchedule = schedule[stationNum];
   if(!stationSchedule) return null;
   
-  // Find which show should be playing right now
+  // Find which TRACK should be playing right now
   for(let i = 0; i < stationSchedule.length; i++) {
-    const currentShow = stationSchedule[i];
-    const nextShow = stationSchedule[i + 1];
+    const currentTrack = stationSchedule[i];
+    const nextTrack = stationSchedule[i + 1];
     
-    if(nextShow && secondsIntoWeek >= currentShow.startTime && secondsIntoWeek < nextShow.startTime) {
+    if(nextTrack && secondsIntoWeek >= currentTrack.startTime && secondsIntoWeek < nextTrack.startTime) {
       return {
-        show: currentShow.show,
-        elapsedTime: secondsIntoWeek - currentShow.startTime
+        show: currentTrack.show,
+        trackIndex: currentTrack.trackIndex,
+        elapsedTime: secondsIntoWeek - currentTrack.startTime,
+        scheduleIndex: i // NEW: which slot in the schedule
       };
     }
     
-    // Last show of the week wraps around
-    if(!nextShow && secondsIntoWeek >= currentShow.startTime) {
+    // Last track of the week wraps around
+    if(!nextTrack && secondsIntoWeek >= currentTrack.startTime) {
       return {
-        show: currentShow.show,
-        elapsedTime: secondsIntoWeek - currentShow.startTime
+        show: currentTrack.show,
+        trackIndex: currentTrack.trackIndex,
+        elapsedTime: secondsIntoWeek - currentTrack.startTime,
+        scheduleIndex: i // NEW: which slot in the schedule
       };
     }
   }
   
-  return stationSchedule[0]; // Fallback to first show
+  return stationSchedule[0]; // Fallback to first track
 }
 
 // EXACT TV SYNC LOGIC
@@ -2643,7 +2666,7 @@ async function playSync(){
     return;
   }
   
-  let currentShow, nextShow, elapsedTime = 0;
+  let currentShow, scheduledTrackIndex, elapsedTime = 0;
   
   // LIVE MODE: Use scheduled broadcast
   if(isLiveMode && weeklySchedule) {
@@ -2651,33 +2674,27 @@ async function playSync(){
     
     if(broadcast) {
       currentShow = broadcast.show;
-      elapsedTime = broadcast.elapsedTime || 0; // Seconds into the show
+      scheduledTrackIndex = broadcast.trackIndex; // Which track from this show
+      elapsedTime = broadcast.elapsedTime || 0; // Seconds into THIS track
+      currentScheduleIndex = broadcast.scheduleIndex; // Store our position in schedule
       
-      // Find next show in schedule
-      const stationSchedule = weeklySchedule[ch.num];
-      const currentIndex = stationSchedule.findIndex(s => s.show === currentShow);
-      if(currentIndex >= 0 && currentIndex < stationSchedule.length - 1) {
-        nextShow = stationSchedule[currentIndex + 1].show;
-      } else {
-        nextShow = stationSchedule[0].show; // Wrap to start
-      }
-      
-      console.log('LIVE MODE - Playing scheduled:', currentShow, 'at', elapsedTime, 'seconds in');
-      document.getElementById('now-playing').textContent = `🔴 LIVE: ${currentShow.substring(0,25)}... | Next: ${nextShow.substring(0,15)}...`;
+      console.log('LIVE MODE - Playing scheduled:', currentShow, 'track', scheduledTrackIndex, 'at', elapsedTime, 'seconds in');
+      console.log('   Schedule index:', currentScheduleIndex);
+      document.getElementById('now-playing').textContent = `🔴 LIVE: ${currentShow.substring(0,40)}...`;
     } else {
       // Fallback if broadcast lookup fails
       currentShow = showList[0];
-      nextShow = showList[1] || showList[0];
+      scheduledTrackIndex = 0;
     }
   } 
   // OFFLINE MODE: Random selection
   else {
     currentShowIndex = Math.floor(Math.random() * showList.length);
     currentShow = showList[currentShowIndex];
-    nextShow = showList[(currentShowIndex + 1) % showList.length];
+    scheduledTrackIndex = 0;
     
     console.log('OFFLINE MODE - Playing random:', currentShow);
-    document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}... | Next: ${nextShow.substring(0,20)}...`;
+    document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}...`;
   }
   
   // Fetch tracks - with fallback system
@@ -2695,13 +2712,6 @@ async function playSync(){
     const nextIndex = (currentIndex + retryCount) % showList.length;
     currentShow = showList[nextIndex];
     
-    // CRITICAL FIX: Reset elapsedTime when switching to fallback show
-    // We can't use the scheduled time from a different show!
-    if(retryCount > 0) {
-      elapsedTime = 0;
-      console.log('⚠️ Switched to fallback show - resetting elapsedTime to 0');
-    }
-    
     files = await fetchFiles(currentShow);
   }
   
@@ -2715,30 +2725,13 @@ async function playSync(){
   console.log(`✓ Found ${files.length} tracks in show: ${currentShow}`);
   currentFiles = files;
   
-  // In LIVE mode, calculate which track should be playing based on elapsed time
+  // In LIVE mode, play the SCHEDULED TRACK
   if(isLiveMode) {
-    console.log('🔴 LIVE MODE ACTIVE - elapsedTime:', elapsedTime, 'seconds');
+    console.log('🔴 LIVE MODE ACTIVE - scheduledTrackIndex:', scheduledTrackIndex, 'elapsedTime:', elapsedTime, 'seconds');
     
-    let timeAccumulator = 0;
-    let targetTrackIndex = 0;
-    let offsetIntoTrack = 0;
-    
-    // Walk through tracks to find which one should be playing
-    for(let i = 0; i < files.length; i++) {
-      const trackDuration = parseFloat(files[i].dur) || 180; // Use 'dur' field, default 3 min
-      
-      console.log(`   Track ${i}: duration=${trackDuration}s, accumulator=${timeAccumulator}s`);
-      
-      if(timeAccumulator + trackDuration > elapsedTime) {
-        // This is the track that should be playing
-        targetTrackIndex = i;
-        offsetIntoTrack = elapsedTime - timeAccumulator;
-        console.log(`   ✅ FOUND! Track ${i} should be playing at ${offsetIntoTrack}s into the track`);
-        break;
-      }
-      
-      timeAccumulator += trackDuration;
-    }
+    // Use the scheduled track index, but make sure it's within bounds
+    let targetTrackIndex = scheduledTrackIndex % files.length;
+    let offsetIntoTrack = elapsedTime; // How far into this specific track
     
     currentTrackIndex = targetTrackIndex;
     const track = files[currentTrackIndex];
@@ -2776,7 +2769,7 @@ async function playSync(){
   }
 }
 
-function go(i){
+async function go(i){
   if(!on) return;
   cur = i;
   const s = STATIONS[i];
@@ -2784,7 +2777,7 @@ function go(i){
   document.getElementById('name').textContent = s.name;
   document.getElementById('station-display').textContent = `${s.num} - ${s.name}`;
   document.getElementById('dial').value = i;
-  playSync();
+  await playSync();
 }
 
 function next(){
@@ -2956,32 +2949,86 @@ function nextTrack(){
 }
 
 // Auto-advance to next track (preserves LIVE mode)
-function autoAdvanceTrack(){
-  if(!on || currentFiles.length === 0) return;
+async function autoAdvanceTrack(){
+  console.log('🔄 autoAdvanceTrack() CALLED');
   
-  currentTrackIndex = (currentTrackIndex + 1) % currentFiles.length;
-  const track = currentFiles[currentTrackIndex];
-  
-  console.log('🔄 Auto-advancing to track', currentTrackIndex + 1, 'of', currentFiles.length);
-  
-  p.src = track.u;
-  p.volume = currentVolume;
-  
-  // In LIVE mode, start the next track from the beginning
-  // (We're naturally progressing through the show in order)
-  if(isLiveMode) {
-    p.dataset.pendingSeek = null; // Start from beginning
-    p.load();
-    console.log('🔴 LIVE mode: Advancing to next track in sequence, starting from 0');
-  } else {
-    // OFFLINE mode - also start from beginning
-    p.currentTime = 0;
-    p.dataset.pendingSeek = null;
+  if(!on) {
+    console.log('❌ Cannot advance - radio off');
+    return;
   }
   
-  p.play().catch(e => console.log('Play blocked:', e));
+  // In LIVE mode, advance to NEXT slot in the schedule
+  if(isLiveMode && weeklySchedule) {
+    console.log('🔴 LIVE mode: Advancing to NEXT scheduled slot');
+    
+    const ch = STATIONS[cur];
+    const stationSchedule = weeklySchedule[ch.num];
+    
+    if(!stationSchedule || stationSchedule.length === 0) {
+      console.error('❌ No schedule available');
+      return;
+    }
+    
+    // Move to NEXT slot in schedule
+    currentScheduleIndex = (currentScheduleIndex + 1) % stationSchedule.length;
+    const nextSlot = stationSchedule[currentScheduleIndex];
+    
+    console.log(`   Moving to schedule slot ${currentScheduleIndex}: ${nextSlot.show}, track ${nextSlot.trackIndex}`);
+    
+    // Fetch files for this show
+    const files = await fetchFiles(nextSlot.show);
+    
+    if(files.length === 0) {
+      console.error('❌ No files in show:', nextSlot.show);
+      // Try next slot
+      autoAdvanceTrack();
+      return;
+    }
+    
+    currentFiles = files;
+    
+    // Get the scheduled track (with bounds checking)
+    const targetTrackIndex = nextSlot.trackIndex % files.length;
+    currentTrackIndex = targetTrackIndex;
+    const track = files[currentTrackIndex];
+    
+    console.log(`🎵 Playing: Track ${targetTrackIndex} - "${track.n}"`);
+    console.log('   ▶️ AUTO-ADVANCE: Starting from beginning (0:00)');
+    
+    // Play from beginning (it's a new song)
+    p.src = track.u;
+    p.volume = currentVolume;
+    p.dataset.pendingSeek = null; // No seeking - start from 0:00
+    p.load();
+    p.play().catch(e => {
+      console.error('❌ Play failed:', e);
+    });
+    
+    setTimeout(() => onTrackChange(), 100);
+    
+  } else {
+    // OFFLINE mode: pick random track from current files
+    console.log('⚫ OFFLINE mode: Picking random track');
+    if(currentFiles.length === 0) {
+      console.log('❌ No files available');
+      return;
+    }
+    
+    currentTrackIndex = Math.floor(Math.random() * currentFiles.length);
+    const track = currentFiles[currentTrackIndex];
+    
+    p.src = track.u;
+    p.currentTime = 0;
+    p.volume = currentVolume;
+    p.dataset.pendingSeek = null;
+    p.play().catch(e => {
+      console.error('❌ Play failed:', e);
+    });
+    
+    setTimeout(() => onTrackChange(), 100);
+  }
   
-  setTimeout(() => onTrackChange(), 100);
+  console.log('✅ autoAdvanceTrack() COMPLETE');
 }
 
 function prevTrack(){
@@ -3316,6 +3363,9 @@ function isCurrentTrackFavorited() {
 function updateFavoriteButton() {
   const btn = document.getElementById('favoriteBtn');
   const icon = document.getElementById('heartIcon');
+  
+  // If buttons don't exist (basic radio), skip update
+  if (!btn || !icon) return;
   
   if (isCurrentTrackFavorited()) {
     btn.classList.add('active');
@@ -3885,8 +3935,10 @@ function toggleShuffle() {
     alert('Cannot use Shuffle and Repeat at the same time!\nTurning off Repeat mode.');
     repeatMode = 'off';
     const repeatBtn = document.getElementById('repeatBtn');
-    repeatBtn.classList.remove('repeat-active');
-    repeatBtn.innerHTML = '🔁 REPEAT';
+    if(repeatBtn) {
+      repeatBtn.classList.remove('repeat-active');
+      repeatBtn.innerHTML = '🔁 REPEAT';
+    }
   }
   
   // Exit LIVE mode when shuffle is activated
@@ -3951,8 +4003,10 @@ function toggleRepeat() {
     alert('Cannot use Repeat and Shuffle at the same time!\nTurning off Shuffle mode.');
     isShuffleMode = false;
     const shuffleBtn = document.getElementById('shuffleBtn');
-    shuffleBtn.classList.remove('shuffle-active');
-    shuffleBtn.innerHTML = '🔀 SHUFFLE';
+    if(shuffleBtn) {
+      shuffleBtn.classList.remove('shuffle-active');
+      shuffleBtn.innerHTML = '🔀 SHUFFLE';
+    }
     
     // Restore original order if shuffled
     if (originalFilesOrder.length > 0) {
@@ -4047,7 +4101,15 @@ function stopProgressTracking() {
 
 // Enhanced track ended handler
 p.addEventListener('ended', () => {
-  if (!on) return;
+  console.log('🎵 TRACK ENDED EVENT FIRED');
+  console.log('   on:', on);
+  console.log('   repeatMode:', repeatMode);
+  console.log('   playQueue.length:', playQueue.length);
+  
+  if (!on) {
+    console.log('❌ Radio is OFF - not advancing');
+    return;
+  }
   
   // Check repeat mode first
   if (repeatMode === 'one') {
@@ -4062,11 +4124,13 @@ p.addEventListener('ended', () => {
   
   // Check if queue has items
   if (playQueue.length > 0) {
+    console.log('📋 Queue has items, playing from queue');
     playNextInQueue();
     return;
   }
   
   // Auto-advance to next track (preserves LIVE mode)
+  console.log('✅ Calling autoAdvanceTrack()');
   autoAdvanceTrack();
 });
 
