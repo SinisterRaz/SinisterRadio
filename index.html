@@ -1493,6 +1493,7 @@ input[type="range"]::-moz-range-thumb{
 .search-input-container{
   padding:15px 20px;
   border-bottom:2px solid var(--gc-border);
+  position:relative;
 }
 
 .search-input{
@@ -1513,12 +1514,101 @@ input[type="range"]::-moz-range-thumb{
   box-shadow:0 0 15px var(--ch-glow);
 }
 
+.search-autocomplete{
+  position:absolute;
+  top:100%;
+  left:20px;
+  right:20px;
+  background:var(--gc-bg);
+  border:2px solid var(--ch-color);
+  border-top:none;
+  max-height:300px;
+  overflow-y:auto;
+  z-index:1000;
+  display:none;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+}
+
+.search-autocomplete.show{
+  display:block;
+}
+
+.autocomplete-item{
+  padding:12px 15px;
+  cursor:pointer;
+  font-family:'VT323',monospace;
+  font-size:16px;
+  color:var(--cnt-color);
+  border-bottom:1px solid var(--gc-border);
+  transition:all 0.2s;
+}
+
+.autocomplete-item:hover{
+  background:var(--btn-bg);
+  color:var(--ch-color);
+}
+
+.autocomplete-item:last-child{
+  border-bottom:none;
+}
+
+.autocomplete-artist{
+  color:var(--ch-color);
+  font-weight:bold;
+}
+
+.autocomplete-count{
+  float:right;
+  color:var(--btn-color);
+  font-size:14px;
+}
+
 .search-filters{
   padding:10px 20px;
   border-bottom:2px solid var(--gc-border);
   display:flex;
   gap:8px;
   flex-wrap:wrap;
+}
+
+.search-params{
+  padding:10px 20px;
+  border-bottom:2px solid var(--gc-border);
+  display:flex;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  background:var(--gc-bg);
+}
+
+.search-param-label{
+  font-family:'Rajdhani',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  color:var(--ch-color);
+  letter-spacing:1px;
+}
+
+.search-param-checkbox{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  font-family:'VT323',monospace;
+  font-size:16px;
+  color:var(--cnt-color);
+  user-select:none;
+}
+
+.search-param-checkbox input[type="checkbox"]{
+  width:18px;
+  height:18px;
+  cursor:pointer;
+  accent-color:var(--ch-color);
+}
+
+.search-param-checkbox:hover{
+  color:var(--ch-color);
 }
 
 .filter-chip{
@@ -1981,31 +2071,9 @@ input[type="range"]::-moz-range-thumb{
     </div>
   </div>
 
-  <!-- PHASE 2: Progress Bar -->
-  <div class="progress-container" id="progressContainer" style="display:none;">
-    <div class="progress-info">
-      <span id="currentTime">0:00</span>
-      <span id="trackDuration">0:00</span>
-    </div>
-    <div class="progress-bar-wrapper" onclick="seekTrack(event)">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </div>
-
-  <div class="controls-single">
-    <button class="btn active" onclick="toggleLiveMode()" id="liveBtn">🔴 LIVE</button>
-  </div>
-
   <div class="controls">
-    <button class="btn" onclick="prevTrack()">⏮️ PREV TRACK</button>
     <button class="btn" onclick="power()" id="pwr">⚡ POWER</button>
-    <button class="btn" onclick="nextTrack()">NEXT TRACK ⏭️</button>
-  </div>
-
-  <div class="controls">
     <button class="btn" onclick="toggleThemeMenu()">🎨 THEMES</button>
-    <button class="btn" onclick="toggleShuffle()" id="shuffleBtn" title="Shuffle">🔀 SHUFFLE</button>
-    <button class="btn" onclick="toggleRepeat()" id="repeatBtn" title="Repeat">🔁 REPEAT</button>
   </div>
 
   <div class="theme-menu" id="theme-menu">
@@ -2221,7 +2289,7 @@ input[type="range"]::-moz-range-thumb{
   <div class="dial-container">
     <div class="dial-label">STATION TUNER</div>
     <div class="station-display" id="station-display">950 - 🔥 Classic Rap Radio</div>
-    <input type="range" id="dial" min="0" max="17" value="0" class="dial-slider">
+    <input type="range" id="dial" min="0" max="18" value="0" class="dial-slider">
     <div class="dial-markers">
       <span>950</span>
       <span>955</span>
@@ -2235,7 +2303,6 @@ input[type="range"]::-moz-range-thumb{
     <input type="range" id="vol" min="0" max="100" value="70">
   </div>
 </div>
-
 
 <script>
 // EXACT COPY OF TV MUSIC CHANNELS
@@ -2257,10 +2324,83 @@ const STATIONS = [
   {num:964, name:"🎧 Deejay Dan", cat:"Music", master:true, networkShows:["DeeJayDanHALLOWEENDUBSTEP2017","DeeJayDanComplextro22017","DeeJayDanBurnTheFire2013","DeeJayDanThisIsMOOMBAHCORE2013","DeeJayDanBurnTheFire22014","DeeJayDanBurnTheFire32014","dee-jay-dan-e-motion-39-2025","DeeJayDanMelodicFullOn62017","DeeJayDanMelodicFullOn112017","DeeJayDanMelodicFullOn132018","DeeJayDanMelodicFullOn162018","DeeJayDanMelodicFullOn122018","DeeJayDanMelodicFullOn72017","DeeJayDanMelodicFullOn102017","DeeJayDanEuromixSarov2352018","dee-jay-dan-capricorn-2025","dee-jay-dan-halloween-house-2025","dee-jay-dan-acid-breaks-13-2024","dee-jay-dan-acid-breaks-11-2024","dee-jay-dan-aquarius-2024","dee-jay-dan-libra-2024","deejaydanemotion342019","deejaydanwinteredm2020","deejaydanwinteredm22020","deejaydaneasternedm2020","deejaydanwinteredm32020","DeeJayDanWhiteNights92019","DeeJayDanWhiteNights32015","DeeJayDanEMotion202018","DeeJayDanKnockout2017","deejaydanstereolove2020","DeeJayDanThisIsMELODICDUBSTEP42014","DeeJayDanThisIsMELODICDUBSTEP102017","DeeJayDanThisIsMELODICDUBSTEP82015","DeeJayDanThisIsMELODICDUBSTEP112018","DeeJayDanThisIsMELODICDUBSTEP72015","DeeJayDanArabianDubstep22018","DeeJayDanThisIsMELODICDUBSTEP122018","DeeJayDanTropicalHouse2015","DeeJayDanMakeYouHappy2014","DeeJayDanFutureHouse2015","DeeJayDanHalloweenDubstep2019","DeeJayDanJapanTrance22018","deejaydanclubnights52019","DeeJayDanArabianDubstep2017","deejaydansummermegamix22019","DeeJayDanHALLOWEENTRAPDUBSTEP2017","DeeJayDanTropicalHouse22015","DeeJayDanTropicalHouse32015","deejaydansummermegamix32019","DeeJayDanHiTech2017","DeeJayDanTropicalHouse42015","deejaydan1001arabiannights2020","DeeJayDanDeepInMySoul1002019","DeeJayDanSpaceJam32016","DeeJayDanSpaceJam22015","DeeJayDanLionsHeart32016","DeeJayDanLionsHeart52016","DeeJayDanLionsHeart42016","DeeJayDanSummerIsBack32015","DeeJayDanSummerIsCalling32015","DeeJayDanSummerIsBack42017","DeeJayDanMakeYouMove2015","DeeJayDanTheWeekendStartsHere22015","DeeJayDanDieselPower2017","DeeJayDanUppercut2018","DeeJayDanComplextro52018","DeeJayDanComplextro32018","DeeJayDanImTheLaw2017","DeeJayDanBurnTheFire52016","DeeJayDanBurnTheFire42016","DeeJayDanMadness2015","DeeJayDanKnockdown2017","DeeJayDanWaitingForTheSummer22015","DeeJayDanSunriseSunset22015","DeeJayDanZeroGravity22015"], avgDur:2400},
   {num:965, name:"🎙️ DJ Clue Radio", cat:"Music", master:true, networkShows:["VA-DJ_Clue_-_Banned_From_CD_Pt._1-2015","VA-DJ_Clue-Where_Ya_Hood_At_Pt.3-2003-WCR","DJ_clue_where_ya_hood_at_pt.1-mf-","DJ_Clue-_Hes_A_Hustler_Pt.1-mf-","DJ_Clue-_Desert_Storm_98-mf-","DJ_Clue_-_Best_of_Freestyles_vol._1--mf--","Fabolous_and_DJ_Clue_-_Friday_Night_Freestyles-2015","Fabolous_and_DJ_Clue_-_Live_From_The_718_Freestyles-2015","DJ_Clue_Best_Of_Clue_Freestyles_Pt_II","DJ_CLUE_-_STADIUM_SERIES_2-mf-","DJ_Clue_-_Hate_Me_Now_Part_2_2002-mf-","DJ_Clue_Show_Me_The_Money_2002-mf-","DJ_Clue-_Clue_For_President_PT.2-mf-","VA-DJ_Clue-Clue_Manatti-The_Clue_World_Order-1997-4HM","DJ_Clue-_Queens_Day_Pt.1_-mf-1999","DJ_Clue-_The_Curse_Of_Clue--mf--_1997","dj_clue-_clue_for_president_1-mf-1997","VA-DJ_Clue-When_Animals_Attack-2004-WCR","VA-DJ_Clue_And_Desert_Storm_Present-The_Mixtape_After_Tomorrow_-2004-mf-","DJ_Clue-DJ_Envy_Desert_Storm_Mixtape_Vol.4_-mf-_2002","DJClueSpringtymeStickup1996","Dj_Clue_Clue_For_President_Pt._3_new_Acuzations_1998-mf-"], avgDur:2400},
   {num:966, name:"💿 Funkmaster Flex Radio", cat:"Music", master:true, networkShows:["VA-Funkmaster_Flex_-_Who_You_Mad_At_Me_Or_Yourself-2013","funkmaster-flex-hot-97-2002-side-b","FunkmasterFlex-19940709","ChuckChilloutShow-199008","FunkmasterFlex-BestOf1995-199512","ChuckChilloutShow-April1990","funkmaster-flex-hot-97-4-9-04","FunkmasterFlex-199709","FunkmasterFlex-FridayNightStreetJams-Hot97-19930130","FunkmasterFlexPeteRockHot971994","ChuckChilloutShow-withFunkmasterFlex-1989","funkmaster-flex-friday-night-street-jam-hot-97-9-26-97","funkmaster-flex-friday-night-street-jam-hot-97-7-19-96","funkmaster-flex-radio-1-rap-exchange-w-fat-joe-big-pun-flipmode-squad-missy-elli","funkmaster-flex-saturday-night-street-jam-hot-97-7-4-98","Funkmaster_Flex_-_Special_Delivery_3","Funkmaster_Flex_and_Roc-A-Fella_Presents_-_Live_Hot_97_Freestyles_Hosted_By_Jay-Z","FunkmasterFlexHot97StreetJams-19950728","djrizhot97streetjams1994"], avgDur:2400},
-  {num:967, name:"🔥 DatPiff Mega Mixtapes", cat:"Music", master:true, networkShows:[], avgDur:2400, dynamicLoader: 'datpiff'}
+  {num:967, name:"🔥 Reggaeton Radio", cat:"Reggaeton", master:true, networkShows:["bad-bunny-x100pre","ozuna-aura","j-balvin-vibras","daddy-yankee-barrio-fino","don-omar-king-of-kings","wisin-yandel-los-extraterrestres","maluma-pretty-boy-dirty-boy","nicky-jam-fenix","anuel-aa-real-hasta-la-muerte","karol-g-unstoppable","rauw-alejandro-vice-versa","myke-towers-lyke-mike","plan-b-house-of-pleasure","zion-lennox-motivando-a-la-yal","tego-calderon-el-abayarde","ivy-queen-diva","calle-13-los-de-atras-vienen-conmigo"], avgDur:2400},
+  {num:968, name:"🔌 The Plug Radio", cat:"Music", master:true, networkShows:["acid-rap","coloring-book-chance","10-d-13.-prom-night","sm-1-01.-no-advance","21-savage-slaughter-tape","21-savage-slaughter-king_202411","slaughter-tape-21-savage","Moneybagg_Yo__NBA_YoungBoy_-_Fed_Babys_2-2020","NBA_YoungBoy_-_38_Baby_3-2020","NLE_Choppa_-_Top_Shotta-2020","VA-Strictly_4_The_Traps_N_Trunks_Long_Live_King_Von_Edition-2021","Yungeen_Ace_-_Life_Of_Betrayal-2018","VA-Strictly_4_The_Traps_N_Trunks_4th_Of_July_2021_Edition-2021","VA-DJ_Spinatik_-_Fuck_Yo_Playlist_3-2021","NLE_Choppa_-_Me_vs_Me-2022","King_Von_-_What_It_Means_To_Be_King-2022","Only_The_Family_-_Lil_Durk_Presents_Loyal_Bros-2021","Lil_Durk_-_Only_The_Family_Involved_2-2018","Lil_Durk_-_Only_The_Family_Involved_Vol.1-2018","DJ_Drama_and_Lil_Durk_-_Signed_To_The_Streets-2013","DJ_Drama_and_Don_Cannon_Present_Lil_Durk_-_Signed_To_The_Streets_2-2014","DJ_Drama_Presents_Nipsey_Hussle_-_Crenshaw-2013","Nipsey_Hussle_and_DJ_Drama_-_Mailbox_Money-2015","Nipsey_Hussle_-_Slauson_Boy_2-2016","Tory_Lanez_-_The_New_Toronto_2-2016","Tory_Lanez_-_Chixtape_4-2016","Tory_Lanez_-_Chixtape_2-2014","Tory_Lanez_-_Daystar-2020","Tory_Lanez_-_Sincerely_Tory-2012","Tory_Lanez_-_Mr._Peterson_Hosted_By_DJ_Ill_Will_and_DJ_Rockstar-2011","Drake_Vs._Tory_Lanez","Tory_Lanez_-_Swavey-2011","Tory_Lanez_-_Sorry_4_What-2022","Young_Thug_-_See_You-2016","Young_Dolph_and_Key_Glock_-_Dum_and_Dummer_2-2021","Young_Dolph_and_Key_Glock_-_Dum_and_Dummer-2019","Young_Dolph_-_High_Class_Street_Music_4_American_Gangster_Hosted_By_DJ_Scream","Young_Dolph_-_High_Class_Street_Music_5_The_Plug_Best_Friend-2015","Young_Dolph_-_High_Class_Street_Music_3_Trappin_Out_A_Mansion-2013","Young_Dolph_-_High_Class_Street_Music_5_The_Plug_Best_Friend","DJ_Scream_and_Young_Dolph_-_Blue_Magic-2012","tha-tour-1-rich-gang","Young_Dolph_-_Everything_Back-2017","Lil_Uzi_Vert_-_Lil_1600-2017","Lil_Uzi_Vert_-_The_Rare_Uzi-2016","Lil_Uzi_Vert_-_Luv_Is_Rage_1.5-2017","Lil_Uzi_Vert_-_2_Luv_Is_2_Rage-2017","lil-uzi-vs-the-world","Lil_Uzi_Vert_-_Lil_Uzi_Rules_The_World-2017","Young_Dolph_-_Hustler_Musik","Young_Dolph_-_16_Zips-2015","Key_Glock_-_Glock_Bond-2018","Key_Glock_-_Glockoma-2018","Key_Glock_-_Yellow_Tape_2-2021","Young_Nudy_-_Slimerre-2019","Hoodrich_Keem_and_DJ_Scream_Present_Young_Nudy_-_Slime_Ball_2-2017","Lil_Bibby_-_Free_Crack_Hosted_By_DJ_Scream-2013","Key_Glock_-_Glock_Season-2017","Kodak_Black_-_Institution-2015","Kodak_Black_-_Unreleased-2016","Kodak_Black_-_I_Remember-2016","Kodak_Black_-_Painting_Pictures_2-2017","Kodak_Black_-_Project_Baby_2-2017","Kodak_Black_-_Orange_Is_The_New_Black-2017","Kevin_Gates_-_Bismillah-2017","Kevin_Gates_-_Unreleased-2016","Kevin_Gates_-_Dont_Know-2016","Kevin_Gates_-_Truth_Be_Told-2017","Kevin_Gates_-_Gold_Paradise-2017","Kevin_Gates_-_Arm_and_Hammer-2016","Kodak_Black_and_Plies_-_F.E.M.A.-2017","Kodak_Black_-_Lil_B-I-G-_Pac-2016","Young_Thug_and_Migos_-_Migos_Thuggin-2015","21_Savage_-_Issa_Savage-2017","DJ_Drama_and_Don_Cannon_Present_Lil_Reese_-_Dont_Like-2012","Roddy_Ricch_-_Feed_Tha_Streets_2-2018","NBA_Youngboy_-_Slime_Mentality-2020","Quando_Rondo_-_Before_My_Time_Up-2020","NBA_Youngboy_-_Thug_Holiday-2018","Moneybagg_Yo_-_Indicted-2018","Moneybagg_Yo_-_Walker_Holmes-2019","Migos_-_3_Way_EP-2016","NBA_Young_Boy_-_Never_Broke_Again_Untouchable-2017","NBA_YoungBoy_-_Unreleased_38_Baby_Edition-2019","21-savage-free-guwop-ep","Owl-Pharoah-OG","dirty-sprite-2","future-self-titled","Hndrxx","captain-california","TheWIZRD","last-call_202409","DIBIKS","monster-future","culture2017","2000-joey-badass","14.-education","hellboy_202503","lil-peep-never-forgotten","lil-peep-crybaby_202503","lil-peep-come-over-when-youre-sober-pt.-2","lil-peep-live-forever_202503","lil-peep-california-girls","lil-peep-vertigo_202503","lifeafterdeathrow","LilpeepFeelz2015","benztruck01"], avgDur:2400}
 ];
 
-// DatPiff Dynamic Loader - Fetches thousands of mixtapes from Archive.org
+// Reggaeton Dynamic Loader - Loads from your two specified collections
+let reggaetonShows = [];
+let reggaetonLoaded = false;
+
+async function loadReggaetonShows() {
+  if (reggaetonLoaded) return reggaetonShows;
+  
+  console.log('Loading Reggaeton shows from Archive.org...');
+  
+  try {
+    // Collection 1: @ReggaetonTXL creator
+    const url1 = 'https://archive.org/advancedsearch.php?q=creator:"@ReggaetonTXL"&fl=identifier&rows=500&output=json';
+    
+    // Collection 2: spanish-speaking-hip-hop
+    const url2 = 'https://archive.org/advancedsearch.php?q=collection:spanish-speaking-hip-hop&fl=identifier&rows=500&output=json';
+    
+    const [resp1, resp2] = await Promise.all([
+      fetch(url1).catch(e => {
+        console.warn('Failed to fetch @ReggaetonTXL:', e);
+        return null;
+      }),
+      fetch(url2).catch(e => {
+        console.warn('Failed to fetch spanish-speaking-hip-hop:', e);
+        return null;
+      })
+    ]);
+    
+    let shows1 = [];
+    let shows2 = [];
+    
+    if (resp1) {
+      const data1 = await resp1.json();
+      shows1 = data1.response?.docs?.map(d => d.identifier) || [];
+      console.log(`Loaded ${shows1.length} shows from @ReggaetonTXL`);
+    }
+    
+    if (resp2) {
+      const data2 = await resp2.json();
+      shows2 = data2.response?.docs?.map(d => d.identifier) || [];
+      console.log(`Loaded ${shows2.length} shows from spanish-speaking-hip-hop`);
+    }
+    
+    // Combine and deduplicate
+    reggaetonShows = [...new Set([...shows1, ...shows2])];
+    
+    if (reggaetonShows.length > 0) {
+      console.log(`Total Reggaeton shows loaded: ${reggaetonShows.length}`);
+      
+      // Update station 967
+      const reggaetonStation = STATIONS.find(s => s.num === 967);
+      if (reggaetonStation) {
+        // Add new shows to existing ones
+        const existingShows = reggaetonStation.networkShows || [];
+        reggaetonStation.networkShows = [...new Set([...existingShows, ...reggaetonShows])];
+        
+        console.log(`✓ Station 967 now has ${reggaetonStation.networkShows.length} total shows`);
+        // Schedule will be generated after all loaders complete
+      }
+    } else {
+      console.log('No additional Reggaeton shows loaded from API, using defaults');
+      console.log(`Station 967 has ${STATIONS.find(s => s.num === 967)?.networkShows?.length || 0} default shows`);
+    }
+    
+    reggaetonLoaded = true;
+    return reggaetonShows;
+  } catch(e) {
+    console.error('Error loading Reggaeton shows:', e);
+    reggaetonLoaded = true;
+    return [];
+  }
+}
+
+// DatPiff Dynamic Loader - Adds thousands of mixtapes to hip-hop stations
 let datpiffMixtapes = [];
 let datpiffLoaded = false;
 
@@ -2271,7 +2411,6 @@ async function loadDatPiffMixtapes() {
   
   try {
     // Search Archive.org for all DatPiff mixtapes
-    // Using Archive.org's advanced search API
     const searchUrl = 'https://archive.org/advancedsearch.php?q=collection:datpiffarchives&fl=identifier&rows=10000&output=json';
     
     const response = await fetch(searchUrl);
@@ -2284,26 +2423,25 @@ async function loadDatPiffMixtapes() {
       
       console.log(`Loaded ${datpiffMixtapes.length} DatPiff mixtapes!`);
       
-      // Update the DatPiff station with the loaded mixtapes
-      const datpiffStation = STATIONS.find(s => s.num === 967);
-      if (datpiffStation) {
-        datpiffStation.networkShows = datpiffMixtapes;
-      }
+      // Add DatPiff mixtapes to hip-hop stations (950, 951, 952, 953)
+      const hipHopStations = [950, 951, 952, 953];
+      hipHopStations.forEach(stationNum => {
+        const station = STATIONS.find(s => s.num === stationNum);
+        if (station) {
+          // Add all DatPiff mixtapes to this station's rotation
+          station.networkShows = [...station.networkShows, ...datpiffMixtapes];
+          console.log(`Added ${datpiffMixtapes.length} DatPiff mixtapes to Station ${stationNum}`);
+        }
+      });
+      
+      // Schedule will be generated after all loaders complete
+      console.log('✓ DatPiff mixtapes added to hip-hop stations');
       
       datpiffLoaded = true;
       return datpiffMixtapes;
     }
   } catch(e) {
     console.error('Error loading DatPiff mixtapes:', e);
-    // Fallback: Use some known mixtapes
-    datpiffMixtapes = [
-      'datpiff-mixtape-maa5f90c',
-      'datpiff-mixtape-m3a7d6df',
-      'datpiff-mixtape-meb48d30',
-      'datpiff-mixtape-mdf262c0',
-      'datpiff-mixtape-ma9d8be7',
-      'datpiff-mixtape-me99d2af'
-    ];
   }
   
   datpiffLoaded = true;
@@ -2311,7 +2449,19 @@ async function loadDatPiffMixtapes() {
 }
 
 // Load DatPiff mixtapes when page loads
-loadDatPiffMixtapes();
+const datpiffPromise = loadDatPiffMixtapes();
+
+// Load Reggaeton shows when page loads  
+const reggaetonPromise = loadReggaetonShows();
+
+// Wait for both to complete, then generate schedule
+Promise.all([datpiffPromise, reggaetonPromise]).then(() => {
+  console.log('All dynamic content loaded, generating schedule...');
+  const currentWeek = getWeekNumber(new Date());
+  const currentYear = new Date().getFullYear();
+  weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
+  console.log('✓ Weekly schedule generated with ALL stations including DatPiff and Reggaeton!');
+});
 
 
 let cur = 0;
@@ -2482,7 +2632,15 @@ async function playSync(){
   
   const ch = STATIONS[cur];
   const showList = ch.networkShows || [];
-  if(showList.length === 0) return;
+  
+  console.log(`📻 playSync() called for Station ${ch.num} - ${ch.name}`);
+  console.log(`   Shows available: ${showList.length}`);
+  
+  if(showList.length === 0) {
+    console.error(`❌ Station ${ch.num} has NO shows! Cannot play.`);
+    document.getElementById('now-playing').textContent = `⚠️ Station ${ch.num} - No content available`;
+    return;
+  }
   
   let currentShow, nextShow, elapsedTime = 0;
   
@@ -2521,29 +2679,60 @@ async function playSync(){
     document.getElementById('now-playing').textContent = `Now: ${currentShow.substring(0,30)}... | Next: ${nextShow.substring(0,20)}...`;
   }
   
-  // Fetch tracks
-  const files = await fetchFiles(currentShow);
+  // Fetch tracks - with fallback system
+  let files = await fetchFiles(currentShow);
+  let retryCount = 0;
+  const maxRetries = 5; // Try up to 5 different shows
+  
+  // If current show has no tracks, try the next shows in rotation
+  while(files.length === 0 && retryCount < maxRetries) {
+    retryCount++;
+    console.log(`Show "${currentShow}" has no tracks, trying next show... (attempt ${retryCount}/${maxRetries})`);
+    
+    // Get next show in the list
+    const currentIndex = showList.indexOf(currentShow);
+    const nextIndex = (currentIndex + retryCount) % showList.length;
+    currentShow = showList[nextIndex];
+    
+    // CRITICAL FIX: Reset elapsedTime when switching to fallback show
+    // We can't use the scheduled time from a different show!
+    if(retryCount > 0) {
+      elapsedTime = 0;
+      console.log('⚠️ Switched to fallback show - resetting elapsedTime to 0');
+    }
+    
+    files = await fetchFiles(currentShow);
+  }
+  
+  // If still no tracks after all retries, show error
   if(files.length === 0){
-    document.getElementById('now-playing').textContent = 'No tracks available';
+    console.error('No tracks available after trying', maxRetries, 'shows');
+    document.getElementById('now-playing').textContent = `⚠️ No tracks available - All shows empty`;
     return;
   }
   
+  console.log(`✓ Found ${files.length} tracks in show: ${currentShow}`);
   currentFiles = files;
   
   // In LIVE mode, calculate which track should be playing based on elapsed time
   if(isLiveMode && elapsedTime > 0) {
+    console.log('🔴 LIVE MODE ACTIVE - elapsedTime:', elapsedTime, 'seconds');
+    
     let timeAccumulator = 0;
     let targetTrackIndex = 0;
     let offsetIntoTrack = 0;
     
     // Walk through tracks to find which one should be playing
     for(let i = 0; i < files.length; i++) {
-      const trackDuration = parseFloat(files[i].length) || 180; // Default 3 min if unknown
+      const trackDuration = parseFloat(files[i].dur) || 180; // Use 'dur' field, default 3 min
+      
+      console.log(`   Track ${i}: duration=${trackDuration}s, accumulator=${timeAccumulator}s`);
       
       if(timeAccumulator + trackDuration > elapsedTime) {
         // This is the track that should be playing
         targetTrackIndex = i;
         offsetIntoTrack = elapsedTime - timeAccumulator;
+        console.log(`   ✅ FOUND! Track ${i} should be playing at ${offsetIntoTrack}s into the track`);
         break;
       }
       
@@ -2553,12 +2742,19 @@ async function playSync(){
     currentTrackIndex = targetTrackIndex;
     const track = files[currentTrackIndex];
     
-    p.src = track.u;
-    p.currentTime = offsetIntoTrack; // Jump to correct position
-    p.volume = currentVolume;
-    p.play().catch(e => console.log('Play blocked:', e));
+    console.log(`🎵 Loading: Track ${targetTrackIndex} - "${track.n}"`);
+    console.log(`   Will seek to: ${Math.floor(offsetIntoTrack)} seconds`);
     
-    console.log('LIVE: Jumped to track', targetTrackIndex, 'at', Math.floor(offsetIntoTrack), 'seconds');
+    // Set source and volume
+    p.src = track.u;
+    p.volume = currentVolume;
+    
+    // Store the offset we need to seek to
+    p.dataset.pendingSeek = offsetIntoTrack;
+    
+    // Load and play - the canplay event will handle seeking
+    p.load();
+    p.play().catch(e => console.log('Play blocked:', e));
     
     // PHASE 1: Track change callback
     setTimeout(() => onTrackChange(), 100);
@@ -2571,6 +2767,7 @@ async function playSync(){
     p.src = track.u;
     p.currentTime = 0;
     p.volume = currentVolume;
+    p.dataset.pendingSeek = null; // No seeking needed
     p.play().catch(e => console.log('Play blocked:', e));
     
     // PHASE 1: Track change callback
@@ -2656,9 +2853,92 @@ p.addEventListener('loadedmetadata', () => {
   p.volume = currentVolume; // Force volume to user's setting
 });
 
-// Also apply on canplay event for extra safety
+// Handle track load errors - skip to next track if current fails
+let loadTimeout = null;
+
+p.addEventListener('error', function handleTrackError() {
+  console.error('❌ Track failed to load:', p.src);
+  console.error('   Error:', p.error);
+  
+  // Clear timeout if it exists
+  if(loadTimeout) {
+    clearTimeout(loadTimeout);
+    loadTimeout = null;
+  }
+  
+  if(!on) return;
+  
+  // If we have more tracks, try the next one
+  if(currentFiles && currentFiles.length > 1) {
+    console.log('⏭️ Skipping to next track...');
+    
+    // In LIVE mode, this should still advance
+    if(isLiveMode) {
+      autoAdvanceTrack(); // Preserves LIVE mode
+    } else {
+      nextTrack(); // Regular advance
+    }
+  } else {
+    console.error('❌ No more tracks available');
+    document.getElementById('now-playing').textContent = '⚠️ Track failed to load';
+  }
+});
+
+// Detect stuck tracks - if no playback starts within 10 seconds, skip
+p.addEventListener('loadstart', () => {
+  // Clear any existing timeout
+  if(loadTimeout) {
+    clearTimeout(loadTimeout);
+  }
+  
+  // Set new timeout
+  loadTimeout = setTimeout(() => {
+    if(p.paused && p.readyState < 2) {
+      console.warn('⏱️ Track took too long to load, skipping...');
+      if(on && currentFiles && currentFiles.length > 1) {
+        if(isLiveMode) {
+          autoAdvanceTrack();
+        } else {
+          nextTrack();
+        }
+      }
+    }
+  }, 10000); // 10 second timeout
+});
+
+// Clear timeout when track starts playing
+p.addEventListener('playing', () => {
+  if(loadTimeout) {
+    clearTimeout(loadTimeout);
+    loadTimeout = null;
+  }
+});
+
+// Handle LIVE mode seeking + volume normalization on canplay
 p.addEventListener('canplay', () => {
+  console.log('📡 canplay event fired - volume:', currentVolume, 'pendingSeek:', p.dataset.pendingSeek);
+  
   p.volume = currentVolume; // Force volume to user's setting
+  
+  // Check if we have a pending seek (LIVE mode)
+  if(p.dataset.pendingSeek !== null && p.dataset.pendingSeek !== undefined && p.dataset.pendingSeek !== 'null') {
+    const seekTime = parseFloat(p.dataset.pendingSeek);
+    
+    console.log('   Attempting seek to:', seekTime, 'duration:', p.duration);
+    
+    if(!isNaN(seekTime) && seekTime > 0 && p.duration && seekTime < p.duration) {
+      p.currentTime = seekTime;
+      console.log('   ✅ LIVE: Seeked to', Math.floor(seekTime), 'seconds (duration:', Math.floor(p.duration), 's)');
+    } else if(!isNaN(seekTime) && seekTime >= p.duration) {
+      console.log('   ⚠️ LIVE: Seek time', Math.floor(seekTime), 'exceeds duration', Math.floor(p.duration), '- starting from beginning');
+      p.currentTime = 0;
+    }
+    
+    // Clear the pending seek
+    p.dataset.pendingSeek = null;
+  } else {
+    console.log('   No pending seek');
+  }
 });
 
 document.getElementById('dial').oninput = function(){
@@ -2669,67 +2949,51 @@ document.getElementById('dial').oninput = function(){
 
 // Track skip functions
 function nextTrack(){
+  // DISABLED IN BASIC RADIO - No track skipping allowed
+  console.log('Track skipping disabled in basic radio');
+  return;
+}
+
+// Auto-advance to next track (preserves LIVE mode)
+function autoAdvanceTrack(){
   if(!on || currentFiles.length === 0) return;
-  
-  // Skipping track exits LIVE mode
-  if(isLiveMode){
-    isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
-    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Random Playback';
-  }
   
   currentTrackIndex = (currentTrackIndex + 1) % currentFiles.length;
   const track = currentFiles[currentTrackIndex];
   
+  console.log('🔄 Auto-advancing to track', currentTrackIndex + 1, 'of', currentFiles.length);
+  
   p.src = track.u;
-  p.currentTime = 0;
-  p.volume = currentVolume; // Apply saved volume
+  p.volume = currentVolume;
+  
+  // In LIVE mode, start the next track from the beginning
+  // (We're naturally progressing through the show in order)
+  if(isLiveMode) {
+    p.dataset.pendingSeek = null; // Start from beginning
+    p.load();
+    console.log('🔴 LIVE mode: Advancing to next track in sequence, starting from 0');
+  } else {
+    // OFFLINE mode - also start from beginning
+    p.currentTime = 0;
+    p.dataset.pendingSeek = null;
+  }
+  
   p.play().catch(e => console.log('Play blocked:', e));
   
-  // PHASE 1: Track change callback
   setTimeout(() => onTrackChange(), 100);
 }
 
 function prevTrack(){
-  if(!on || currentFiles.length === 0) return;
-  
-  // Skipping track exits LIVE mode
-  if(isLiveMode){
-    isLiveMode = false;
-    document.getElementById('liveBtn').classList.remove('active');
-    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Random Playback';
-  }
-  
-  currentTrackIndex = (currentTrackIndex - 1 + currentFiles.length) % currentFiles.length;
-  const track = currentFiles[currentTrackIndex];
-  
-  p.src = track.u;
-  p.currentTime = 0;
-  p.volume = currentVolume; // Apply saved volume
-  p.play().catch(e => console.log('Play blocked:', e));
-  
-  // PHASE 1: Track change callback
-  setTimeout(() => onTrackChange(), 100);
+  // DISABLED IN BASIC RADIO - No track skipping allowed
+  console.log('Track skipping disabled in basic radio');
+  return;
 }
 
 // LIVE mode toggle
 function toggleLiveMode(){
-  if(!on) return; // Can't toggle if radio is off
-  
-  isLiveMode = !isLiveMode;
-  
-  if(isLiveMode){
-    // Entering LIVE mode - rejoin broadcast
-    document.getElementById('liveBtn').classList.add('active');
-    console.log('LIVE MODE: ON - Rejoining broadcast');
-    // Reload the current station with LIVE schedule
-    playSync();
-  } else {
-    // Exiting LIVE mode - switch to random
-    document.getElementById('liveBtn').classList.remove('active');
-    document.getElementById('now-playing').textContent = 'OFFLINE MODE - Random Playback';
-    console.log('LIVE MODE: OFF');
-  }
+  // DISABLED IN BASIC RADIO - Always in LIVE mode
+  console.log('Basic radio is always in LIVE mode');
+  return;
 }
 
 // Theme switcher
@@ -2795,8 +3059,7 @@ const currentWeek = getWeekNumber(new Date());
 const currentYear = new Date().getFullYear();
 console.log('Initializing Week', currentWeek, 'of', currentYear);
 
-weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
-console.log('Weekly schedule generated for all stations');
+// Schedule will be generated after dynamic loaders complete (see above)
 
 // ============================================
 // PHASE 1: FAVORITES, PLAYLISTS, HISTORY, LIBRARY
@@ -3414,10 +3677,10 @@ async function playTrackFromInfo(trackInfo) {
     document.getElementById('station-display').textContent = `${s.num} - ${s.name}`;
     document.getElementById('dial').value = cur;
     
-    // Try to get the show ID from multiple sources
+    // Extract show ID from multiple sources
     let showToLoad = trackInfo.showId || trackInfo.albumShow;
     
-    // If no showId, try to extract from URL
+    // If no showId yet, extract from URL
     // URL format: https://archive.org/download/SHOW_ID/filename.mp3
     if (!showToLoad && trackInfo.url) {
       const urlParts = trackInfo.url.split('/');
@@ -3427,13 +3690,16 @@ async function playTrackFromInfo(trackInfo) {
       }
     }
     
+    console.log('playTrackFromInfo - Track:', trackInfo.name, 'ShowID:', showToLoad, 'URL:', trackInfo.url);
+    
     // If we have the show ID, load those files
     if (showToLoad) {
       try {
         const files = await fetchFiles(showToLoad);
         currentFiles = files;
+        currentShow = showToLoad;
         
-        // Find the exact track
+        // Find the exact track by URL
         const trackIndex = files.findIndex(t => t.u === trackInfo.url);
         
         if (trackIndex >= 0) {
@@ -3448,20 +3714,21 @@ async function playTrackFromInfo(trackInfo) {
           
           setTimeout(() => onTrackChange(), 100);
           
-          console.log('Playing from library:', trackInfo.name, 'from show:', showToLoad);
+          console.log('✓ Playing from library:', trackInfo.name, 'from show:', showToLoad);
           return;
         } else {
-          console.warn('Track not found in loaded files, URL:', trackInfo.url);
+          console.warn('✗ Track not found in loaded files. URL:', trackInfo.url);
+          console.warn('✗ Available tracks:', files.map(f => f.u));
         }
       } catch(e) {
-        console.error('Error loading album files:', e);
+        console.error('✗ Error loading album files:', e);
       }
     } else {
-      console.warn('No show ID available for track:', trackInfo.name);
+      console.warn('✗ No show ID available for track:', trackInfo.name, trackInfo);
     }
     
     // Fallback: use station's default playback
-    console.log('Using fallback playback');
+    console.log('→ Using fallback playback');
     playSync();
   }
 }
@@ -3798,8 +4065,8 @@ p.addEventListener('ended', () => {
     return;
   }
   
-  // Normal next track (handles REPEAT ALL via modulo in nextTrack)
-  nextTrack();
+  // Auto-advance to next track (preserves LIVE mode)
+  autoAdvanceTrack();
 });
 
 // Track when audio starts playing
@@ -3816,6 +4083,268 @@ p.addEventListener('pause', () => {
 // ============================================
 // PHASE 3: SEARCH & STATISTICS
 // ============================================
+
+// ARTIST INDEX for autocomplete
+let artistIndex = {};  // {artist: {name, count}}
+let artistIndexBuilt = false;
+
+// COMPLETE TRACK INDEX for fast searching
+let trackIndex = [];  // Array of all tracks with metadata
+let trackIndexBuilt = false;
+let trackIndexProgress = 0;
+
+// Cache version - increment this when index structure changes
+const TRACK_INDEX_VERSION = 1;
+const TRACK_INDEX_CACHE_KEY = 'radioTrackIndex_v' + TRACK_INDEX_VERSION;
+const ARTIST_INDEX_CACHE_KEY = 'radioArtistIndex_v' + TRACK_INDEX_VERSION;
+
+function saveIndexToCache() {
+  try {
+    localStorage.setItem(TRACK_INDEX_CACHE_KEY, JSON.stringify(trackIndex));
+    localStorage.setItem(ARTIST_INDEX_CACHE_KEY, JSON.stringify(artistIndex));
+    console.log('✓ Search index saved to cache');
+  } catch(e) {
+    console.warn('Failed to cache search index:', e);
+  }
+}
+
+function loadIndexFromCache() {
+  try {
+    const cachedTracks = localStorage.getItem(TRACK_INDEX_CACHE_KEY);
+    const cachedArtists = localStorage.getItem(ARTIST_INDEX_CACHE_KEY);
+    
+    if (cachedTracks && cachedArtists) {
+      trackIndex = JSON.parse(cachedTracks);
+      artistIndex = JSON.parse(cachedArtists);
+      trackIndexBuilt = true;
+      artistIndexBuilt = true;
+      
+      console.log(`✓ Loaded search index from cache: ${trackIndex.length} tracks, ${Object.keys(artistIndex).length} artists`);
+      
+      // Update UI
+      const statusEl = document.getElementById('searchResults');
+      if (statusEl) {
+        statusEl.innerHTML = '<div class="search-no-results">Type to search...</div>';
+      }
+      
+      return true;
+    }
+  } catch(e) {
+    console.warn('Failed to load cached index:', e);
+  }
+  return false;
+}
+
+async function buildCompleteTrackIndex() {
+  if (trackIndexBuilt) return trackIndex;
+  
+  // Try loading from cache first
+  if (loadIndexFromCache()) {
+    console.log('Using cached search index - no rebuild needed!');
+    return trackIndex;
+  }
+  
+  console.log('Building complete track index...');
+  trackIndex = [];
+  artistIndex = {};
+  
+  const totalShows = STATIONS.reduce((sum, s) => sum + (s.networkShows?.length || 0), 0);
+  let processedShows = 0;
+  
+  // Update status in search panel
+  const updateStatus = () => {
+    const percent = Math.round((processedShows / totalShows) * 100);
+    trackIndexProgress = percent;
+    const statusEl = document.getElementById('searchResults');
+    if (statusEl && !trackIndexBuilt) {
+      statusEl.innerHTML = `<div class="search-no-results">Building search index... ${percent}%<br><small>This happens once, then cached locally</small></div>`;
+    }
+  };
+  
+  for (const station of STATIONS) {
+    if (!station.networkShows) continue;
+    
+    const stationGenre = station.cat || '';
+    
+    for (const showId of station.networkShows) {
+      try {
+        const parsed = parseShowIdentifier(showId);
+        const artistText = parsed.artists.join(' ');
+        
+        // Build artist index
+        parsed.artists.forEach(artist => {
+          const artistLower = artist.toLowerCase();
+          if (!artistIndex[artistLower]) {
+            artistIndex[artistLower] = {
+              name: artist,
+              count: 0
+            };
+          }
+          artistIndex[artistLower].count++;
+        });
+        
+        // Fetch tracks from this show
+        const tracks = await fetchFiles(showId);
+        
+        // Add each track to index
+        tracks.forEach(track => {
+          const trackName = track.n || track.u.split('/').pop().replace(/\.[^/.]+$/, "");
+          
+          trackIndex.push({
+            // Track info
+            name: trackName,
+            url: track.u,
+            duration: track.dur,
+            
+            // Show info
+            showId: showId,
+            artists: parsed.artists,
+            albumTitle: parsed.title,
+            
+            // Station info
+            stationName: station.name,
+            stationNum: station.num,
+            stationIndex: STATIONS.indexOf(station),
+            genre: stationGenre,
+            
+            // Searchable text (lowercase for fast matching)
+            searchableArtist: artistText.toLowerCase(),
+            searchableSong: trackName.toLowerCase(),
+            searchableGenre: stationGenre.toLowerCase()
+          });
+        });
+        
+      } catch(e) {
+        // Silently skip shows that fail to load
+        console.warn('Failed to index show:', showId);
+      }
+      
+      processedShows++;
+      if (processedShows % 10 === 0) {
+        updateStatus();
+        // Yield to browser to prevent freezing
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+    }
+  }
+  
+  trackIndexBuilt = true;
+  artistIndexBuilt = true;
+  
+  console.log(`Track index built: ${trackIndex.length} tracks from ${processedShows} shows`);
+  console.log(`Artist index built: ${Object.keys(artistIndex).length} unique artists`);
+  
+  // Save to cache for next time
+  saveIndexToCache();
+  
+  // Clear status message
+  const statusEl = document.getElementById('searchResults');
+  if (statusEl) {
+    statusEl.innerHTML = '<div class="search-no-results">Type to search...</div>';
+  }
+  
+  return trackIndex;
+}
+
+// Start building index after DatPiff loads (3 seconds delay)
+setTimeout(() => {
+  buildCompleteTrackIndex();
+}, 3000);
+
+// Function to manually rebuild the search index
+async function rebuildSearchIndex() {
+  if (!confirm('Rebuild search index?\n\nThis will clear the cache and re-index all tracks.\nThis may take 10-30 seconds.')) {
+    return;
+  }
+  
+  // Clear cache
+  try {
+    localStorage.removeItem(TRACK_INDEX_CACHE_KEY);
+    localStorage.removeItem(ARTIST_INDEX_CACHE_KEY);
+    console.log('Cache cleared');
+  } catch(e) {
+    console.warn('Failed to clear cache:', e);
+  }
+  
+  // Reset flags
+  trackIndexBuilt = false;
+  artistIndexBuilt = false;
+  trackIndex = [];
+  artistIndex = {};
+  
+  // Rebuild
+  await buildCompleteTrackIndex();
+  
+  alert('Search index rebuilt successfully!');
+}
+
+// AUTOCOMPLETE HANDLER
+function handleSearchInput() {
+  const input = document.getElementById('searchInput');
+  const autocomplete = document.getElementById('searchAutocomplete');
+  const query = input.value.toLowerCase().trim();
+  
+  // Hide autocomplete if query is empty
+  if (!query) {
+    autocomplete.classList.remove('show');
+    autocomplete.innerHTML = '';
+    performSearch();
+    return;
+  }
+  
+  // Show artist suggestions
+  const suggestions = [];
+  
+  for (const artistKey in artistIndex) {
+    const artist = artistIndex[artistKey];
+    if (artistKey.startsWith(query) || artistKey.includes(query)) {
+      suggestions.push(artist);
+    }
+  }
+  
+  // Sort by count (most popular first)
+  suggestions.sort((a, b) => b.count - a.count);
+  
+  // Limit to top 8 suggestions
+  const topSuggestions = suggestions.slice(0, 8);
+  
+  if (topSuggestions.length > 0) {
+    autocomplete.innerHTML = topSuggestions.map(artist => `
+      <div class="autocomplete-item" onclick="selectArtist('${artist.name.replace(/'/g, "\\'")}')">
+        <span class="autocomplete-artist">${artist.name}</span>
+        <span class="autocomplete-count">${artist.count} show${artist.count !== 1 ? 's' : ''}</span>
+      </div>
+    `).join('');
+    autocomplete.classList.add('show');
+  } else {
+    autocomplete.classList.remove('show');
+    autocomplete.innerHTML = '';
+  }
+  
+  // Also perform the actual search
+  performSearch();
+}
+
+function selectArtist(artistName) {
+  const input = document.getElementById('searchInput');
+  const autocomplete = document.getElementById('searchAutocomplete');
+  
+  input.value = artistName;
+  autocomplete.classList.remove('show');
+  autocomplete.innerHTML = '';
+  
+  performSearch();
+}
+
+// Close autocomplete when clicking outside
+document.addEventListener('click', (e) => {
+  const autocomplete = document.getElementById('searchAutocomplete');
+  const input = document.getElementById('searchInput');
+  
+  if (autocomplete && input && !autocomplete.contains(e.target) && e.target !== input) {
+    autocomplete.classList.remove('show');
+  }
+});
 
 // STATISTICS SYSTEM
 let listeningStats = {
@@ -4080,101 +4609,78 @@ async function performSearch() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const results = document.getElementById('searchResults');
   
+  // Get selected search parameters
+  const searchArtist = document.getElementById('searchArtist').checked;
+  const searchSong = document.getElementById('searchSong').checked;
+  const searchGenre = document.getElementById('searchGenre').checked;
+  
   if (!query) {
-    results.innerHTML = '<div class="search-no-results">Type to search by artist, song title, or genre...</div>';
+    if (!trackIndexBuilt) {
+      const percent = trackIndexProgress;
+      results.innerHTML = `<div class="search-no-results">Building search index... ${percent}%<br><small>This happens once on page load</small></div>`;
+    } else {
+      results.innerHTML = '<div class="search-no-results">Type to search...</div>';
+    }
     return;
   }
   
-  // Show loading message
-  results.innerHTML = '<div class="search-no-results">Searching artists, songs, and genres...</div>';
+  // Wait for index to build
+  if (!trackIndexBuilt) {
+    results.innerHTML = '<div class="search-no-results">Search index still building...<br><small>Please wait a moment</small></div>';
+    return;
+  }
+  
+  // Check if at least one parameter is selected
+  if (!searchArtist && !searchSong && !searchGenre) {
+    results.innerHTML = '<div class="search-no-results">Please select at least one search parameter</div>';
+    return;
+  }
+  
+  // Show searching message
+  results.innerHTML = '<div class="search-no-results">Searching...</div>';
   
   let searchResults = [];
   
-  // Create search terms - split by spaces for multi-word matching
-  const searchTerms = query.split(/\s+/).filter(term => term.length > 0);
-  
-  // Helper function to check if all search terms match in the text
-  function matchesSearch(text) {
-    const lowerText = text.toLowerCase();
-    // All search terms must be present as whole words or parts of words
-    return searchTerms.every(term => {
-      // Create word boundary regex for more precise matching
-      // Matches if term appears as a complete word or as part of a hyphenated/compound word
-      const regex = new RegExp('\\b' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-      return regex.test(text);
-    });
-  }
-  
-  // Search all stations and load their actual track files
-  if (currentSearchFilter === 'all' || currentSearchFilter === 'stations') {
-    for (const station of STATIONS) {
-      if (!station.networkShows) continue;
-      
-      // Check if searching by genre/category
-      const stationGenre = station.cat || '';
-      const stationNameMatch = matchesSearch(station.name);
-      const genreMatch = matchesSearch(stationGenre);
-      
-      for (const showId of station.networkShows) {
-        // Parse the show identifier
-        const parsed = parseShowIdentifier(showId);
-        const artistText = parsed.artists.join(' ');
-        const albumText = parsed.title;
-        
-        // Check if artist or album matches
-        const artistMatch = matchesSearch(artistText);
-        const albumMatch = matchesSearch(albumText);
-        const showIdMatch = matchesSearch(showId);
-        
-        // If station genre matches OR artist matches OR album matches, load tracks
-        if (genreMatch || stationNameMatch || artistMatch || albumMatch || showIdMatch) {
-          // Fetch actual tracks from this show
-          try {
-            const tracks = await fetchFiles(showId);
-            
-            // Add each track as a searchable result
-            tracks.forEach(track => {
-              const trackName = track.n || '';
-              const trackSearchText = `${trackName} ${artistText} ${albumText} ${stationGenre} ${station.name}`;
-              
-              // Check if the track name itself matches OR if artist/genre matched
-              // This allows finding by: song title, artist, album, or genre
-              if (matchesSearch(trackSearchText) || genreMatch) {
-                searchResults.push({
-                  type: 'station-track',
-                  data: {
-                    name: trackName,
-                    url: track.u,
-                    duration: track.dur,
-                    showId: showId,
-                    stationName: station.name,
-                    stationNum: station.num,
-                    stationIndex: STATIONS.indexOf(station),
-                    artists: parsed.artists,
-                    albumTitle: parsed.title,
-                    genre: stationGenre
-                  }
-                });
-              }
-            });
-          } catch(e) {
-            console.error('Error loading tracks from', showId, e);
-          }
-          
-          // Limit to prevent too many requests
-          if (searchResults.length > 100) break;
-        }
-      }
-      
-      if (searchResults.length > 100) break;
+  // FAST IN-MEMORY SEARCH - No async calls!
+  for (const track of trackIndex) {
+    let matches = false;
+    
+    // Check artist match (simple contains, not word boundary)
+    if (searchArtist && track.searchableArtist.includes(query)) {
+      matches = true;
     }
+    
+    // Check song title match
+    if (searchSong && track.searchableSong.includes(query)) {
+      matches = true;
+    }
+    
+    // Check genre match
+    if (searchGenre && track.searchableGenre.includes(query)) {
+      matches = true;
+    }
+    
+    if (matches) {
+      searchResults.push({
+        type: 'station-track',
+        data: track
+      });
+    }
+    
+    // Limit results
+    if (searchResults.length >= 100) break;
   }
   
-  // Search favorites
+  // Also search favorites (if filter allows)
   if (currentSearchFilter === 'all' || currentSearchFilter === 'favorites') {
     favorites.forEach(track => {
-      const searchText = `${track.name} ${(track.parsedArtists || []).join(' ')} ${track.parsedTitle || ''} ${track.albumShow || ''} ${track.station}`;
-      if (matchesSearch(searchText)) {
+      const artistText = (track.parsedArtists || []).join(' ').toLowerCase();
+      const trackName = (track.name || '').toLowerCase();
+      
+      const artistMatches = searchArtist && artistText.includes(query);
+      const songMatches = searchSong && trackName.includes(query);
+      
+      if (artistMatches || songMatches) {
         searchResults.push({
           type: 'favorite',
           data: track
@@ -4186,16 +4692,21 @@ async function performSearch() {
   // Search playlists
   if (currentSearchFilter === 'all' || currentSearchFilter === 'playlists') {
     Object.values(playlists).forEach(playlist => {
-      if (matchesSearch(playlist.name)) {
+      if (playlist.name.toLowerCase().includes(query)) {
         searchResults.push({
           type: 'playlist',
           data: playlist
         });
       }
-      // Also search tracks within playlists
+      // Search tracks within playlists
       playlist.tracks.forEach(track => {
-        const searchText = `${track.name} ${(track.parsedArtists || []).join(' ')} ${track.parsedTitle || ''} ${track.albumShow || ''} ${track.station}`;
-        if (matchesSearch(searchText)) {
+        const artistText = (track.parsedArtists || []).join(' ').toLowerCase();
+        const trackName = (track.name || '').toLowerCase();
+        
+        const artistMatches = searchArtist && artistText.includes(query);
+        const songMatches = searchSong && trackName.includes(query);
+        
+        if (artistMatches || songMatches) {
           searchResults.push({
             type: 'playlist-track',
             data: track,
@@ -4209,8 +4720,13 @@ async function performSearch() {
   // Search history
   if (currentSearchFilter === 'all' || currentSearchFilter === 'history') {
     playHistory.forEach(track => {
-      const searchText = `${track.name} ${(track.parsedArtists || []).join(' ')} ${track.parsedTitle || ''} ${track.albumShow || ''} ${track.station}`;
-      if (matchesSearch(searchText)) {
+      const artistText = (track.parsedArtists || []).join(' ').toLowerCase();
+      const trackName = (track.name || '').toLowerCase();
+      
+      const artistMatches = searchArtist && artistText.includes(query);
+      const songMatches = searchSong && trackName.includes(query);
+      
+      if (artistMatches || songMatches) {
         searchResults.push({
           type: 'history',
           data: track
@@ -4228,12 +4744,9 @@ async function performSearch() {
     return true;
   });
   
-  // Limit results to prevent lag
-  searchResults = searchResults.slice(0, 100);
-  
   // Render results
   if (searchResults.length === 0) {
-    results.innerHTML = '<div class="search-no-results">No results found for "' + query + '"<br><br>Try searching by:<br>• Artist name (lil wayne, drake)<br>• Song title (a milli, hotline bling)<br>• Genre (rock, electronic, rap)</div>';
+    results.innerHTML = '<div class="search-no-results">No results found for "' + query + '"</div>';
     return;
   }
   
@@ -4244,13 +4757,12 @@ async function performSearch() {
     item.className = 'search-result-item';
     
     if (result.type === 'station-track') {
-      // Actual track from station
+      // Track from index
       let artistDisplay = '';
       if (result.data.artists && result.data.artists.length > 0) {
         artistDisplay = `<div class="search-result-info" style="color:var(--ch-color); font-weight:600; margin-bottom:2px;">🎤 ${result.data.artists.join(', ')}</div>`;
       }
       
-      // Add genre badge if available
       let genreBadge = '';
       if (result.data.genre) {
         genreBadge = `<span style="background:var(--btn-bg); border:1px solid var(--btn-border); padding:2px 8px; border-radius:10px; font-size:10px; margin-left:8px;">${result.data.genre}</span>`;
@@ -4267,13 +4779,12 @@ async function performSearch() {
         toggleSearch();
       };
     } else {
-      // Build artist display for tracks
+      // Favorites/playlists/history
       let artistDisplay = '';
       if (result.data.parsedArtists && result.data.parsedArtists.length > 0) {
         artistDisplay = `<div class="search-result-info" style="color:var(--ch-color); font-weight:600; margin-bottom:2px;">🎤 ${result.data.parsedArtists.join(', ')}</div>`;
       }
       
-      // Show album/show info
       const albumInfo = result.data.parsedTitle || result.data.albumShow;
       const albumDisplay = albumInfo ? `<div class="search-result-info" style="font-size:11px; opacity:0.7;">📀 ${albumInfo}</div>` : '';
       
@@ -4325,11 +4836,11 @@ async function performSearch() {
     results.appendChild(item);
   });
   
-  // Add helpful message
+  // Add count
   if (searchResults.length > 0) {
     const hint = document.createElement('div');
     hint.style.cssText = 'text-align:center; padding:15px; color:var(--cnt-color); opacity:0.6; font-size:12px; font-family:Rajdhani,sans-serif;';
-    hint.textContent = `Showing ${searchResults.length} results. Click any track to play in OFFLINE mode.`;
+    hint.textContent = `Found ${searchResults.length} result${searchResults.length !== 1 ? 's' : ''}`;
     results.appendChild(hint);
   }
 }
@@ -4841,21 +5352,6 @@ playSync = function() {
   originalPlaySync();
 };
 
-// BASIC VERSION: Stub functions for removed features
-function toggleFavorite() {}
-function showAddToPlaylist() {}
-function addToQueue() {}
-function toggleQueue() {}
-function toggleLibrary() {}
-function toggleSearch() {}
-function toggleParty() {}
-function performSearch() {}
-function setSearchFilter() {}
-function createParty() {}
-function showJoinParty() {}
-function clearQueue() {}
-function updateQueueDisplay() {}
-function onTrackChange() {}
 
 </script>
 </body>
