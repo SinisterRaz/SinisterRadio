@@ -5844,6 +5844,126 @@ input[type="range"]::-moz-range-thumb{
 }
 
 
+/* =======================================================
+   JUGGALO - Dark Carnival Theme
+   ======================================================= */
+:root.juggalo{
+  --bg:#050000;--frame:#120004;
+  --brand-bg:linear-gradient(135deg,#1a0002 0%,#2d0005 40%,#1a0002 100%);
+  --brand-border:#cc0008;
+  --logo-color:#cc0008;--logo-glow:rgba(204,0,8,0.9);
+  --np-color:#ff4444;--ch-color:#cc0008;--ch-glow:rgba(204,0,8,1);
+  --btn-bg:linear-gradient(145deg,#120004,#050000);--btn-border:#880004;--btn-color:#cc0008;
+  --cnt-color:#884444;--gc-bg:#050000;--gc-border:#120004;
+}
+
+:root.juggalo body{
+  background:
+    repeating-linear-gradient(-45deg,transparent 0px,transparent 22px,rgba(180,0,6,0.06) 22px,rgba(180,0,6,0.06) 44px),
+    radial-gradient(ellipse 60% 20% at 50% 0%,rgba(204,0,8,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 30% at 50% 110%,rgba(150,0,4,0.18) 0%,transparent 60%),
+    radial-gradient(ellipse 30% 100% at 0% 50%,rgba(0,0,0,0.7) 0%,transparent 70%),
+    radial-gradient(ellipse 30% 100% at 100% 50%,rgba(0,0,0,0.7) 0%,transparent 70%),
+    linear-gradient(180deg,#030000 0%,#050000 50%,#020000 100%);
+  animation:carnivalPulse 8s ease-in-out infinite;
+}
+@keyframes carnivalPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.04) saturate(1.1);}}
+
+:root.juggalo .radio{
+  background:
+    repeating-linear-gradient(-45deg,transparent 0,transparent 18px,rgba(180,0,6,0.04) 18px,rgba(180,0,6,0.04) 36px),
+    linear-gradient(160deg,#0d0002,#050000);
+  border:1px solid rgba(204,0,8,0.22);
+  border-top:2px solid rgba(220,0,10,0.5);
+  border-radius:8px;
+  box-shadow:-4px -4px 14px rgba(204,0,8,0.07),5px 5px 22px rgba(0,0,0,0.98),inset 0 1px 0 rgba(255,60,60,0.12),0 0 60px rgba(180,0,6,0.06);
+  position:relative;overflow:hidden;
+}
+:root.juggalo .radio::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:6px;
+  background:repeating-linear-gradient(90deg,transparent 0px,transparent 30px,#cc0008 30px,#cc0008 32px,transparent 32px,transparent 55px,#880004 55px,#880004 57px,transparent 57px,transparent 90px,#cc0008 90px,#cc0008 93px,transparent 93px,transparent 120px);
+  pointer-events:none;z-index:10;
+}
+:root.juggalo .radio::after{
+  content:'';position:absolute;top:6px;left:0;right:0;height:20px;
+  background:radial-gradient(ellipse 4px 14px at 31px 0,#cc0008 60%,transparent 100%),radial-gradient(ellipse 3px 10px at 56px 0,#880004 60%,transparent 100%),radial-gradient(ellipse 5px 16px at 91px 0,#cc0008 60%,transparent 100%),radial-gradient(ellipse 4px 14px at 310px 0,#cc0008 60%,transparent 100%),radial-gradient(ellipse 3px 11px at 420px 0,#880004 60%,transparent 100%),radial-gradient(ellipse 5px 15px at 510px 0,#cc0008 60%,transparent 100%);
+  pointer-events:none;z-index:10;
+}
+
+:root.juggalo .brand{
+  position:relative;overflow:hidden;
+  background:repeating-linear-gradient(-45deg,transparent 0,transparent 14px,rgba(180,0,6,0.08) 14px,rgba(180,0,6,0.08) 28px),linear-gradient(135deg,#0a0001 0%,#1a0003 40%,#0a0001 100%) !important;
+  border:1px solid rgba(204,0,8,0.38) !important;
+  border-top:2px solid rgba(220,0,10,0.65) !important;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.9),0 0 30px rgba(180,0,6,0.12);
+}
+:root.juggalo .brand::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 0%,rgba(204,0,8,0.06) 38%,rgba(255,40,40,0.18) 50%,rgba(204,0,8,0.06) 62%,transparent 100%);
+  transform:translateX(-120%);animation:carnivalSpotlight 7s ease-in-out infinite;pointer-events:none;z-index:1;
+}
+@keyframes carnivalSpotlight{0%{transform:translateX(-120%);opacity:0;}6%{opacity:1;}44%{transform:translateX(160%);opacity:1;}50%{opacity:0;}100%{transform:translateX(160%);opacity:0;}}
+
+:root.juggalo .display{
+  border:1px solid rgba(204,0,8,0.28) !important;
+  border-top:2px solid rgba(220,0,10,0.55) !important;
+  box-shadow:inset 4px 4px 16px rgba(0,0,0,0.98),inset -1px -1px 4px rgba(204,0,8,0.05),0 0 22px rgba(180,0,6,0.12),0 0 2px rgba(220,0,10,0.45);
+}
+:root.juggalo .display::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(204,0,8,0.025) 3px,rgba(204,0,8,0.025) 4px);
+  pointer-events:none;z-index:4;
+}
+
+:root.juggalo .logo{
+  font-family:'Black Ops One',cursive !important;
+  font-size:22px !important;letter-spacing:4px;text-transform:uppercase;
+  background:linear-gradient(180deg,#ff6666 0%,#cc0008 35%,#880004 55%,#cc0008 75%,#ff6666 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 16px rgba(204,0,8,0.95)) drop-shadow(0 0 35px rgba(180,0,6,0.6)) drop-shadow(0 3px 8px rgba(0,0,0,1));
+  animation:hatchetGlow 5s ease-in-out infinite;
+}
+@keyframes hatchetGlow{
+  0%,100%{filter:drop-shadow(0 0 16px rgba(204,0,8,0.95)) drop-shadow(0 0 35px rgba(180,0,6,0.6)) drop-shadow(0 3px 8px rgba(0,0,0,1));}
+  45%{filter:drop-shadow(0 0 26px rgba(255,40,40,1)) drop-shadow(0 0 55px rgba(204,0,8,0.95)) drop-shadow(0 0 80px rgba(180,0,6,0.5)) drop-shadow(0 3px 10px rgba(0,0,0,1));}
+  47%{filter:drop-shadow(0 0 8px rgba(204,0,8,0.4)) drop-shadow(0 3px 8px rgba(0,0,0,1));}
+  49%{filter:drop-shadow(0 0 26px rgba(255,40,40,1)) drop-shadow(0 0 55px rgba(204,0,8,0.95)) drop-shadow(0 3px 10px rgba(0,0,0,1));}
+}
+
+:root.juggalo .dial-container{
+  background:linear-gradient(180deg,rgba(180,0,6,0.06) 0%,rgba(0,0,0,0.5) 100%);
+  border:1px solid rgba(204,0,8,0.18);border-top:1px solid rgba(220,0,10,0.32);
+  border-radius:8px;padding:12px 16px;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.8),0 0 16px rgba(180,0,6,0.07);margin-bottom:20px;
+}
+:root.juggalo .volume{
+  background:linear-gradient(180deg,rgba(180,0,6,0.05) 0%,rgba(0,0,0,0.4) 100%);
+  border:1px solid rgba(204,0,8,0.15);border-top:1px solid rgba(220,0,10,0.28);
+  border-radius:8px;padding:12px 16px;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.7),0 0 12px rgba(180,0,6,0.06);
+}
+
+:root.juggalo #num{font-family:'Orbitron',sans-serif;font-weight:900;color:#cc0008;text-shadow:0 0 8px rgba(204,0,8,0.9),0 0 20px rgba(204,0,8,0.6),0 0 2px rgba(255,255,255,0.6);letter-spacing:2px;}
+:root.juggalo #name{text-shadow:0 0 10px rgba(204,0,8,0.5),0 1px 3px rgba(0,0,0,0.9);}
+:root.juggalo #now-playing{text-shadow:0 0 6px rgba(204,0,8,0.4),0 1px 2px rgba(0,0,0,0.9);}
+:root.juggalo .vis-bar{box-shadow:0 0 6px rgba(204,0,8,0.8),0 0 14px rgba(180,0,6,0.4) !important;border-radius:2px 2px 0 0;}
+
+:root.juggalo button{
+  background:linear-gradient(160deg,#0d0002,#050000) !important;
+  border:1px solid rgba(136,0,4,0.42) !important;
+  position:relative;overflow:hidden;transition:all 0.3s ease;
+}
+:root.juggalo button::before{
+  content:'';position:absolute;top:0;left:-120%;width:55%;height:100%;
+  background:linear-gradient(105deg,transparent 0%,rgba(204,0,8,0.08) 35%,rgba(255,40,40,0.22) 50%,rgba(204,0,8,0.08) 65%,transparent 100%);
+  pointer-events:none;transition:left 0.5s ease;
+}
+:root.juggalo button:hover{border-color:rgba(204,0,8,0.7) !important;box-shadow:0 0 25px rgba(204,0,8,0.55),0 0 50px rgba(180,0,6,0.25),0 4px 16px rgba(0,0,0,0.95) !important;transform:translateY(-1px);}
+:root.juggalo button:hover::before{left:150%;}
+:root.juggalo #liveBtn.active{animation:juggaloBeacon 1.5s ease-in-out infinite !important;}
+@keyframes juggaloBeacon{0%,100%{box-shadow:0 0 12px rgba(204,0,8,0.6),0 0 25px rgba(180,0,6,0.3);}50%{box-shadow:0 0 25px rgba(255,40,40,1),0 0 50px rgba(204,0,8,0.7);}}
+
+
 </style>
 </head>
 <body>
@@ -6219,18 +6339,25 @@ input[type="range"]::-moz-range-thumb{
         <span class="theme-icon">⚡</span>
         <span class="theme-name">Balenciaga Couture Brutale</span>
       </button>
+
+      <div class="theme-category">🪓 DARK CARNIVAL</div>
+      <button class="theme-btn" onclick="changeTheme('juggalo')">
+        <span class="theme-icon">🪓</span>
+        <span class="theme-name">Juggalo Dark Carnival</span>
+      </button>
     </div>
   </div>
 
   <div class="dial-container">
     <div class="dial-label">STATION TUNER</div>
     <div class="station-display" id="station-display">950 - 🔥 Classic Rap Radio</div>
-    <input type="range" id="dial" min="0" max="19" value="0" class="dial-slider">
+    <input type="range" id="dial" min="0" max="21" value="0" class="dial-slider">
     <div class="dial-markers">
       <span>950</span>
       <span>955</span>
       <span>960</span>
       <span>966</span>
+      <span>971</span>
     </div>
   </div>
 
@@ -6249,7 +6376,7 @@ const STATIONS = [
   {num:953, name:"🎤 Hip Hop Classics", cat:"Music", master:true, networkShows:["DJ_Green_Lantern_and_Don_Cannon_Present_B.o.B._-_B.o.B._Vs._Bobby_Ray_No_DJ_Versi","DJ_Green_Lantern_-_Master_Class-2011","Suge_White_Presents_Jadakiss_and_Styles_P_-_Brothers-2012","Royce_Da_59-Bar_Exam_2_Mixed_By_DJ_Green_Lantern-2008","Nature-N-Noreaga_-_Queensbridge_2_Lefrak-2008","VA-DJ_Hood_and_DJ_Whiteowl_-_Kiss_That_Ass_Goodbye_Pt._1","DJ_Green_Lantern_And_Jay-Z_-_Creative_Control-2010","DJ_007_and_Jim_Jones-Pray_For_A_HustlaBootleg2010-","VA-DJ_Green_Lantern_-_Invasion_Radio_2K10-2010","the-champ-is-here-jadakiss","Capone-N-Noreaga_and_DJ_Green_Lantern-_Camouflage_Season-2010","VA-DJ_Holiday__DJ_Kutt_Throat_and_DJ_Green_Lantern_-_BET_Hip_Hop_Awards_2010_Invas","VA-DJ_Green_Lantern-I_Produced_That-Bootleg-2007_Bootleg_mixfiend","VA-DJ_Big_Mike_-_Soundtrack_To_The_Streets_2K20_Pt._3-2020","DJ_Mystery_-_L.O.X._Classics-2021","Kodak_Black_-_Unreleased-2016","01-rhymin-stealin","me-against-the-world_202510","stankonia_202511","1993-wu-tang-clan-enter-the-wu-tang-36-chambers","Boss_Hogg_Outlawz_-_Still_On_Da_Grind_2K10_2CD-2010","likefatherlikeson_202403","bad-vibes-forever_202409","liquid-swords-gza-wu-tang","doctors-advocate_202406","curtis_20240624","the-inspiration","Lil_Wayne_and_DJ_Drama_-_Dedication_5-2013","exclusive_202405","kings-of-crunk","timbaland-presents-shock-value","rolling-papers","bobs-04.-ms.-fat-booty","thug-pound-_-thug-pound_202501","the-infamous-mobb-deep_202409","the-blue-carpet-treatment","11.-emerica-feat.-young-life-and-chink-santana_202401","VA-Striclty_4_Traps_N_Trunks_Christmas_2022_Edition-2022","VA-DJ_S.R._-_Arrogant_Music_51-2022","VA-DJ_Triple_Exe-The_Passion_Of_RandB_152","VA-DJ_S.R._-_Good_Muziikk_19-2022","VA-DJ_S.R._-_Faloos_15-2022","VA-DJ_S.R._-_Dont_Kill_Our_Vibe_14-2022","VA-DJ_S.R._and_DJ_Spinatik_-_History_In_The_Making_53-2022","VA-Strictly_4_The_Traps_N_Trunks_Halloween_Edition_2022-2022","VA-DJ_S.R._-_Backwood_Music_28-2022","VA-DJ_S.R._-_No_Friends_In_The_Industry_12-2022","VA-DJ_Slim_K__OG_Ron_C_and_The_Chopstars_-_Chop_Apocalypse_X-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_65-2022","VA-DJ_Red_Skull_and_DJ_ASAP_-_Sex_and_Hip-Hop-2022","VA-DJ_Red_Skull_and_DJ_ASAP_-_Trap_Club_Music_2-2022","VA-DJ_Ben_Frank_-_Only_For_The_Plugs_32-2022","VA-Strictly_4_The_Traps_N_Trunks_182-2022","VA-DJ_Trigga_-_New_World_Order_2-2022","VA-DJ_Tokars_-_Street_Sorority-2022","VA-DJ_S.R._-_Street_imoney_41-2022","VA-DJ_S.R._-_Faloos_14-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_64-2022","VA-DJ_Konvict_-_Texas_Street_Kings_and_Queens_8-2022","VA-DJ_Immature_-_Ratchet_Azz_Friends-2022","VA-DJ_E-Dub_-_Takeoff_Season_12-2022","VA-Strictly_4_The_Traps_N_Trunks_Real_Radio_Edition_Pt._2-2022","VA-DJ_S.R._-_Only_Good_Vibes_32-2022","VA-DJ_S.R._-_History_In_The_Making_51-2022","VA-DJ_S.R._-_Backwood_Music_27-2022","VA-DJ_S.R._-_No_Friends_In_The_Industry_10-2022","VA-DJ_Konvict_-_Trap_Bangers_5-2022","VA-Strictly_4_The_Traps_N_Trunks_long_Live_Trouble_Edition-2022","VA-DJ_S.R._-_No_Foreplay_Needed_7-2022","VA-DJ_S.R._-_Faloos_12-2022","VA-Strictly_4_The_Traps_N_Trunks_180-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_63-2022","VA-Strictly_4_The_Traps_N_Trunks_Dopeboy_Edition_Pt._2-2022","VA-Strictly_4_The_Traps_N_Trunks_Memorial_Day_2022-2022","VA-Strictly_4_The_Traps_N_Trunks_179-2022","VA-DJ_S.R._-_Only_Good_Vibes_30-2022","VA-DJ_S.R._-_Smooth_Operator_9-2022","VA-DJ_S.R._-_Faloos_11-2022","VA-DJ_S.R._-_Dont_Kill_Our_Vibe_9-2022","VA-DJ_S.R._-_Backwood_Music_26-2022","VA-DJ_Smooth_Montana_-_Teflon_Don_40-2022","VA-DJ_Smooth_Montana_-_Back_On_My_Shit_62-2022","VA-DJ_Konvict_-_Plug_4-2022","VA-DJ_Kenny_Mac_-_Trappin_After_Dark_25-2022","VA-DJ_DES_-_The_Block_Never_Sleeps_187-2022","VA-DJ_Cinemax_-_Take_Risks_And_Prosper-2022","VA-Strictly_4_The_Traps_N_Trunks_420_Edition-2022","VA-DJ_S.R._-_Arrogant_Music_46-2022","VA-DJ_Mellz_-_March_Madness_2K22-2022","Kevin_Gates_-_Arm_and_Hammer-2016","Kevin_Gates_-_Bismillah-2017","YFN_Lucci_-_Wish_Me_Well_2-2016","Lil_Boosie_Lil-Boosie-Ana_Best_of_Boosie","Young_Thug_and_Migos_-_Migos_Thuggin-2015","VA-DJ_New_Era_-_Mood_Musiq_14-2016","Kevin_Gates_-_Gold_Paradise-2017","Lil_Uzi_Vert_-_Luv_Is_Rage_1.5-2017","Kodak_Black_-_Lil_B-I-G-_Pac-2016","Yelawolf_-_Trunk_Muzik_Returns","NBA_Young_Boy_-_Never_Broke_Again_Untouchable-2017","Drake_Vs._Tory_Lanez","Kodak_Black_-_Project_Baby_2-2017","Lil_Uzi_Vert_-_The_Rare_Uzi-2016","VA-DJ_Cortez__DJ_Wats_and_DJ_Suspence_-_Codeine_Overdose_Vol._5-2016","VA-DJ_Slick10_and_2Pair_Tate_-_Winter_Classic_2K16-2016","VA-DJ_Diggz_and_DJ_Arab_-_Press_Play_3-2016","VA-DJ_S.R._-_Arrogant_Music_10-2016","VA-DJ_Amanda_Blaze_-_Flee_God_South_Trap_Miami_2-2015","VA-DJ_Whiteowl_-_Whiteowl_Drop_That_249-2015"], avgDur:2400},
   {num:954, name:"🎸 Classic Rock Radio", cat:"Music", master:true, networkShows:["METEORA20","linkinparkhybridtheory_202007","led-zeppelin_202510","abbey-road_202512","1973-pink-floyd-the-dark-side-of-the-moon","nirvana-in-utero_20250729","nevermind_202410","pearl-jam_202510","1963-the-beatles-please-please-me"], avgDur:2400},
   {num:955, name:"🕺 Funk & Soul Radio", cat:"Music", master:true, networkShows:["beegeeshereatlast","bad_20260113","prince_20251023","bob_marley_catch_the-1995-mfsl"], avgDur:2400},
-  {num:956, name:"🎛️ Electronic Radio", cat:"Music", master:true, networkShows:["daft-punk-random-access-memories-2013","daft-punk-discovery-2001","kraftwerk_202511","the-prodigy_202509","massive-attack_202509","moby_202511"], avgDur:2400},
+  {num:956, name:"🎛️ Electronic Radio", cat:"Music", master:true, networkShows:["daft-punk-random-access-memories-2013","daft-punk-discovery-2001","kraftwerk_202511","the-prodigy_202509","massive-attack_202509","moby_202511","va_-_spiritual_cyberbeatz_psydg003","va_-_sound_of_the_future2_psydg005","va_-_sound_of_the_future_psydg001","va_digital_reminder_psydg009","goawizzard_-_psyexperimental-psydg002","va_-_world_connection_psydg004","va_psy-voyages_psydg007","Subivk_DreamADream_EP_psydg007a","va_-_spiritual_cyberbeatz2_psydg006","va_sound_waves_psydg008_201506","va_space_inhabitant_psydg010a","sun-tribe-synthspace-electronic","Music_For_The_Jilted_Generation-6303","soundcloud-345298357","soundcloud-345296074","soundcloud-344431273","soundcloud-344443549","toulp8","va-halloween-2017-opus-128","Idmf009TechnominimaldeepHouseCompilation","Idmf007Continuum","Va-KarmatonicVol.1promoRelease2012","strict-classix-vol.-01-60","trance-in-motion-vol-1-300","vocal-trance-collection-vol.-1-140","physical-dreams-discography","trance-mission-fantasy","va-dream-dance-best-of-25-years-2021","promising-trance-cosmic-party-2018","dream-trance-the-future-is-now-2018","spacesynth-italodisco-world","italo-space-51-75","italo-space-26-50","gt-vs-project-c-voices-of-trance-101-135","dream-dance-party-2021","physical-dreams-dreams-trance-vol.1-3-2017","beautiful-vocal-trance-progressive-2020","edm-rave-dance-2019-top-100-hits-psy-goa-trance-house-dubstep-bass-trap-techno"], avgDur:2400},
   {num:957, name:"🥁 Drum & Bass Radio", cat:"Music", master:true, networkShows:["rz100","good_looking_records-vinyl-eps","wipeoutost","wieput_fusion_soundtrack-2002","jamendo-188268","the-art-of-noise-the-drum-and-bass-collection-1996","Sniper_-_Drum_and_Bass","soundcloud-895968703","classic-drum-and-bass-mix-2004-2006","tkset009","djfez_mixes_8189","gein-14-years-of-jungle-syndicate-gein-best-drum-and-bass","chilled-drum-and-bass","djfez_mixes_4914","djfez_mixes_10436","jamendo-308176","AndyCPendulumInnovationDrumAndBassCarnival29","djfez_mixes_1141","djfez_mixes_532","djfez_mixes_1012","DNALOUNGE-2021-04-03c","One_Nation_-_United_States_of_Drum_and_Bass_II_-_1998","One_Nation_-_United_States_Of_Drum_N_Bass_30.5.97","ultimate-drum-n-bass-1997","a-sides-illusions","goldie-saturnz-return-cd2-saturn-1998","trans-central-connection-ii-cd2-mixed-by-dj-addiction-1998","neil-trix-ft.-b.-c.-2-sixth-sense","omni-trio-the-haunted-science-1996","omnitrio-breakbeatetiquettenubirth2000","lookingback12000","ronisizereprazent-inthemode2000","djhype-junglemassivecd22000","dj-dara-from-here-to-there-2000","aphrodite-project22000","ronisize-onpointlbreaks2000","roni-size-roni-size-remixes-1995","ganja-bass-2-2000","ganja-bass-4-ganja-bass-compilations-ganja-bass-4-2000","aphrodite-recuts32000","dieselboy-patriotgamesep2000","badcompanyuk-digitalnation2000","pointsintime0092000","ltjbukem-progressionsessionsvol.5cd12000","fabriclive18andycdjhype2004","blacksunempire-drivinginsanecd12004","technicalitch-raisedbyevildemon2006","tc-evolution2007","piratestation662007","limewax-empireepwiththepanacea2007","technicalitch-thediageneep2003","ramrecords15x152007","dieselboy-substancedcd2-unmixed2008","killahmadison-deadspeech2008","nextlevel2mixedbydjfrictioncd22006","fabriclive03djhype2002","waxdoctor-cruisecontrolep2000","therapysession7mixedbypanacea2008","omni-trio-music-for-the-next-millenium-1995","roni-size-reprazent-new-forms-1997","omni-trio-skeleton-keys-1997","moving-shadow-98.1-mixed-by-rob-playford-1998","drumfunk-hooliganz-cd2-mixed-by-ez-rollers-1998","goldie-timeless-cd2-1995","full-force-cd2-1997","innovation-the-album-cd2","dj-roger-more-more-drum-more-bass","drumbassessentialscd22005","drumbassessentialscd12005","metalheadz-platinum-breakz-2-1997","jonny-l-moving-thru-air-optical-remix","metalheadz-platinum-breakz-1-1996","grooverider-mysteries-of-funk-1998https","ltj-bukem-presents-earth-volume-three-1998","ltj-bukem-presents-earth-volume-one-1996","drumfunkhooliganz2cd12000","subbase-sampler-1996","artcore-4-drum-bass-beat-technology-cd2-1997","the-different-colours-of-drum-n-bass-d1-1997","atmospheric-drum-bass-vol.-ii-cd1-1997","artcore-3-expressions-in-drum-bass-1997","soundcloud-462718026","soundcloud-209794646","jamendo-043683","ct_One_Nation_United_States_Of_Drum_N_Bass_30.5.97","mashup_ToToM_2008-Bootleg_is_Resistance_Vol_II-FLAC","mashup_Zamali_Motown_Compilation","Forgotten_Hits","hiphopmixtapes"], avgDur:2400},
   {num:958, name:"📼 80s Hits Radio", cat:"Music", master:true, networkShows:["te_20230213","wave-goodbye-to-the-80s"], avgDur:2400},
   {num:959, name:"🕺 EuroDance Radio", cat:"Music", master:true, networkShows:["90s-eurodance-part-ii-compiled-by-electro75-2018"], avgDur:2400},
@@ -6262,7 +6389,9 @@ const STATIONS = [
   {num:966, name:"💿 Funkmaster Flex Radio", cat:"Music", master:true, networkShows:["VA-Funkmaster_Flex_-_Who_You_Mad_At_Me_Or_Yourself-2013","funkmaster-flex-hot-97-2002-side-b","FunkmasterFlex-19940709","ChuckChilloutShow-199008","FunkmasterFlex-BestOf1995-199512","ChuckChilloutShow-April1990","funkmaster-flex-hot-97-4-9-04","FunkmasterFlex-199709","FunkmasterFlex-FridayNightStreetJams-Hot97-19930130","FunkmasterFlexPeteRockHot971994","ChuckChilloutShow-withFunkmasterFlex-1989","funkmaster-flex-friday-night-street-jam-hot-97-9-26-97","funkmaster-flex-friday-night-street-jam-hot-97-7-19-96","funkmaster-flex-radio-1-rap-exchange-w-fat-joe-big-pun-flipmode-squad-missy-elli","funkmaster-flex-saturday-night-street-jam-hot-97-7-4-98","Funkmaster_Flex_-_Special_Delivery_3","Funkmaster_Flex_and_Roc-A-Fella_Presents_-_Live_Hot_97_Freestyles_Hosted_By_Jay-Z","FunkmasterFlexHot97StreetJams-19950728","djrizhot97streetjams1994"], avgDur:2400},
   {num:967, name:"🔥 Reggaeton Radio", cat:"Reggaeton", master:true, networkShows:["bad-bunny-x100pre","ozuna-aura","j-balvin-vibras","daddy-yankee-barrio-fino","don-omar-king-of-kings","wisin-yandel-los-extraterrestres","maluma-pretty-boy-dirty-boy","nicky-jam-fenix","anuel-aa-real-hasta-la-muerte","karol-g-unstoppable","rauw-alejandro-vice-versa","myke-towers-lyke-mike","plan-b-house-of-pleasure","zion-lennox-motivando-a-la-yal","tego-calderon-el-abayarde","ivy-queen-diva","calle-13-los-de-atras-vienen-conmigo"], avgDur:2400},
   {num:968, name:"🔌 The Plug Radio", cat:"Music", master:true, networkShows:["acid-rap","coloring-book-chance","10-d-13.-prom-night","sm-1-01.-no-advance","21-savage-slaughter-tape","21-savage-slaughter-king_202411","slaughter-tape-21-savage","Moneybagg_Yo__NBA_YoungBoy_-_Fed_Babys_2-2020","NBA_YoungBoy_-_38_Baby_3-2020","NLE_Choppa_-_Top_Shotta-2020","VA-Strictly_4_The_Traps_N_Trunks_Long_Live_King_Von_Edition-2021","Yungeen_Ace_-_Life_Of_Betrayal-2018","VA-Strictly_4_The_Traps_N_Trunks_4th_Of_July_2021_Edition-2021","VA-DJ_Spinatik_-_Fuck_Yo_Playlist_3-2021","NLE_Choppa_-_Me_vs_Me-2022","King_Von_-_What_It_Means_To_Be_King-2022","Only_The_Family_-_Lil_Durk_Presents_Loyal_Bros-2021","Lil_Durk_-_Only_The_Family_Involved_2-2018","Lil_Durk_-_Only_The_Family_Involved_Vol.1-2018","DJ_Drama_and_Lil_Durk_-_Signed_To_The_Streets-2013","DJ_Drama_and_Don_Cannon_Present_Lil_Durk_-_Signed_To_The_Streets_2-2014","DJ_Drama_Presents_Nipsey_Hussle_-_Crenshaw-2013","Nipsey_Hussle_and_DJ_Drama_-_Mailbox_Money-2015","Nipsey_Hussle_-_Slauson_Boy_2-2016","Tory_Lanez_-_The_New_Toronto_2-2016","Tory_Lanez_-_Chixtape_4-2016","Tory_Lanez_-_Chixtape_2-2014","Tory_Lanez_-_Daystar-2020","Tory_Lanez_-_Sincerely_Tory-2012","Tory_Lanez_-_Mr._Peterson_Hosted_By_DJ_Ill_Will_and_DJ_Rockstar-2011","Drake_Vs._Tory_Lanez","Tory_Lanez_-_Swavey-2011","Tory_Lanez_-_Sorry_4_What-2022","Young_Thug_-_See_You-2016","Young_Dolph_and_Key_Glock_-_Dum_and_Dummer_2-2021","Young_Dolph_and_Key_Glock_-_Dum_and_Dummer-2019","Young_Dolph_-_High_Class_Street_Music_4_American_Gangster_Hosted_By_DJ_Scream","Young_Dolph_-_High_Class_Street_Music_5_The_Plug_Best_Friend-2015","Young_Dolph_-_High_Class_Street_Music_3_Trappin_Out_A_Mansion-2013","Young_Dolph_-_High_Class_Street_Music_5_The_Plug_Best_Friend","DJ_Scream_and_Young_Dolph_-_Blue_Magic-2012","tha-tour-1-rich-gang","Young_Dolph_-_Everything_Back-2017","Lil_Uzi_Vert_-_Lil_1600-2017","Lil_Uzi_Vert_-_The_Rare_Uzi-2016","Lil_Uzi_Vert_-_Luv_Is_Rage_1.5-2017","Lil_Uzi_Vert_-_2_Luv_Is_2_Rage-2017","lil-uzi-vs-the-world","Lil_Uzi_Vert_-_Lil_Uzi_Rules_The_World-2017","Young_Dolph_-_Hustler_Musik","Young_Dolph_-_16_Zips-2015","Key_Glock_-_Glock_Bond-2018","Key_Glock_-_Glockoma-2018","Key_Glock_-_Yellow_Tape_2-2021","Young_Nudy_-_Slimerre-2019","Hoodrich_Keem_and_DJ_Scream_Present_Young_Nudy_-_Slime_Ball_2-2017","Lil_Bibby_-_Free_Crack_Hosted_By_DJ_Scream-2013","Key_Glock_-_Glock_Season-2017","Kodak_Black_-_Institution-2015","Kodak_Black_-_Unreleased-2016","Kodak_Black_-_I_Remember-2016","Kodak_Black_-_Painting_Pictures_2-2017","Kodak_Black_-_Project_Baby_2-2017","Kodak_Black_-_Orange_Is_The_New_Black-2017","Kevin_Gates_-_Bismillah-2017","Kevin_Gates_-_Unreleased-2016","Kevin_Gates_-_Dont_Know-2016","Kevin_Gates_-_Truth_Be_Told-2017","Kevin_Gates_-_Gold_Paradise-2017","Kevin_Gates_-_Arm_and_Hammer-2016","Kodak_Black_and_Plies_-_F.E.M.A.-2017","Kodak_Black_-_Lil_B-I-G-_Pac-2016","Young_Thug_and_Migos_-_Migos_Thuggin-2015","21_Savage_-_Issa_Savage-2017","DJ_Drama_and_Don_Cannon_Present_Lil_Reese_-_Dont_Like-2012","Roddy_Ricch_-_Feed_Tha_Streets_2-2018","NBA_Youngboy_-_Slime_Mentality-2020","Quando_Rondo_-_Before_My_Time_Up-2020","NBA_Youngboy_-_Thug_Holiday-2018","Moneybagg_Yo_-_Indicted-2018","Moneybagg_Yo_-_Walker_Holmes-2019","Migos_-_3_Way_EP-2016","NBA_Young_Boy_-_Never_Broke_Again_Untouchable-2017","NBA_YoungBoy_-_Unreleased_38_Baby_Edition-2019","21-savage-free-guwop-ep","Owl-Pharoah-OG","dirty-sprite-2","future-self-titled","Hndrxx","captain-california","TheWIZRD","last-call_202409","DIBIKS","monster-future","culture2017","2000-joey-badass","14.-education","hellboy_202503","lil-peep-never-forgotten","lil-peep-crybaby_202503","lil-peep-come-over-when-youre-sober-pt.-2","lil-peep-live-forever_202503","lil-peep-california-girls","lil-peep-vertigo_202503","lifeafterdeathrow","LilpeepFeelz2015","benztruck01"], avgDur:2400},
-  {num:969, name:"🎧 DJ Gotti On The Mix", cat:"Live", streamUrl:"http://gostream.store:8544/", avgDur:0}
+  {num:969, name:"🎧 DJ Gotti On The Mix", cat:"Live", streamUrl:"http://gostream.store:8544/", avgDur:0},
+  {num:970, name:"🎪 Juggalo Radio", cat:"Music", master:true, networkShows:["ICP-yukon-moose-dick-bigfoot-vip-single","icp-the-phanton-GOTJ-2015","Welcome2TheUnderground","TwiztidDontPlayThis4Any1","DJClayTheHandsofOddTourExclusiveEP2014","InsaneClownPosseSteveMeetsAbuEP2019","DukDaFukDown","PsychopathicRecordsPsychopathicPsyphers1to4","psychopathic-records-1998-sampler","PsyRydasRydenDirtay","BlazeSelfTitled2000","IntelligenceViolenceRemastered","Hallowicked2016","icp-fun-hallowicked-2021","ICP-haunted-by-the-devil","insaneclownpossethedark2019","CheckYourShitInBitch","TheRydas2019","DLOpaqueBrotherhoodRareDeluxeTracks","SoopaVillainzFurious","SerialKillazEP","RageOfThePlagueEP","IntelligenceAndViolence2017Remaster","twiztid-welcome-to-your-funeral-8-let-me-go","Twiztid-U-Aint-never-heard-of-santa","TwiztidAVeryTwiztidXmas2019","twiztid-4-the-fam-ep-2003","Twiztid-Frankenstein-VLS-2016","kottonmouth-kings-twiztid-watch-out-2012","twiztid-for-the-fam-vol2-2014","TwiztidCCHalloween","twiztid-how-does-it-feel-VLS-2017","TwiztidBack2The80s2020","twiztidfanclubredvinylseries","TwiztidPsychomania","TwiztidForTheFamVol3","mostasteless98","crypticcollection2","crypticcollection1","Twiztid-Freek-Show-Disturbed-Unheard-2020","juggalo-gangsta-niggas-4-life","ViolentJTheShiningDemo2008","riddlebox","theringmaster","icpcoc","insane-clown-posse-devils-night-2024","icpcottoncandy","milenkohollywood","15-climbing","mostasteless2025","coltongrundy","blazextupac","thewraith","15-death-don-t-want-you","talesfromthelotuspod","psyphers","blazeyadeadhomie","icptunneloflove_202508","bizzar","freekshow","monoxide-singles-covers-2024","09-sour-batch-b-tches","twiztid-wicked","twiztidfulldiscography","blaze-ya-dead-homie-clockwork-grey_202501","twiztid-independence-day","ProblemChildren","insane-clown-posse-hallowicked-collection-20th-anniversary-edition","twiztid-heartbroken-and-homicidal","boondox-punkinhed","boondox-abbadon","boondox-south-of-hell","boondox-the-murder","uga-the-underground-avengers-ep","boondox-krimson-crow","alla-xul-elu-the-almighty","alla-xul-elu-the-mauxuleum","twiztid-mans-myth-vol.1","VA-MNE-Fall-Sampler-2016"], avgDur:2400},
+  {num:971, name:"🤘 Nu Metal Radio", cat:"Music", master:true, networkShows:["dbkillingthedrama","stilllifemtp","scarsoflifemute","scarsoflifeat","birthofacentury","nightwish-century-child","nightwish-oceanborn-vinyl-1998","a_torn_dilema_tainted_by_birth_2004","aphile_waiting_for_an_answer_2004","broken_stone_life_after_you_2005","rumblefish_exit_highland_2003","endface_draw_the_line_2004","mr_slate_blood_groove_2006","her_words_kill_i_will_not_die_her_hero_2004","neveroddoreven_self_titled_2002","mervyn_albin_100_hurtin_albertan_fer_certain_2004","metric_madness_escape_from_the_factory_2008","stone_cold_sober_small_town_2009","medialabbm","dust_self_titled_2002","aggressive_persuasion_prolonged_farewells_2005","aggressive_persuasion_sticks_and_stones_ep_2003","aggressive_persuasion_self_titled_2001","absenthoughtsflac","venaculasst","solwhatwereflect","flyleaf2022flyleafdeluxeedition","stillifeamiw","hybrid_glitch_self_titled_2004","scene_of_the_crime_prelude_2007","anubis_the_last_again_2000","dbtothecore","waking_the_maze_ep_2004","lhmimp","SOaDMezmerize","system-of-a-down","steal-this-album_202501","avenged-sevenfold-hail-to-the-king-2013","downbreedtks","chinest"], avgDur:2400}
 ];
 
 // Reggaeton Dynamic Loader - Loads from your two specified collections
@@ -6428,6 +6557,8 @@ let pausedPosition = {
   trackIndex: null
 };
 const p = document.getElementById('player');
+
+
 const pwr = document.getElementById('pwr');
 const metaCache = {};
 
@@ -6451,87 +6582,75 @@ function seededRandom(seed) {
 }
 
 // Generate weekly schedule for all stations - TRACK-BASED (not album-based)
-function generateWeeklySchedule(weekNumber) {
+function generateWeeklySchedule(weekSeed) {
   const schedule = {};
-  let seedCounter = weekNumber * 10000; // Base seed for this week
-  
-  STATIONS.forEach((station, stationIdx) => {
+
+  STATIONS.forEach(station => {
     schedule[station.num] = [];
     if(station.streamUrl || !station.networkShows || !station.networkShows.length) return;
-    
-    // Generate 7 days of programming (168 hours)
-    let currentTime = 0; // Seconds from start of week
-    const weekDuration = 7 * 24 * 60 * 60; // 1 week in seconds
-    
+
+    // Each station gets its OWN isolated seed — independent of other stations
+    // This ensures all radio editions produce identical schedules for shared stations
+    let seedCounter = weekSeed * 100000 + station.num * 10000;
+
+    let currentTime = 0;
+    const weekDuration = 7 * 24 * 60 * 60; // 604800 seconds
+
     while(currentTime < weekDuration) {
-      // Pick a random show/album from this station
-      const showIndex = Math.floor(seededRandom(seedCounter++) * station.networkShows.length);
-      const showName = station.networkShows[showIndex];
-      
-      // Pick a random track NUMBER from that show (we'll resolve it later when we have the files)
-      // Assume most shows have 10-50 tracks, pick a track index
-      const trackIndex = Math.floor(seededRandom(seedCounter++) * 50);
-      
-      schedule[station.num].push({
-        show: showName,
-        trackIndex: trackIndex, // NEW: which track from this show
-        startTime: currentTime,
-        station: station.num
-      });
-      
-      // Each TRACK lasts roughly 3-5 minutes (180-300 seconds) - like a real song
+      const showIndex   = Math.floor(seededRandom(seedCounter++) * station.networkShows.length);
+      const trackIndex  = Math.floor(seededRandom(seedCounter++) * 50);
       const trackDuration = 180 + Math.floor(seededRandom(seedCounter++) * 120);
+
+      schedule[station.num].push({
+        show:      station.networkShows[showIndex],
+        trackIndex: trackIndex,
+        startTime:  currentTime,
+        duration:   trackDuration,
+        station:    station.num
+      });
       currentTime += trackDuration;
     }
   });
-  
+
   return schedule;
 }
+
 
 // Get current show/track based on time
 function getCurrentBroadcast(schedule, stationNum) {
   const now = new Date();
-  const dayOfWeek = now.getUTCDay(); // 0 = Sunday, 6 = Saturday
-  const hourOfDay = now.getUTCHours();
-  const minuteOfHour = now.getUTCMinutes();
-  const secondOfMinute = now.getUTCSeconds();
-  
-  // Calculate seconds elapsed since start of week (Sunday 00:00:00 UTC)
-  const secondsIntoWeek = (dayOfWeek * 24 * 60 * 60) + 
-                          (hourOfDay * 60 * 60) + 
-                          (minuteOfHour * 60) + 
-                          secondOfMinute;
-  
+  const secondsIntoWeek =
+    (now.getUTCDay()     * 86400) +
+    (now.getUTCHours()   * 3600)  +
+    (now.getUTCMinutes() * 60)    +
+    now.getUTCSeconds();
+
   const stationSchedule = schedule[stationNum];
-  if(!stationSchedule) return null;
-  
-  // Find which TRACK should be playing right now
+  if(!stationSchedule || stationSchedule.length === 0) return null;
+
   for(let i = 0; i < stationSchedule.length; i++) {
-    const currentTrack = stationSchedule[i];
-    const nextTrack = stationSchedule[i + 1];
-    
-    if(nextTrack && secondsIntoWeek >= currentTrack.startTime && secondsIntoWeek < nextTrack.startTime) {
-      return {
-        show: currentTrack.show,
-        trackIndex: currentTrack.trackIndex,
-        elapsedTime: secondsIntoWeek - currentTrack.startTime,
-        scheduleIndex: i // NEW: which slot in the schedule
-      };
-    }
-    
-    // Last track of the week wraps around
-    if(!nextTrack && secondsIntoWeek >= currentTrack.startTime) {
-      return {
-        show: currentTrack.show,
-        trackIndex: currentTrack.trackIndex,
-        elapsedTime: secondsIntoWeek - currentTrack.startTime,
-        scheduleIndex: i // NEW: which slot in the schedule
-      };
+    const slot     = stationSchedule[i];
+    const nextSlot = stationSchedule[i + 1];
+
+    if(nextSlot) {
+      if(secondsIntoWeek >= slot.startTime && secondsIntoWeek < nextSlot.startTime) {
+        return { show: slot.show, trackIndex: slot.trackIndex,
+                 elapsedTime: secondsIntoWeek - slot.startTime, scheduleIndex: i };
+      }
+    } else {
+      // Last slot of week
+      if(secondsIntoWeek >= slot.startTime) {
+        return { show: slot.show, trackIndex: slot.trackIndex,
+                 elapsedTime: secondsIntoWeek - slot.startTime, scheduleIndex: i };
+      }
     }
   }
-  
-  return stationSchedule[0]; // Fallback to first track
+
+  // Fallback — always include scheduleIndex
+  return { show: stationSchedule[0].show, trackIndex: stationSchedule[0].trackIndex,
+           elapsedTime: 0, scheduleIndex: 0 };
 }
+
 
 // EXACT TV SYNC LOGIC
 async function fetchFiles(identifier){
@@ -6984,86 +7103,68 @@ function nextTrack(){
 
 // Auto-advance to next track (preserves LIVE mode)
 async function autoAdvanceTrack(){
-  console.log('🔄 autoAdvanceTrack() CALLED');
-  
-  if(!on) {
-    console.log('❌ Cannot advance - radio off');
+  if(!on) return;
+  console.log('🔄 autoAdvanceTrack() - checking broadcast clock');
+
+  if(STATIONS[cur] && STATIONS[cur].streamUrl) {
+    document.getElementById('now-playing').textContent = '📴 Stream offline';
     return;
   }
-  
-  // In LIVE mode, advance to NEXT slot in the schedule
+
   if(isLiveMode && weeklySchedule) {
-    console.log('🔴 LIVE mode: Advancing to NEXT scheduled slot');
-    
     const ch = STATIONS[cur];
-    const stationSchedule = weeklySchedule[ch.num];
-    
-    if(!stationSchedule || stationSchedule.length === 0) {
-      console.error('❌ No schedule available');
-      return;
+    const slots = weeklySchedule[ch.num];
+    if(!slots || slots.length === 0) { await playSync(); return; }
+
+    const broadcast = getCurrentBroadcast(weeklySchedule, ch.num);
+    if(!broadcast) { await playSync(); return; }
+
+    // If clock still shows same slot we just played, force next slot
+    let targetSlotIndex = broadcast.scheduleIndex;
+    if(targetSlotIndex === currentScheduleIndex) {
+      targetSlotIndex = (currentScheduleIndex + 1) % slots.length;
+      console.log('Same slot — forcing advance to slot', targetSlotIndex);
     }
-    
-    // Move to NEXT slot in schedule
-    currentScheduleIndex = (currentScheduleIndex + 1) % stationSchedule.length;
-    const nextSlot = stationSchedule[currentScheduleIndex];
-    
-    console.log(`   Moving to schedule slot ${currentScheduleIndex}: ${nextSlot.show}, track ${nextSlot.trackIndex}`);
-    
-    // Fetch files for this show
-    const files = await fetchFiles(nextSlot.show);
-    
-    if(files.length === 0) {
-      console.error('❌ No files in show:', nextSlot.show);
-      // Try next slot
-      autoAdvanceTrack();
-      return;
+
+    currentScheduleIndex = targetSlotIndex;
+    let slot = slots[currentScheduleIndex];
+
+    let files = await fetchFiles(slot.show);
+    let tries = 0;
+    while(files.length === 0 && tries < 5) {
+      tries++;
+      currentScheduleIndex = (currentScheduleIndex + 1) % slots.length;
+      slot = slots[currentScheduleIndex];
+      files = await fetchFiles(slot.show);
     }
-    
+    if(files.length === 0) return;
+
     currentFiles = files;
-    
-    // Get the scheduled track (with bounds checking)
-    const targetTrackIndex = nextSlot.trackIndex % files.length;
-    currentTrackIndex = targetTrackIndex;
+    currentTrackIndex = slot.trackIndex % files.length;
     const track = files[currentTrackIndex];
-    
-    console.log(`🎵 Playing: Track ${targetTrackIndex} - "${track.n}"`);
-    console.log('   ▶️ AUTO-ADVANCE: Starting from beginning (0:00)');
-    
-    // Play from beginning (it's a new song)
+
+    console.log('▶️ Slot', currentScheduleIndex, '—', slot.show, 'track', currentTrackIndex);
+
     p.src = track.u;
     p.volume = currentVolume;
-    p.dataset.pendingSeek = null; // No seeking - start from 0:00
+    p.dataset.pendingSeek = null;
     p.load();
-    p.play().catch(e => {
-      console.error('❌ Play failed:', e);
-    });
-    
+    p.play().catch(e => console.error('Play failed:', e));
     setTimeout(() => onTrackChange(), 100);
-    
+
   } else {
-    // OFFLINE mode: pick random track from current files
-    console.log('⚫ OFFLINE mode: Picking random track');
-    if(currentFiles.length === 0) {
-      console.log('❌ No files available');
-      return;
-    }
-    
-    currentTrackIndex = Math.floor(Math.random() * currentFiles.length);
+    if(currentFiles.length === 0) return;
+    currentTrackIndex = (currentTrackIndex + 1) % currentFiles.length;
     const track = currentFiles[currentTrackIndex];
-    
     p.src = track.u;
     p.currentTime = 0;
     p.volume = currentVolume;
     p.dataset.pendingSeek = null;
-    p.play().catch(e => {
-      console.error('❌ Play failed:', e);
-    });
-    
+    p.play().catch(e => console.error('Play failed:', e));
     setTimeout(() => onTrackChange(), 100);
   }
-  
-  console.log('✅ autoAdvanceTrack() COMPLETE');
 }
+
 
 function prevTrack(){
   // DISABLED IN BASIC RADIO - No track skipping allowed
