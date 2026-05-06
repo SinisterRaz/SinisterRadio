@@ -7075,7 +7075,8 @@ async function autoAdvanceTrack(){
     if(files.length === 0) return;
 
     currentFiles = files;
-    currentTrackIndex = slot.trackIndex % files.length;
+    // Always advance forward from current position - never use random index
+    currentTrackIndex = (currentTrackIndex + 1) % files.length;
     const track = files[currentTrackIndex];
 
     console.log('▶️ Slot', currentScheduleIndex, '—', slot.show, 'track', currentTrackIndex);
