@@ -546,87 +546,6 @@
   --cnt-color:#ffffff;--gc-bg:#0a0a0a;--gc-border:#1a1a1a;
 }
 
-/* Christmas Theme */
-:root.christmas{
-  --bg:#0a0200;--frame:#C41E3A;
-  --brand-bg:linear-gradient(90deg,#620f1d,#93172c,#620f1d);--brand-border:#C41E3A;
-  --logo-color:#00843D;--logo-glow:rgba(0,132,61,0.6);
-  --np-color:#FFD700;--ch-color:#FFD700;--ch-glow:#FFD700;
-  --btn-bg:linear-gradient(145deg,#93172c,#620f1d);--btn-border:#C41E3A;--btn-color:#00632e;
-  --cnt-color:#FFD700;--gc-bg:#620f1d;--gc-border:#93172c;
-}
-
-/* Halloween Theme */
-:root.halloween{
-  --bg:#0a0600;--frame:#FF6600;
-  --brand-bg:linear-gradient(90deg,#803300,#bf4d00,#803300);--brand-border:#FF6600;
-  --logo-color:#FF6600;--logo-glow:rgba(255,102,0,0.6);
-  --np-color:#9D00FF;--ch-color:#9D00FF;--ch-glow:#9D00FF;
-  --btn-bg:linear-gradient(145deg,#bf4d00,#803300);--btn-border:#FF6600;--btn-color:#7500c0;
-  --cnt-color:#9D00FF;--gc-bg:#803300;--gc-border:#bf4d00;
-}
-
-/* Valentine's Theme */
-:root.valentines{
-  --bg:#120208;--frame:#FF1493;
-  --brand-bg:linear-gradient(90deg,#80064a,#bf0a6f,#80064a);--brand-border:#FF1493;
-  --logo-color:#FF69B4;--logo-glow:rgba(255,105,180,0.6);
-  --np-color:#FFB6C1;--ch-color:#FF69B4;--ch-glow:#FF69B4;
-  --btn-bg:linear-gradient(145deg,#bf0a6f,#80064a);--btn-border:#FF1493;--btn-color:#c95087;
-  --cnt-color:#FFB6C1;--gc-bg:#80064a;--gc-border:#bf0a6f;
-}
-
-/* St. Patrick's Theme */
-:root.stpatricks{
-  --bg:#000a00;--frame:#009B48;
-  --brand-bg:linear-gradient(90deg,#004d24,#007436,#004d24);--brand-border:#009B48;
-  --logo-color:#FFD700;--logo-glow:rgba(255,215,0,0.6);
-  --np-color:#FFD700;--ch-color:#FFD700;--ch-glow:#FFD700;
-  --btn-bg:linear-gradient(145deg,#007436,#004d24);--btn-border:#009B48;--btn-color:#c9a900;
-  --cnt-color:#FFD700;--gc-bg:#004d24;--gc-border:#007436;
-}
-
-/* Easter Theme */
-:root.easter{
-  --bg:#0a0810;--frame:#E0BBE4;
-  --brand-bg:linear-gradient(90deg,#705e72,#a88db2,#705e72);--brand-border:#E0BBE4;
-  --logo-color:#FFDFD3;--logo-glow:rgba(255,223,211,0.6);
-  --np-color:#FEC8D8;--ch-color:#FFDFD3;--ch-glow:#FFDFD3;
-  --btn-bg:linear-gradient(145deg,#a88db2,#705e72);--btn-border:#E0BBE4;--btn-color:#c9a9a0;
-  --cnt-color:#FEC8D8;--gc-bg:#705e72;--gc-border:#a88db2;
-}
-
-/* 4th of July Theme */
-:root.july4th{
-  --bg:#000308;--frame:#B22234;
-  --brand-bg:linear-gradient(90deg,#59111a,#851a27,#59111a);--brand-border:#B22234;
-  --logo-color:#3C3B6E;--logo-glow:rgba(60,59,110,0.6);
-  --np-color:#ffffff;--ch-color:#ffffff;--ch-glow:#ffffff;
-  --btn-bg:linear-gradient(145deg,#851a27,#59111a);--btn-border:#B22234;--btn-color:#2d2c52;
-  --cnt-color:#ffffff;--gc-bg:#59111a;--gc-border:#851a27;
-}
-
-/* Thanksgiving Theme */
-:root.thanksgiving{
-  --bg:#0a0400;--frame:#D2691E;
-  --brand-bg:linear-gradient(90deg,#69340f,#9f4e16,#69340f);--brand-border:#D2691E;
-  --logo-color:#FF8C00;--logo-glow:rgba(255,140,0,0.6);
-  --np-color:#FFD700;--ch-color:#FF8C00;--ch-glow:#FF8C00;
-  --btn-bg:linear-gradient(145deg,#9f4e16,#69340f);--btn-border:#D2691E;--btn-color:#c96900;
-  --cnt-color:#FFD700;--gc-bg:#69340f;--gc-border:#9f4e16;
-}
-
-/* New Year's Theme */
-:root.newyear{
-  --bg:#000000;--frame:#FFD700;
-  --brand-bg:linear-gradient(90deg,#806b00,#bfa100,#806b00);--brand-border:#FFD700;
-  --logo-color:#C0C0C0;--logo-glow:rgba(192,192,192,0.6);
-  --np-color:#ffffff;--ch-color:#FFD700;--ch-glow:#FFD700;
-  --btn-bg:linear-gradient(145deg,#bfa100,#806b00);--btn-border:#FFD700;--btn-color:#909090;
-  --cnt-color:#ffffff;--gc-bg:#806b00;--gc-border:#bfa100;
-}
-
-/* Summer Theme */
 :root.summer{
   --bg:#0a0c02;--frame:#FFB347;
   --brand-bg:linear-gradient(90deg,#805923,#bf8735,#805923);--brand-border:#FFB347;
@@ -4621,13 +4540,57 @@ audio{
   font-size:24px;
 }
 
-.theme-name{
-  font-family:'Rajdhani',sans-serif;
-  font-size:16px;
-  font-weight:600;
-  color:var(--btn-color);
-  letter-spacing:1px;
+.theme-cat-btn{
+  background:var(--btn-bg);
+  border:2px solid var(--btn-border);
+  border-radius:4px;
+  padding:14px 15px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  transition:all 0.2s;
+  width:100%;
 }
+
+.theme-cat-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.5);
+  border-color:var(--ch-color);
+}
+
+.theme-cat-btn .theme-name{
+  font-family:'Rajdhani',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  color:var(--cnt-color);
+  letter-spacing:1px;
+  text-align:left;
+}
+
+.theme-back-btn{
+  background:transparent;
+  border:2px solid var(--btn-border);
+  border-radius:4px;
+  padding:10px 15px;
+  font-family:'Rajdhani',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  color:var(--logo-color);
+  letter-spacing:2px;
+  cursor:pointer;
+  transition:all 0.2s;
+  width:100%;
+  text-align:left;
+  margin-bottom:8px;
+}
+
+.theme-back-btn:hover{
+  border-color:var(--ch-color);
+  color:var(--ch-color);
+}
+
+
 
 .volume{
   background:var(--gc-bg);
@@ -5964,6 +5927,258 @@ input[type="range"]::-moz-range-thumb{
 @keyframes juggaloBeacon{0%,100%{box-shadow:0 0 12px rgba(204,0,8,0.6),0 0 25px rgba(180,0,6,0.3);}50%{box-shadow:0 0 25px rgba(255,40,40,1),0 0 50px rgba(204,0,8,0.7);}}
 
 
+/* ============================================
+   🖨️ RISOGRAPH PRINT THEME
+   Inspired by indie zine culture — teal/coral/cream
+   Simulates misregistered ink layers, warm grain
+   Color theory: Split-complementary teal + coral + cream
+   ============================================ */
+:root.riso{
+  --bg:#1a0e08;--frame:#2d1a10;
+  --brand-bg:linear-gradient(160deg,#0f2626 0%,#1a3d3d 40%,#0f2626 100%);--brand-border:#2a5555;
+  --logo-color:#e8735a;--logo-glow:rgba(232,115,90,0.7);
+  --np-color:#f5e6d0;--ch-color:#4db8b8;--ch-glow:rgba(77,184,184,0.8);
+  --btn-bg:linear-gradient(145deg,#1a3d3d,#0f2626);--btn-border:#2a5555;--btn-color:#e8735a;
+  --cnt-color:#f5e6d0;--gc-bg:#0f2626;--gc-border:#1a3d3d;
+}
+:root.riso body{
+  background:
+    /* Grain noise simulation via micro-dots */
+    radial-gradient(circle 1px at 8% 12%,rgba(245,230,208,0.08) 0%,transparent 2px),
+    radial-gradient(circle 1px at 23% 37%,rgba(245,230,208,0.06) 0%,transparent 2px),
+    radial-gradient(circle 1px at 41% 8%,rgba(232,115,90,0.07) 0%,transparent 2px),
+    radial-gradient(circle 1px at 67% 29%,rgba(245,230,208,0.05) 0%,transparent 2px),
+    radial-gradient(circle 1px at 84% 15%,rgba(77,184,184,0.08) 0%,transparent 2px),
+    radial-gradient(circle 1px at 12% 58%,rgba(232,115,90,0.06) 0%,transparent 2px),
+    radial-gradient(circle 1px at 55% 71%,rgba(245,230,208,0.07) 0%,transparent 2px),
+    radial-gradient(circle 1px at 78% 83%,rgba(77,184,184,0.05) 0%,transparent 2px),
+    radial-gradient(circle 1px at 33% 91%,rgba(232,115,90,0.06) 0%,transparent 2px),
+    radial-gradient(circle 1px at 90% 55%,rgba(245,230,208,0.04) 0%,transparent 2px),
+    /* Ink bleed layers — teal bleeds slightly right of coral (misregistration) */
+    radial-gradient(ellipse 80% 60% at 30% 40%,rgba(77,184,184,0.06) 0%,transparent 70%),
+    radial-gradient(ellipse 70% 50% at 72% 60%,rgba(232,115,90,0.05) 0%,transparent 70%),
+    /* Deep warm base — aged paper behind risograph inks */
+    linear-gradient(160deg,#1a0e08 0%,#0f2020 50%,#1a1008 100%);
+}
+:root.riso .radio{
+  border:3px solid #2a5555;
+  box-shadow:
+    /* Teal ink glow — primary color */
+    0 0 40px rgba(77,184,184,0.15),
+    /* Coral ink glow — accent color, slightly offset like misregistration */
+    4px 4px 30px rgba(232,115,90,0.10),
+    inset 0 0 20px rgba(10,30,30,0.6);
+}
+:root.riso .brand{
+  background:linear-gradient(160deg,#0a2020 0%,#163535 40%,#0a2020 100%);
+  border-bottom:3px solid #2a5555;
+  /* Subtle halftone-dot feel on header */
+  background-image:
+    radial-gradient(circle 1px at 20% 50%,rgba(77,184,184,0.2) 0%,transparent 2px),
+    radial-gradient(circle 1px at 50% 50%,rgba(232,115,90,0.15) 0%,transparent 2px),
+    radial-gradient(circle 1px at 80% 50%,rgba(77,184,184,0.2) 0%,transparent 2px),
+    linear-gradient(160deg,#0a2020 0%,#163535 40%,#0a2020 100%);
+}
+:root.riso .logo{
+  font-family:'Monoton',cursive !important;
+  color:#e8735a;
+  text-shadow:
+    /* Coral text with teal shadow offset — classic riso misregistration */
+    -2px -2px 0 rgba(77,184,184,0.5),
+    3px 3px 0 rgba(77,184,184,0.3),
+    0 0 20px rgba(232,115,90,0.4);
+  letter-spacing:3px;
+}
+:root.riso .display{
+  background:linear-gradient(180deg,#0a1f1f 0%,#0d2828 100%);
+  border:2px solid #2a5555;
+  /* Halftone dots on display panel */
+  background-image:
+    radial-gradient(circle 1.5px at 15% 25%,rgba(77,184,184,0.12) 0%,transparent 3px),
+    radial-gradient(circle 1.5px at 45% 75%,rgba(232,115,90,0.10) 0%,transparent 3px),
+    radial-gradient(circle 1.5px at 75% 35%,rgba(77,184,184,0.12) 0%,transparent 3px),
+    linear-gradient(180deg,#0a1f1f 0%,#0d2828 100%);
+}
+:root.riso #num{
+  color:#4db8b8;
+  text-shadow:-1px -1px 0 rgba(232,115,90,0.4),2px 2px 0 rgba(232,115,90,0.2),0 0 15px rgba(77,184,184,0.7);
+  font-family:'Orbitron',sans-serif;
+}
+:root.riso #name{color:#f5e6d0;text-shadow:0 1px 3px rgba(0,0,0,0.8);}
+:root.riso #now-playing{color:#e8b99a;text-shadow:0 1px 2px rgba(0,0,0,0.7);}
+:root.riso .vis-bar{
+  background:linear-gradient(180deg,#e8735a,#4db8b8) !important;
+  box-shadow:0 0 8px rgba(232,115,90,0.6),0 0 16px rgba(77,184,184,0.3) !important;
+}
+:root.riso button{
+  border-color:#2a5555 !important;
+  background:linear-gradient(145deg,#163535,#0a2020) !important;
+}
+:root.riso button:hover{
+  border-color:#4db8b8 !important;
+  box-shadow:0 0 20px rgba(77,184,184,0.4),-3px -3px 15px rgba(232,115,90,0.2) !important;
+}
+:root.riso #liveBtn.active{animation:risoBeacon 2s ease-in-out infinite !important;}
+@keyframes risoBeacon{
+  0%,100%{box-shadow:0 0 10px rgba(77,184,184,0.5),0 0 20px rgba(232,115,90,0.2);}
+  50%{box-shadow:0 0 22px rgba(232,115,90,0.7),-3px -3px 18px rgba(77,184,184,0.5);}
+}
+
+
+/* ============================================
+   🌿 SOLARPUNK THEME
+   Lush green future — warm sun gold + deep ivy + sky
+   Color theory: Triadic — green (120°) + gold (0°) + sky blue (240°)
+   Inspired by: community gardens, brass solar panels, living walls
+   ============================================ */
+:root.solarpunk{
+  --bg:#030d06;--frame:#0a2010;
+  --brand-bg:linear-gradient(160deg,#051a08 0%,#0a2e10 40%,#051a08 100%);--brand-border:#1a4d20;
+  --logo-color:#d4a843;--logo-glow:rgba(212,168,67,0.8);
+  --np-color:#b8e0c0;--ch-color:#4db870;--ch-glow:rgba(77,184,112,0.8);
+  --btn-bg:linear-gradient(145deg,#0a2e10,#051a08);--btn-border:#1a4d20;--btn-color:#d4a843;
+  --cnt-color:#b8e0c0;--gc-bg:#051a08;--gc-border:#0a2e10;
+}
+:root.solarpunk body{
+  background:
+    /* Living wall leaf textures — organic scatter */
+    radial-gradient(ellipse 3px 8px at 5% 20%,rgba(77,184,112,0.15) 0%,transparent 4px),
+    radial-gradient(ellipse 5px 3px at 18% 65%,rgba(77,184,112,0.12) 0%,transparent 4px),
+    radial-gradient(ellipse 3px 7px at 32% 10%,rgba(77,184,112,0.10) 0%,transparent 4px),
+    radial-gradient(ellipse 6px 3px at 48% 80%,rgba(77,184,112,0.13) 0%,transparent 4px),
+    radial-gradient(ellipse 3px 9px at 62% 35%,rgba(77,184,112,0.11) 0%,transparent 4px),
+    radial-gradient(ellipse 5px 3px at 75% 70%,rgba(77,184,112,0.14) 0%,transparent 4px),
+    radial-gradient(ellipse 3px 6px at 88% 15%,rgba(77,184,112,0.10) 0%,transparent 4px),
+    radial-gradient(ellipse 4px 3px at 93% 55%,rgba(77,184,112,0.12) 0%,transparent 4px),
+    /* Solar gold warmth from above — sun angle */
+    radial-gradient(ellipse 100% 40% at 50% 0%,rgba(212,168,67,0.08) 0%,transparent 60%),
+    /* Sky blue on the horizon */
+    radial-gradient(ellipse 100% 30% at 50% 100%,rgba(77,150,200,0.05) 0%,transparent 60%),
+    /* Deep ivy base */
+    linear-gradient(180deg,#030d06 0%,#050f07 60%,#030d06 100%);
+}
+:root.solarpunk .radio{
+  border:3px solid #1a4d20;
+  box-shadow:
+    0 0 50px rgba(77,184,112,0.12),
+    0 -5px 30px rgba(212,168,67,0.08),
+    inset 0 0 25px rgba(3,15,6,0.7);
+}
+:root.solarpunk .logo{
+  font-family:'Rajdhani',sans-serif !important;
+  font-weight:900;
+  color:#d4a843;
+  text-shadow:
+    0 0 20px rgba(212,168,67,0.7),
+    0 0 40px rgba(212,168,67,0.3),
+    0 2px 4px rgba(0,0,0,0.8);
+  letter-spacing:4px;
+}
+:root.solarpunk #num{color:#4db870;text-shadow:0 0 15px rgba(77,184,112,0.8),0 0 30px rgba(77,184,112,0.4);}
+:root.solarpunk #name{color:#b8e0c0;text-shadow:0 1px 3px rgba(0,0,0,0.8);}
+:root.solarpunk #now-playing{color:#8ec89a;}
+:root.solarpunk .vis-bar{
+  background:linear-gradient(180deg,#d4a843 0%,#4db870 60%,#2a8040 100%) !important;
+  box-shadow:0 0 8px rgba(77,184,112,0.7),0 0 18px rgba(212,168,67,0.3) !important;
+}
+:root.solarpunk button{border-color:#1a4d20 !important;background:linear-gradient(145deg,#0a2e10,#051a08) !important;}
+:root.solarpunk button:hover{border-color:#4db870 !important;box-shadow:0 0 20px rgba(77,184,112,0.4),0 -2px 12px rgba(212,168,67,0.2) !important;}
+:root.solarpunk #liveBtn.active{animation:solarBeacon 2.5s ease-in-out infinite !important;}
+@keyframes solarBeacon{
+  0%,100%{box-shadow:0 0 12px rgba(77,184,112,0.5),0 0 25px rgba(212,168,67,0.2);}
+  50%{box-shadow:0 0 25px rgba(212,168,67,0.8),0 0 45px rgba(77,184,112,0.3);}
+}
+
+
+/* ============================================
+   🔷 MEMPHIS DESIGN THEME
+   1980s postmodern — bold geometry, squiggles, primary brights
+   Color theory: Full tetradic — red + yellow + blue + black
+   Inspired by: Sottsass, Ettore, 1981 Memphis Group
+   ============================================ */
+:root.memphis{
+  --bg:#0a0008;--frame:#1a0028;
+  --brand-bg:linear-gradient(90deg,#1a0028,#28003a,#1a0028);--brand-border:#cc00aa;
+  --logo-color:#ffdd00;--logo-glow:rgba(255,221,0,0.9);
+  --np-color:#ffffff;--ch-color:#ff3366;--ch-glow:rgba(255,51,102,0.9);
+  --btn-bg:linear-gradient(145deg,#28003a,#1a0028);--btn-border:#cc00aa;--btn-color:#00ccff;
+  --cnt-color:#ffffff;--gc-bg:#1a0028;--gc-border:#28003a;
+}
+:root.memphis body{
+  background:
+    /* Memphis signature squiggles as dots/dashes */
+    radial-gradient(circle 3px at 8% 15%,rgba(255,221,0,0.4) 0%,transparent 4px),
+    radial-gradient(circle 2px at 12% 18%,rgba(255,221,0,0.3) 0%,transparent 3px),
+    radial-gradient(circle 3px at 25% 42%,rgba(255,51,102,0.35) 0%,transparent 4px),
+    radial-gradient(circle 2px at 29% 45%,rgba(255,51,102,0.25) 0%,transparent 3px),
+    radial-gradient(circle 3px at 45% 8%,rgba(0,204,255,0.4) 0%,transparent 4px),
+    radial-gradient(circle 2px at 49% 11%,rgba(0,204,255,0.3) 0%,transparent 3px),
+    radial-gradient(circle 3px at 63% 70%,rgba(255,221,0,0.35) 0%,transparent 4px),
+    radial-gradient(circle 2px at 67% 73%,rgba(255,221,0,0.25) 0%,transparent 3px),
+    radial-gradient(circle 3px at 78% 30%,rgba(255,51,102,0.4) 0%,transparent 4px),
+    radial-gradient(circle 2px at 82% 33%,rgba(255,51,102,0.3) 0%,transparent 3px),
+    radial-gradient(circle 3px at 90% 85%,rgba(0,204,255,0.35) 0%,transparent 4px),
+    radial-gradient(circle 2px at 94% 88%,rgba(0,204,255,0.25) 0%,transparent 3px),
+    /* Bold diagonal Memphis stripe — key signature move */
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 18px,
+      rgba(255,221,0,0.03) 18px,
+      rgba(255,221,0,0.03) 20px
+    ),
+    /* Deep purple-black base */
+    linear-gradient(135deg,#0a0008 0%,#12000f 50%,#0a0008 100%);
+}
+:root.memphis .radio{
+  border:3px solid #cc00aa;
+  box-shadow:
+    0 0 0 6px rgba(255,51,102,0.08),
+    0 0 40px rgba(204,0,170,0.25),
+    4px 0 30px rgba(0,204,255,0.10),
+    -4px 0 30px rgba(255,221,0,0.08),
+    inset 0 0 20px rgba(10,0,8,0.8);
+}
+:root.memphis .logo{
+  font-family:'Bungee',cursive !important;
+  color:#ffdd00;
+  text-shadow:
+    /* Bold Memphis shadow stack */
+    3px 3px 0 #ff3366,
+    6px 6px 0 #00ccff,
+    0 0 30px rgba(255,221,0,0.6);
+  letter-spacing:4px;
+}
+:root.memphis #num{
+  color:#ff3366;
+  font-family:'Bungee',cursive;
+  text-shadow:2px 2px 0 #00ccff,0 0 20px rgba(255,51,102,0.8);
+}
+:root.memphis #name{color:#ffffff;text-shadow:1px 1px 0 #cc00aa;}
+:root.memphis #now-playing{color:#00ccff;text-shadow:1px 1px 0 rgba(255,221,0,0.5);}
+:root.memphis .vis-bar{
+  background:repeating-linear-gradient(180deg,#ffdd00 0px,#ffdd00 4px,#ff3366 4px,#ff3366 8px,#00ccff 8px,#00ccff 12px) !important;
+  box-shadow:0 0 10px rgba(255,51,102,0.8),0 0 20px rgba(255,221,0,0.4) !important;
+}
+:root.memphis button{
+  border-color:#cc00aa !important;
+  background:linear-gradient(145deg,#28003a,#1a0028) !important;
+  box-shadow:2px 2px 0 rgba(255,51,102,0.3) !important;
+}
+:root.memphis button:hover{
+  border-color:#ffdd00 !important;
+  box-shadow:3px 3px 0 #ff3366,0 0 25px rgba(255,221,0,0.5) !important;
+  transform:translate(-2px,-2px) !important;
+}
+:root.memphis #liveBtn.active{animation:memphisBeacon 1s ease-in-out infinite !important;}
+@keyframes memphisBeacon{
+  0%{box-shadow:0 0 10px rgba(255,51,102,0.8),3px 3px 0 #ffdd00;}
+  33%{box-shadow:0 0 10px rgba(255,221,0,0.8),3px 3px 0 #00ccff;}
+  66%{box-shadow:0 0 10px rgba(0,204,255,0.8),3px 3px 0 #ff3366;}
+  100%{box-shadow:0 0 10px rgba(255,51,102,0.8),3px 3px 0 #ffdd00;}
+}
+
+
 </style>
 </head>
 <body>
@@ -6011,347 +6226,38 @@ input[type="range"]::-moz-range-thumb{
   </div>
 
   <div class="theme-menu" id="theme-menu">
-    <div class="theme-menu-header">
-      <span>SELECT THEME</span>
+    <div class="theme-menu-header" id="theme-header">
+      <span id="theme-header-title">SELECT CATEGORY</span>
       <button class="close-btn" onclick="toggleThemeMenu()">✕</button>
     </div>
-    <div class="theme-options">
-      <div class="theme-category">SINISTER DIVISION</div>
-      <button class="theme-btn" onclick="changeTheme('brown')">
-        <span class="theme-icon">💀🔥</span>
-        <span class="theme-name">Sinister Division (Default)</span>
-      </button>
-      
-      <div class="theme-category">CLASSIC COLORS</div>
-      <button class="theme-btn" onclick="changeTheme('blue')">
-        <span class="theme-icon">🔵</span>
-        <span class="theme-name">Blue Ocean</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('red')">
-        <span class="theme-icon">🔴</span>
-        <span class="theme-name">Red Fire</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('green')">
-        <span class="theme-icon">🟢</span>
-        <span class="theme-name">Green Forest</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('purple')">
-        <span class="theme-icon">🟣</span>
-        <span class="theme-name">Purple Night</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('cyan')">
-        <span class="theme-icon">🩵</span>
-        <span class="theme-name">Cyan Wave</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('orange')">
-        <span class="theme-icon">🟠</span>
-        <span class="theme-name">Orange Sunset</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('pink')">
-        <span class="theme-icon">🩷</span>
-        <span class="theme-name">Pink Dream</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('yellow')">
-        <span class="theme-icon">🟡</span>
-        <span class="theme-name">Yellow Sun</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('teal')">
-        <span class="theme-icon">🫧</span>
-        <span class="theme-name">Teal Breeze</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('lime')">
-        <span class="theme-icon">💚</span>
-        <span class="theme-name">Lime Splash</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('magenta')">
-        <span class="theme-icon">🌸</span>
-        <span class="theme-name">Magenta Glow</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('indigo')">
-        <span class="theme-icon">💙</span>
-        <span class="theme-name">Indigo Deep</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('amber')">
-        <span class="theme-icon">🧡</span>
-        <span class="theme-name">Amber Warm</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('mint')">
-        <span class="theme-icon">🍃</span>
-        <span class="theme-name">Mint Fresh</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('coral')">
-        <span class="theme-icon">🪸</span>
-        <span class="theme-name">Coral Reef</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('lavender')">
-        <span class="theme-icon">💜</span>
-        <span class="theme-name">Lavender Haze</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('turquoise')">
-        <span class="theme-icon">🌊</span>
-        <span class="theme-name">Turquoise Sea</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('crimson')">
-        <span class="theme-icon">❤️</span>
-        <span class="theme-name">Crimson Rage</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('navy')">
-        <span class="theme-icon">🌌</span>
-        <span class="theme-name">Navy Midnight</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('olive')">
-        <span class="theme-icon">🫒</span>
-        <span class="theme-name">Olive Drab</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('gold')">
-        <span class="theme-icon">⭐</span>
-        <span class="theme-name">Gold Shine</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('silver')">
-        <span class="theme-icon">🌙</span>
-        <span class="theme-name">Silver Moon</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('rose')">
-        <span class="theme-icon">🌹</span>
-        <span class="theme-name">Rose Petal</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('slate')">
-        <span class="theme-icon">🪨</span>
-        <span class="theme-name">Slate Gray</span>
-      </button>
-      
-      <div class="theme-category">SPORTS TEAMS</div>
-      <button class="theme-btn" onclick="changeTheme('lakers')">
-        <span class="theme-icon">🏀</span>
-        <span class="theme-name">Lakers Purple/Gold</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('celtics')">
-        <span class="theme-icon">☘️</span>
-        <span class="theme-name">Celtics Green</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('cowboys')">
-        <span class="theme-icon">🏈</span>
-        <span class="theme-name">Cowboys Blue/Silver</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('steelers')">
-        <span class="theme-icon">⚫</span>
-        <span class="theme-name">Steelers Black/Gold</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('yankees')">
-        <span class="theme-icon">⚾</span>
-        <span class="theme-name">Yankees Navy</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('redsox')">
-        <span class="theme-icon">🧦</span>
-        <span class="theme-name">Red Sox</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('patriots')">
-        <span class="theme-icon">🦅</span>
-        <span class="theme-name">Patriots Red/Navy</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('packers')">
-        <span class="theme-icon">🧀</span>
-        <span class="theme-name">Packers Green/Gold</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('bulls')">
-        <span class="theme-icon">🐂</span>
-        <span class="theme-name">Bulls Red/Black</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('warriors')">
-        <span class="theme-icon">⚡</span>
-        <span class="theme-name">Warriors Blue/Gold</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('heat')">
-        <span class="theme-icon">🔥</span>
-        <span class="theme-name">Miami Heat</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('raiders')">
-        <span class="theme-icon">☠️</span>
-        <span class="theme-name">Raiders Silver/Black</span>
-      </button>
-      
-      <div class="theme-category">HOLIDAYS & SEASONS</div>
-      <button class="theme-btn" onclick="changeTheme('christmas')">
-        <span class="theme-icon">🎄</span>
-        <span class="theme-name">Christmas</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('halloween')">
-        <span class="theme-icon">🎃</span>
-        <span class="theme-name">Halloween</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('valentines')">
-        <span class="theme-icon">💝</span>
-        <span class="theme-name">Valentine's Day</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('stpatricks')">
-        <span class="theme-icon">🍀</span>
-        <span class="theme-name">St. Patrick's Day</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('easter')">
-        <span class="theme-icon">🐰</span>
-        <span class="theme-name">Easter Pastels</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('july4th')">
-        <span class="theme-icon">🎆</span>
-        <span class="theme-name">4th of July</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('thanksgiving')">
-        <span class="theme-icon">🦃</span>
-        <span class="theme-name">Thanksgiving</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('newyear')">
-        <span class="theme-icon">🎊</span>
-        <span class="theme-name">New Year's Eve</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('summer')">
-        <span class="theme-icon">☀️</span>
-        <span class="theme-name">Summer Vibes</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('autumn')">
-        <span class="theme-icon">🍂</span>
-        <span class="theme-name">Autumn Leaves</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('winter')">
-        <span class="theme-icon">❄️</span>
-        <span class="theme-name">Winter Frost</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('spring')">
-        <span class="theme-icon">🌸</span>
-        <span class="theme-name">Spring Bloom</span>
-      </button>
-      
-      <div class="theme-category">🎨 ARTISTIC MASTERPIECES</div>
-      <button class="theme-btn" onclick="changeTheme('outrun')">
-        <span class="theme-icon">🌆</span>
-        <span class="theme-name">Outrun Sunset</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('goldenstate')">
-        <span class="theme-icon">🏀</span>
-        <span class="theme-name">Golden State Arena</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('icecold')">
-        <span class="theme-icon">💎</span>
-        <span class="theme-name">Ice Cold Diamonds</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('wabisabi')">
-        <span class="theme-icon">🇯🇵</span>
-        <span class="theme-name">Wabi-Sabi Japan</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('boombap')">
-        <span class="theme-icon">📻</span>
-        <span class="theme-name">Boom Bap NYC</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('samba')">
-        <span class="theme-icon">🇧🇷</span>
-        <span class="theme-name">Samba Nights Brazil</span>
-      </button>
-      
-      <div class="theme-category">🎮 RETRO & GAMING</div>
-      <button class="theme-btn" onclick="changeTheme('retrogaming')">
-        <span class="theme-icon">🕹️</span>
-        <span class="theme-name">Retro 8-Bit Arcade</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('matrix')">
-        <span class="theme-icon">💻</span>
-        <span class="theme-name">Matrix Hacker</span>
-      </button>
-      
-      <div class="theme-category">🌃 CYBERPUNK & NEON</div>
-      <button class="theme-btn" onclick="changeTheme('cyberpunk')">
-        <span class="theme-icon">🌃</span>
-        <span class="theme-name">Cyberpunk Dystopia</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('vaporwave')">
-        <span class="theme-icon">🌺</span>
-        <span class="theme-name">Vaporwave Aesthetic</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('tokyo')">
-        <span class="theme-icon">🗼</span>
-        <span class="theme-name">Neon Tokyo</span>
-      </button>
-      
-      <div class="theme-category">🎵 MUSIC MOODS</div>
-      <button class="theme-btn" onclick="changeTheme('lofi')">
-        <span class="theme-icon">🎧</span>
-        <span class="theme-name">Chill Lo-Fi Beats</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('metal')">
-        <span class="theme-icon">🤘</span>
-        <span class="theme-name">Heavy Metal</span>
-      </button>
-      
-      <div class="theme-category">🌌 SPACE & NATURE</div>
-      <button class="theme-btn" onclick="changeTheme('space')">
-        <span class="theme-icon">🌌</span>
-        <span class="theme-name">Cosmic Space</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('beach')">
-        <span class="theme-icon">🏖️</span>
-        <span class="theme-name">Beach Sunset</span>
-      </button>
 
-      <div class="theme-category">👑 LUXURY FASHION HOUSES</div>
-      <button class="theme-btn" onclick="changeTheme('lv')">
-        <span class="theme-icon">👜</span>
-        <span class="theme-name">Louis Vuitton Monogram</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('gucci')">
-        <span class="theme-icon">🐍</span>
-        <span class="theme-name">Gucci GG Supreme</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('armani')">
-        <span class="theme-icon">🦅</span>
-        <span class="theme-name">Giorgio Armani Nero</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('versace')">
-        <span class="theme-icon">🔱</span>
-        <span class="theme-name">Versace Medusa Gold</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('burberry')">
-        <span class="theme-icon">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
-        <span class="theme-name">Burberry Haymarket</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('chanel')">
-        <span class="theme-icon">⬛</span>
-        <span class="theme-name">Chanel Noir Quilté</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('hermes')">
-        <span class="theme-icon">🟠</span>
-        <span class="theme-name">Hermès Orange Sellier</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('dior')">
-        <span class="theme-icon">🌹</span>
-        <span class="theme-name">Dior Bar Jacket Bleu</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('fendi')">
-        <span class="theme-icon">👜</span>
-        <span class="theme-name">Fendi Zucca FF</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('bottega')">
-        <span class="theme-icon">🟢</span>
-        <span class="theme-name">Bottega Veneta Intrecciato</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('valentino')">
-        <span class="theme-icon">🔴</span>
-        <span class="theme-name">Valentino Rosso Garavani</span>
-      </button>
-      <button class="theme-btn" onclick="changeTheme('balenciaga')">
-        <span class="theme-icon">⚡</span>
-        <span class="theme-name">Balenciaga Couture Brutale</span>
-      </button>
+    <!-- CATEGORY GRID (level 1) -->
+    <div class="theme-options" id="theme-categories">
+      <button class="theme-cat-btn" onclick="openThemeCat('sinister')"><span class="theme-icon">💀</span><span class="theme-name">Sinister Division</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('colors')"><span class="theme-icon">🎨</span><span class="theme-name">Classic Colors</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('sports')"><span class="theme-icon">🏆</span><span class="theme-name">Sports Teams</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('holidays')"><span class="theme-icon">🎄</span><span class="theme-name">Holidays & Seasons</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('artistic')"><span class="theme-icon">🎨</span><span class="theme-name">Artistic Masterpieces</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('retro')"><span class="theme-icon">🕹️</span><span class="theme-name">Retro & Gaming</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('cyberpunk')"><span class="theme-icon">🌃</span><span class="theme-name">Cyberpunk & Neon</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('music')"><span class="theme-icon">🎵</span><span class="theme-name">Music Moods</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('nature')"><span class="theme-icon">🌌</span><span class="theme-name">Space & Nature</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('luxury')"><span class="theme-icon">👑</span><span class="theme-name">Luxury Fashion Houses</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('darkcarnival')"><span class="theme-icon">🪓</span><span class="theme-name">Dark Carnival</span></button>
+      <button class="theme-cat-btn" onclick="openThemeCat('artmovements')"><span class="theme-icon">🖨️</span><span class="theme-name">Art Movements</span></button>
+    </div>
 
-      <div class="theme-category">🪓 DARK CARNIVAL</div>
-      <button class="theme-btn" onclick="changeTheme('juggalo')">
-        <span class="theme-icon">🪓</span>
-        <span class="theme-name">Juggalo Dark Carnival</span>
-      </button>
+    <!-- THEME LIST (level 2) — hidden until category selected -->
+    <div class="theme-options" id="theme-list" style="display:none;">
+      <button class="theme-back-btn" onclick="closeThemeCat()">◀ BACK TO CATEGORIES</button>
+      <div id="theme-list-items"></div>
     </div>
   </div>
 
   <div class="dial-container">
     <div class="dial-label">STATION TUNER</div>
     <div class="station-display" id="station-display">950 - 🔥 Classic Rap Radio</div>
-    <input type="range" id="dial" min="0" max="21" value="0" class="dial-slider">
+    <input type="range" id="dial" min="0" max="22" value="0" class="dial-slider">
     <div class="dial-markers">
       <span>950</span>
       <span>955</span>
@@ -6391,7 +6297,8 @@ const STATIONS = [
   {num:968, name:"🔌 The Plug Radio", cat:"Music", master:true, networkShows:["acid-rap","coloring-book-chance","10-d-13.-prom-night","sm-1-01.-no-advance","21-savage-slaughter-tape","21-savage-slaughter-king_202411","slaughter-tape-21-savage","Moneybagg_Yo__NBA_YoungBoy_-_Fed_Babys_2-2020","NBA_YoungBoy_-_38_Baby_3-2020","NLE_Choppa_-_Top_Shotta-2020","VA-Strictly_4_The_Traps_N_Trunks_Long_Live_King_Von_Edition-2021","Yungeen_Ace_-_Life_Of_Betrayal-2018","VA-Strictly_4_The_Traps_N_Trunks_4th_Of_July_2021_Edition-2021","VA-DJ_Spinatik_-_Fuck_Yo_Playlist_3-2021","NLE_Choppa_-_Me_vs_Me-2022","King_Von_-_What_It_Means_To_Be_King-2022","Only_The_Family_-_Lil_Durk_Presents_Loyal_Bros-2021","Lil_Durk_-_Only_The_Family_Involved_2-2018","Lil_Durk_-_Only_The_Family_Involved_Vol.1-2018","DJ_Drama_and_Lil_Durk_-_Signed_To_The_Streets-2013","DJ_Drama_and_Don_Cannon_Present_Lil_Durk_-_Signed_To_The_Streets_2-2014","DJ_Drama_Presents_Nipsey_Hussle_-_Crenshaw-2013","Nipsey_Hussle_and_DJ_Drama_-_Mailbox_Money-2015","Nipsey_Hussle_-_Slauson_Boy_2-2016","Tory_Lanez_-_The_New_Toronto_2-2016","Tory_Lanez_-_Chixtape_4-2016","Tory_Lanez_-_Chixtape_2-2014","Tory_Lanez_-_Daystar-2020","Tory_Lanez_-_Sincerely_Tory-2012","Tory_Lanez_-_Mr._Peterson_Hosted_By_DJ_Ill_Will_and_DJ_Rockstar-2011","Drake_Vs._Tory_Lanez","Tory_Lanez_-_Swavey-2011","Tory_Lanez_-_Sorry_4_What-2022","Young_Thug_-_See_You-2016","Young_Dolph_and_Key_Glock_-_Dum_and_Dummer_2-2021","Young_Dolph_and_Key_Glock_-_Dum_and_Dummer-2019","Young_Dolph_-_High_Class_Street_Music_4_American_Gangster_Hosted_By_DJ_Scream","Young_Dolph_-_High_Class_Street_Music_5_The_Plug_Best_Friend-2015","Young_Dolph_-_High_Class_Street_Music_3_Trappin_Out_A_Mansion-2013","Young_Dolph_-_High_Class_Street_Music_5_The_Plug_Best_Friend","DJ_Scream_and_Young_Dolph_-_Blue_Magic-2012","tha-tour-1-rich-gang","Young_Dolph_-_Everything_Back-2017","Lil_Uzi_Vert_-_Lil_1600-2017","Lil_Uzi_Vert_-_The_Rare_Uzi-2016","Lil_Uzi_Vert_-_Luv_Is_Rage_1.5-2017","Lil_Uzi_Vert_-_2_Luv_Is_2_Rage-2017","lil-uzi-vs-the-world","Lil_Uzi_Vert_-_Lil_Uzi_Rules_The_World-2017","Young_Dolph_-_Hustler_Musik","Young_Dolph_-_16_Zips-2015","Key_Glock_-_Glock_Bond-2018","Key_Glock_-_Glockoma-2018","Key_Glock_-_Yellow_Tape_2-2021","Young_Nudy_-_Slimerre-2019","Hoodrich_Keem_and_DJ_Scream_Present_Young_Nudy_-_Slime_Ball_2-2017","Lil_Bibby_-_Free_Crack_Hosted_By_DJ_Scream-2013","Key_Glock_-_Glock_Season-2017","Kodak_Black_-_Institution-2015","Kodak_Black_-_Unreleased-2016","Kodak_Black_-_I_Remember-2016","Kodak_Black_-_Painting_Pictures_2-2017","Kodak_Black_-_Project_Baby_2-2017","Kodak_Black_-_Orange_Is_The_New_Black-2017","Kevin_Gates_-_Bismillah-2017","Kevin_Gates_-_Unreleased-2016","Kevin_Gates_-_Dont_Know-2016","Kevin_Gates_-_Truth_Be_Told-2017","Kevin_Gates_-_Gold_Paradise-2017","Kevin_Gates_-_Arm_and_Hammer-2016","Kodak_Black_and_Plies_-_F.E.M.A.-2017","Kodak_Black_-_Lil_B-I-G-_Pac-2016","Young_Thug_and_Migos_-_Migos_Thuggin-2015","21_Savage_-_Issa_Savage-2017","DJ_Drama_and_Don_Cannon_Present_Lil_Reese_-_Dont_Like-2012","Roddy_Ricch_-_Feed_Tha_Streets_2-2018","NBA_Youngboy_-_Slime_Mentality-2020","Quando_Rondo_-_Before_My_Time_Up-2020","NBA_Youngboy_-_Thug_Holiday-2018","Moneybagg_Yo_-_Indicted-2018","Moneybagg_Yo_-_Walker_Holmes-2019","Migos_-_3_Way_EP-2016","NBA_Young_Boy_-_Never_Broke_Again_Untouchable-2017","NBA_YoungBoy_-_Unreleased_38_Baby_Edition-2019","21-savage-free-guwop-ep","Owl-Pharoah-OG","dirty-sprite-2","future-self-titled","Hndrxx","captain-california","TheWIZRD","last-call_202409","DIBIKS","monster-future","culture2017","2000-joey-badass","14.-education","hellboy_202503","lil-peep-never-forgotten","lil-peep-crybaby_202503","lil-peep-come-over-when-youre-sober-pt.-2","lil-peep-live-forever_202503","lil-peep-california-girls","lil-peep-vertigo_202503","lifeafterdeathrow","LilpeepFeelz2015","benztruck01"], avgDur:2400},
   {num:969, name:"🎧 DJ Gotti On The Mix", cat:"Live", streamUrl:"http://gostream.store:8544/", avgDur:0},
   {num:970, name:"🎪 Juggalo Radio", cat:"Music", master:true, networkShows:["ICP-yukon-moose-dick-bigfoot-vip-single","icp-the-phanton-GOTJ-2015","Welcome2TheUnderground","TwiztidDontPlayThis4Any1","DJClayTheHandsofOddTourExclusiveEP2014","InsaneClownPosseSteveMeetsAbuEP2019","DukDaFukDown","PsychopathicRecordsPsychopathicPsyphers1to4","psychopathic-records-1998-sampler","PsyRydasRydenDirtay","BlazeSelfTitled2000","IntelligenceViolenceRemastered","Hallowicked2016","icp-fun-hallowicked-2021","ICP-haunted-by-the-devil","insaneclownpossethedark2019","CheckYourShitInBitch","TheRydas2019","DLOpaqueBrotherhoodRareDeluxeTracks","SoopaVillainzFurious","SerialKillazEP","RageOfThePlagueEP","IntelligenceAndViolence2017Remaster","twiztid-welcome-to-your-funeral-8-let-me-go","Twiztid-U-Aint-never-heard-of-santa","TwiztidAVeryTwiztidXmas2019","twiztid-4-the-fam-ep-2003","Twiztid-Frankenstein-VLS-2016","kottonmouth-kings-twiztid-watch-out-2012","twiztid-for-the-fam-vol2-2014","TwiztidCCHalloween","twiztid-how-does-it-feel-VLS-2017","TwiztidBack2The80s2020","twiztidfanclubredvinylseries","TwiztidPsychomania","TwiztidForTheFamVol3","mostasteless98","crypticcollection2","crypticcollection1","Twiztid-Freek-Show-Disturbed-Unheard-2020","juggalo-gangsta-niggas-4-life","ViolentJTheShiningDemo2008","riddlebox","theringmaster","icpcoc","insane-clown-posse-devils-night-2024","icpcottoncandy","milenkohollywood","15-climbing","mostasteless2025","coltongrundy","blazextupac","thewraith","15-death-don-t-want-you","talesfromthelotuspod","psyphers","blazeyadeadhomie","icptunneloflove_202508","bizzar","freekshow","monoxide-singles-covers-2024","09-sour-batch-b-tches","twiztid-wicked","twiztidfulldiscography","blaze-ya-dead-homie-clockwork-grey_202501","twiztid-independence-day","ProblemChildren","insane-clown-posse-hallowicked-collection-20th-anniversary-edition","twiztid-heartbroken-and-homicidal","boondox-punkinhed","boondox-abbadon","boondox-south-of-hell","boondox-the-murder","uga-the-underground-avengers-ep","boondox-krimson-crow","alla-xul-elu-the-almighty","alla-xul-elu-the-mauxuleum","twiztid-mans-myth-vol.1","VA-MNE-Fall-Sampler-2016"], avgDur:2400},
-  {num:971, name:"🤘 Nu Metal Radio", cat:"Music", master:true, networkShows:["dbkillingthedrama","stilllifemtp","scarsoflifemute","scarsoflifeat","birthofacentury","nightwish-century-child","nightwish-oceanborn-vinyl-1998","a_torn_dilema_tainted_by_birth_2004","aphile_waiting_for_an_answer_2004","broken_stone_life_after_you_2005","rumblefish_exit_highland_2003","endface_draw_the_line_2004","mr_slate_blood_groove_2006","her_words_kill_i_will_not_die_her_hero_2004","neveroddoreven_self_titled_2002","mervyn_albin_100_hurtin_albertan_fer_certain_2004","metric_madness_escape_from_the_factory_2008","stone_cold_sober_small_town_2009","medialabbm","dust_self_titled_2002","aggressive_persuasion_prolonged_farewells_2005","aggressive_persuasion_sticks_and_stones_ep_2003","aggressive_persuasion_self_titled_2001","absenthoughtsflac","venaculasst","solwhatwereflect","flyleaf2022flyleafdeluxeedition","stillifeamiw","hybrid_glitch_self_titled_2004","scene_of_the_crime_prelude_2007","anubis_the_last_again_2000","dbtothecore","waking_the_maze_ep_2004","lhmimp","SOaDMezmerize","system-of-a-down","steal-this-album_202501","avenged-sevenfold-hail-to-the-king-2013","downbreedtks","chinest"], avgDur:2400}
+  {num:971, name:"🤘 Nu Metal Radio", cat:"Music", master:true, networkShows:["dbkillingthedrama","stilllifemtp","scarsoflifemute","scarsoflifeat","birthofacentury","nightwish-century-child","nightwish-oceanborn-vinyl-1998","a_torn_dilema_tainted_by_birth_2004","aphile_waiting_for_an_answer_2004","broken_stone_life_after_you_2005","rumblefish_exit_highland_2003","endface_draw_the_line_2004","mr_slate_blood_groove_2006","her_words_kill_i_will_not_die_her_hero_2004","neveroddoreven_self_titled_2002","mervyn_albin_100_hurtin_albertan_fer_certain_2004","metric_madness_escape_from_the_factory_2008","stone_cold_sober_small_town_2009","medialabbm","dust_self_titled_2002","aggressive_persuasion_prolonged_farewells_2005","aggressive_persuasion_sticks_and_stones_ep_2003","aggressive_persuasion_self_titled_2001","absenthoughtsflac","venaculasst","solwhatwereflect","flyleaf2022flyleafdeluxeedition","stillifeamiw","hybrid_glitch_self_titled_2004","scene_of_the_crime_prelude_2007","anubis_the_last_again_2000","dbtothecore","waking_the_maze_ep_2004","lhmimp","SOaDMezmerize","system-of-a-down","steal-this-album_202501","avenged-sevenfold-hail-to-the-king-2013","downbreedtks","chinest","vol.-3-the-subliminal-verses","14-spit-it-out-cd-2","paranormal_202404","the-paradigm-shift-deluxe-edition","life-is-peachy_202503","the-path-of-totality_202601","take-a-look-in-the-mirror","the-serenity-of-suffering-deluxe-edition","wisconsin-death-trip","the-sinister-urge","hellbilly-deluxe","hellbilly-deluxe-2","1995-white-zombie-astro-creep-2000","godsmack-cd-wav","06-godsmack-mistakes","powerman-5000-destroy-what-you-enjoy","powerman-5K","06-a-is-for-apathy","rage-against-the-machine_202503","RATM-Revolution-KTS-1993","mtv2-headbangers-ball"], avgDur:2400},
+  {num:972, name:"🔥 Hardbass Nation", cat:"Music", master:true, networkShows:["yt-1s.com-dj-blyatman-kamaz-official-music-video","dj-blyatman-russian-village-boys-made-in-russia-official-music-video","SLAVKINGBorisVs.DJBlyatman","DJBlyatmanBabushka","dj-blyatman-tsar-bomb","dj-blyatman-no-problem-feat.-loli-official-video","dj-blyatman-kamaz-ft.-dlb","dj-blyatman-alan-aztec-russian-monster","slav-king-boris-vs.-dj-blyatman","dj-blyatman-autobus-feat-nick-sax-lolli-slav-hardbass-music-video","hard-bass-2016","q-base-2016-die-hards-only","va-hardstyle_by_q-dance_2023_vol_2-qdig050-web-2023-oma","va-hardstyle_anthems_2024-mor31560-web-2023-justify_int","va-majesty_of_hardstyle_the_very_best_in_hands_up-mor31564-web-2023-aov","VA_-_Scantraxx_Hardstyle_Spring_2022-WEB-2022","va_-_hardstyle_empire_2023.2-mor31595-web-2023","VA-Hardstyle_Summer_2023-WEB-2023-OMA","q-base-2017","hands-up-freaks-vol-6-deejay-edition-2016","2006-bassleader_202305","damn-best-of-2003-2003-192"], avgDur:2400}
 ];
 
 // Reggaeton Dynamic Loader - Loads from your two specified collections
@@ -6590,25 +6497,27 @@ function generateWeeklySchedule(weekSeed) {
     if(station.streamUrl || !station.networkShows || !station.networkShows.length) return;
 
     // Each station gets its OWN isolated seed — independent of other stations
-    // This ensures all radio editions produce identical schedules for shared stations
     let seedCounter = weekSeed * 100000 + station.num * 10000;
 
     let currentTime = 0;
     const weekDuration = 7 * 24 * 60 * 60; // 604800 seconds
 
+    // Use station's avgDur as the slot length so elapsed time math stays within real track bounds
+    // avgDur is the full album/show duration — each slot = one full show
+    const slotDuration = station.avgDur && station.avgDur > 0 ? station.avgDur : 2400;
+
     while(currentTime < weekDuration) {
-      const showIndex   = Math.floor(seededRandom(seedCounter++) * station.networkShows.length);
-      const trackIndex  = Math.floor(seededRandom(seedCounter++) * 50);
-      const trackDuration = 180 + Math.floor(seededRandom(seedCounter++) * 120);
+      const showIndex  = Math.floor(seededRandom(seedCounter++) * station.networkShows.length);
+      const trackIndex = Math.floor(seededRandom(seedCounter++) * 20); // max 20 tracks per show
 
       schedule[station.num].push({
         show:      station.networkShows[showIndex],
         trackIndex: trackIndex,
         startTime:  currentTime,
-        duration:   trackDuration,
+        duration:   slotDuration,
         station:    station.num
       });
-      currentTime += trackDuration;
+      currentTime += slotDuration;
     }
   });
 
@@ -6857,17 +6766,36 @@ async function go(i){
   document.getElementById('name').textContent = s.name;
   document.getElementById('station-display').textContent = `${s.num} - ${s.name}`;
   document.getElementById('dial').value = i;
+  if(s.cat !== 'Live') {
+    document.getElementById('now-playing').textContent = '📡 Tuning in...';
+  }
   await playSync();
 }
 
 function next(){
   if(!on) return;
-  go((cur + 1) % STATIONS.length);
+  const nextIdx = (cur + 1) % STATIONS.length;
+  go(nextIdx);
+  // Prefetch the one after that in background
+  const prefetchIdx = (nextIdx + 1) % STATIONS.length;
+  const prefetchSt = STATIONS[prefetchIdx];
+  if(prefetchSt && prefetchSt.networkShows && prefetchSt.networkShows.length) {
+    const show = prefetchSt.networkShows[0];
+    if(!metaCache[show]) fetchFiles(show);
+  }
 }
 
 function prev(){
   if(!on) return;
-  go((cur - 1 + STATIONS.length) % STATIONS.length);
+  const prevIdx = (cur - 1 + STATIONS.length) % STATIONS.length;
+  go(prevIdx);
+  // Prefetch the one before that in background
+  const prefetchIdx = (prevIdx - 1 + STATIONS.length) % STATIONS.length;
+  const prefetchSt = STATIONS[prefetchIdx];
+  if(prefetchSt && prefetchSt.networkShows && prefetchSt.networkShows.length) {
+    const show = prefetchSt.networkShows[0];
+    if(!metaCache[show]) fetchFiles(show);
+  }
 }
 
 function random(){
@@ -7073,12 +7001,20 @@ p.addEventListener('canplay', () => {
     
     console.log('   Attempting seek to:', seekTime, 'duration:', p.duration);
     
-    if(!isNaN(seekTime) && seekTime > 0 && p.duration && seekTime < p.duration) {
-      p.currentTime = seekTime;
-      console.log('   ✅ LIVE: Seeked to', Math.floor(seekTime), 'seconds (duration:', Math.floor(p.duration), 's)');
-    } else if(!isNaN(seekTime) && seekTime >= p.duration) {
-      console.log('   ⚠️ LIVE: Seek time', Math.floor(seekTime), 'exceeds duration', Math.floor(p.duration), '- starting from beginning');
-      p.currentTime = 0;
+    if(!isNaN(seekTime) && p.duration && p.duration > 0) {
+      if(seekTime > 0 && seekTime < p.duration) {
+        // Normal seek within track
+        p.currentTime = seekTime;
+        console.log('   ✅ LIVE: Seeked to', Math.floor(seekTime), 'seconds (duration:', Math.floor(p.duration), 's)');
+      } else if(seekTime >= p.duration) {
+        // Elapsed time exceeds this track's actual duration — wrap to start
+        // This prevents stalling on short tracks
+        const wrappedTime = seekTime % p.duration;
+        p.currentTime = wrappedTime > 0 ? wrappedTime : 0;
+        console.log('   🔁 LIVE: Elapsed', Math.floor(seekTime), 's > duration', Math.floor(p.duration), 's — wrapped to', Math.floor(p.currentTime), 's');
+      } else {
+        p.currentTime = 0;
+      }
     }
     
     // Clear the pending seek
@@ -7183,13 +7119,142 @@ function toggleLiveMode(){
 function toggleThemeMenu(){
   const menu = document.getElementById('theme-menu');
   menu.classList.toggle('open');
+  // Always reset to category view when opening
+  if(menu.classList.contains('open')) closeThemeCat();
+}
+
+const THEME_CATEGORIES = {
+  sinister: {
+    label: '💀 Sinister Division',
+    themes: [
+      {id:'brown', icon:'💀🔥', name:'Sinister Division (Default)'}
+    ]
+  },
+  colors: {
+    label: '🎨 Classic Colors',
+    themes: [
+      {id:'blue',icon:'🔵',name:'Blue Ocean'},{id:'red',icon:'🔴',name:'Red Fire'},
+      {id:'green',icon:'🟢',name:'Green Forest'},{id:'purple',icon:'🟣',name:'Purple Night'},
+      {id:'cyan',icon:'🩵',name:'Cyan Wave'},{id:'orange',icon:'🟠',name:'Orange Sunset'},
+      {id:'pink',icon:'🩷',name:'Pink Dream'},{id:'yellow',icon:'🟡',name:'Yellow Sun'},
+      {id:'teal',icon:'🫧',name:'Teal Breeze'},{id:'lime',icon:'💚',name:'Lime Splash'},
+      {id:'magenta',icon:'🌸',name:'Magenta Glow'},{id:'indigo',icon:'💙',name:'Indigo Deep'},
+      {id:'amber',icon:'🧡',name:'Amber Warm'},{id:'mint',icon:'🍃',name:'Mint Fresh'},
+      {id:'coral',icon:'🪸',name:'Coral Reef'},{id:'lavender',icon:'💜',name:'Lavender Haze'},
+      {id:'turquoise',icon:'🌊',name:'Turquoise Sea'},{id:'crimson',icon:'❤️',name:'Crimson Rage'},
+      {id:'navy',icon:'🌌',name:'Navy Midnight'},{id:'olive',icon:'🫒',name:'Olive Drab'},
+      {id:'gold',icon:'⭐',name:'Gold Shine'},{id:'silver',icon:'🌙',name:'Silver Moon'},
+      {id:'rose',icon:'🌹',name:'Rose Petal'},{id:'slate',icon:'🪨',name:'Slate Gray'}
+    ]
+  },
+  sports: {
+    label: '🏆 Sports Teams',
+    themes: [
+      {id:'lakers',icon:'🏀',name:'Lakers Purple/Gold'},{id:'celtics',icon:'☘️',name:'Celtics Green'},
+      {id:'cowboys',icon:'🏈',name:'Cowboys Blue/Silver'},{id:'steelers',icon:'⚫',name:'Steelers Black/Gold'},
+      {id:'yankees',icon:'⚾',name:'Yankees Navy'},{id:'redsox',icon:'🧦',name:'Red Sox'},
+      {id:'patriots',icon:'🦅',name:'Patriots Red/Navy'},{id:'packers',icon:'🧀',name:'Packers Green/Gold'},
+      {id:'bulls',icon:'🐂',name:'Bulls Red/Black'},{id:'warriors',icon:'⚡',name:'Warriors Blue/Gold'},
+      {id:'heat',icon:'🔥',name:'Miami Heat'},{id:'raiders',icon:'☠️',name:'Raiders Silver/Black'}
+    ]
+  },
+  holidays: {
+    label: '🎄 Holidays & Seasons',
+    themes: [
+      {id:'christmas',icon:'🎄',name:'Christmas'},{id:'halloween',icon:'🎃',name:'Halloween'},
+      {id:'valentines',icon:'💝',name:"Valentine's Day"},{id:'stpatricks',icon:'🍀',name:"St. Patrick's Day"},
+      {id:'easter',icon:'🐰',name:'Easter Pastels'},{id:'july4th',icon:'🎆',name:'4th of July'},
+      {id:'thanksgiving',icon:'🦃',name:'Thanksgiving'},{id:'newyear',icon:'🎊',name:"New Year's Eve"},
+      {id:'summer',icon:'☀️',name:'Summer Vibes'},{id:'autumn',icon:'🍂',name:'Autumn Leaves'},
+      {id:'winter',icon:'❄️',name:'Winter Frost'},{id:'spring',icon:'🌸',name:'Spring Bloom'}
+    ]
+  },
+  artistic: {
+    label: '🎨 Artistic Masterpieces',
+    themes: [
+      {id:'outrun',icon:'🌆',name:'Outrun Sunset'},{id:'goldenstate',icon:'🏀',name:'Golden State Arena'},
+      {id:'icecold',icon:'💎',name:'Ice Cold Diamonds'},{id:'wabisabi',icon:'🇯🇵',name:'Wabi-Sabi Japan'},
+      {id:'boombap',icon:'📻',name:'Boom Bap NYC'},{id:'samba',icon:'🇧🇷',name:'Samba Nights Brazil'}
+    ]
+  },
+  retro: {
+    label: '🕹️ Retro & Gaming',
+    themes: [
+      {id:'retrogaming',icon:'🕹️',name:'Retro 8-Bit Arcade'},{id:'matrix',icon:'💻',name:'Matrix Hacker'}
+    ]
+  },
+  cyberpunk: {
+    label: '🌃 Cyberpunk & Neon',
+    themes: [
+      {id:'cyberpunk',icon:'🌃',name:'Cyberpunk Dystopia'},{id:'vaporwave',icon:'🌺',name:'Vaporwave Aesthetic'},
+      {id:'tokyo',icon:'🗼',name:'Neon Tokyo'}
+    ]
+  },
+  music: {
+    label: '🎵 Music Moods',
+    themes: [
+      {id:'lofi',icon:'🎧',name:'Chill Lo-Fi Beats'},{id:'metal',icon:'🤘',name:'Heavy Metal'}
+    ]
+  },
+  nature: {
+    label: '🌌 Space & Nature',
+    themes: [
+      {id:'space',icon:'🌌',name:'Cosmic Space'},{id:'beach',icon:'🏖️',name:'Beach Sunset'}
+    ]
+  },
+  luxury: {
+    label: '👑 Luxury Fashion Houses',
+    themes: [
+      {id:'lv',icon:'👜',name:'Louis Vuitton Monogram'},{id:'gucci',icon:'🐍',name:'Gucci GG Supreme'},
+      {id:'armani',icon:'🦅',name:'Giorgio Armani Nero'},{id:'versace',icon:'🔱',name:'Versace Medusa Gold'},
+      {id:'burberry',icon:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',name:'Burberry Haymarket'},{id:'chanel',icon:'⬛',name:'Chanel Noir Quilté'},
+      {id:'hermes',icon:'🟠',name:'Hermès Orange Sellier'},{id:'dior',icon:'🌹',name:'Dior Bar Jacket Bleu'},
+      {id:'fendi',icon:'👜',name:'Fendi Zucca FF'},{id:'bottega',icon:'🟢',name:'Bottega Veneta Intrecciato'},
+      {id:'valentino',icon:'🔴',name:'Valentino Rosso Garavani'},{id:'balenciaga',icon:'⚡',name:'Balenciaga Couture Brutale'}
+    ]
+  },
+  darkcarnival: {
+    label: '🪓 Dark Carnival',
+    themes: [
+      {id:'juggalo',icon:'🪓',name:'Juggalo Dark Carnival'}
+    ]
+  },
+  artmovements: {
+    label: '🖨️ Art Movements',
+    themes: [
+      {id:'riso',icon:'🖨️',name:'Risograph Print'},
+      {id:'solarpunk',icon:'🌿',name:'Solarpunk Future'},
+      {id:'memphis',icon:'🔷',name:'Memphis Design 1981'}
+    ]
+  }
+};
+
+function openThemeCat(catKey) {
+  const cat = THEME_CATEGORIES[catKey];
+  if(!cat) return;
+  document.getElementById('theme-categories').style.display = 'none';
+  document.getElementById('theme-list').style.display = 'flex';
+  document.getElementById('theme-header-title').textContent = cat.label;
+
+  const container = document.getElementById('theme-list-items');
+  container.innerHTML = cat.themes.map(t =>
+    `<button class="theme-btn" onclick="changeTheme('${t.id}')">
+      <span class="theme-icon">${t.icon}</span>
+      <span class="theme-name">${t.name}</span>
+    </button>`
+  ).join('');
+}
+
+function closeThemeCat() {
+  document.getElementById('theme-categories').style.display = 'flex';
+  document.getElementById('theme-list').style.display = 'none';
+  document.getElementById('theme-header-title').textContent = 'SELECT CATEGORY';
 }
 
 function changeTheme(theme){
   const root = document.documentElement;
   root.className = theme;
   localStorage.setItem('radioTheme', theme);
-  // Close menu after selection
   const menu = document.getElementById('theme-menu');
   menu.classList.remove('open');
 }
