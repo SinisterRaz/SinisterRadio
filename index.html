@@ -7788,8 +7788,6 @@ mark.sr-hl{background:var(--ch-color,#d4a843);color:#000;border-radius:2px;paddi
       <button class="stab"        data-tab="playlists" onclick="switchTab('playlists')">≡ PLAYLISTS</button>
     </div>
     <div id="db-status" class="db-status">⏳ Loading...</div>
-    <button id="build-db-btn" class="build-db-btn" onclick="exportDB()" title="One-time: crawl everything and download db.json to host">⬇ BUILD DATABASE FILE</button>
-    <div class="build-db-hint">One-time setup: builds the full song database, then commit the downloaded db.json next to index.html for instant search for everyone.</div>
     <button class="search-close" onclick="toggleSearch()">✕</button>
   </div>
 
@@ -11422,48 +11420,6 @@ let searchTab   = 'search';
 try { dbFavorites = JSON.parse(localStorage.getItem('dar_fav2') || '[]'); } catch(e) {}
 try { dbPlaylists = JSON.parse(localStorage.getItem('dar_pl2')  || '{}'); } catch(e) {}
 
-function _exportGenre(t){
-  const sg=(t.genre||t.searchableGenre||'');
-  if(sg && sg.toLowerCase()!=='music') return sg;
-  let d=_stationGenreFor(t.stationNum);
-  if(!d && t.stationName) d=_deriveGenre({name:t.stationName});
-  return d||sg||'';
-}
-async function exportDB(){
-  const btn=document.getElementById('build-db-btn');
-  const setBtn=function(txt,dis){ if(btn){ btn.textContent=txt; btn.disabled=!!dis; } };
-  if(!confirm('This crawls every station from Archive.org and downloads db.json. It can take a few minutes \u2014 keep this tab open and on this page. Continue?')) return;
-  setBtn('\u23f3 Building\u2026 keep tab open', true);
-  try{
-    trackIndexBuilt=false;
-    try{ localStorage.removeItem(TRACK_INDEX_CACHE_KEY); localStorage.removeItem(ARTIST_INDEX_CACHE_KEY); }catch(e){}
-    await buildCompleteTrackIndex();
-    if(!trackIndex.length) throw new Error('No tracks were indexed');
-    const tracks=trackIndex.map(function(t){
-      return { title:t.name||'', url:t.url||'', duration:t.duration||0, show:t.showId||'',
-        artist:(t.artists&&t.artists[0])||t.artist||'', album:t._album||t.albumTitle||'',
-        station_name:t.stationName||'', station:t.stationNum||0, genre:_exportGenre(t),
-        uid:t._uid||t.url||'', year:t._year||'' };
-    });
-    const aS=new Set(), gS=new Set(), yS=new Set(), stn={};
-    tracks.forEach(function(t){ if(t.artist)aS.add(t.artist); if(t.genre)gS.add(t.genre); if(t.year)yS.add(t.year); if(t.station!=null)stn[t.station]=t.station_name||('Station '+t.station); });
-    const out={ total_tracks:tracks.length, generated:new Date().toISOString(),
-      index:{ artists:Array.from(aS).slice(0,5000), genres:Array.from(gS).sort(),
-        years:Array.from(yS).sort().reverse(),
-        stations:Object.keys(stn).map(function(k){ return {num:isNaN(+k)?k:+k, name:stn[k]}; }) },
-      tracks:tracks };
-    const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='db.json'; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function(){ URL.revokeObjectURL(url); },5000);
-    setBtn('\u2713 db.json downloaded ('+tracks.length.toLocaleString()+')', false);
-    if(typeof _toast==='function') _toast('db.json ready \u2014 '+tracks.length.toLocaleString()+' tracks. Commit it next to index.html');
-  }catch(e){
-    console.error('exportDB failed',e);
-    setBtn('\u26a0\ufe0f Build failed \u2014 retry', false);
-    alert('Build failed: '+((e&&e.message)||e));
-  }
-}
 async function loadDB() {
   if (dbLoadTried || trackIndexBuilt) return;
   dbLoadTried = true;
