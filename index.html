@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sinister Division's Dead Archive Radio</title>
 <!-- VERSION 2.0 - TRACK-BASED SCHEDULING (not album-based) -->
-<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+<script src="./peerjs.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700;900&family=Rajdhani:wght@600&family=Monoton&family=Audiowide&family=Anton&family=Bebas+Neue&family=Bungee&family=Permanent+Marker&family=Noto+Serif+JP:wght@700;900&family=Lilita+One&family=Press+Start+2P&family=Creepster&family=Nosifer&family=Black+Ops+One&family=Righteous&family=Pacifico&family=Bangers&family=Cinzel:wght@700;900&family=Iceland&family=Faster+One&family=Rubik+Glitch&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -7606,16 +7606,24 @@ input[type="range"]::-moz-range-thumb{
 mark.sr-hl{background:var(--ch-color,#d4a843);color:#000;border-radius:2px;padding:0 1px;}
 #bulk-bar button{cursor:pointer;}
 #sq-sort{width:100%;}
-.br-link{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;}
+.br-link{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;transition:color .15s;}
 .br-link:hover{color:var(--ch-color,#d4a843);}
 .browse-chip{display:flex;align-items:center;gap:8px;margin:4px 0 2px;padding:4px 10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:14px;font-size:12px;font-weight:700;width:fit-content;}
 .browse-chip .bc-x{background:none;border:none;color:inherit;cursor:pointer;font-size:13px;padding:0 2px;opacity:.7;}
 .browse-chip .bc-x:hover{opacity:1;}
-.party-now{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9998;max-width:92%;background:linear-gradient(135deg,rgba(24,0,32,0.96),rgba(46,0,54,0.96));border:1px solid var(--ch-color,#d4a843);border-radius:12px;padding:8px 16px;box-shadow:0 4px 24px rgba(0,0,0,.55);color:#fff;font-family:sans-serif;text-align:center;pointer-events:none;}
-.party-now .pn-head{font-size:10px;letter-spacing:1px;opacity:.7;text-transform:uppercase;}
-.party-now .pn-now{font-size:14px;font-weight:700;margin:2px 0;}
+.party-now{position:fixed;bottom:16px;top:auto;left:50%;transform:translate(-50%,0);z-index:9998;max-width:92%;background:linear-gradient(135deg,rgba(24,0,32,0.97),rgba(46,0,54,0.97));border:1px solid var(--ch-color,#d4a843);border-radius:12px;padding:9px 18px;box-shadow:0 6px 28px rgba(0,0,0,.6),0 0 18px var(--ch-glow,rgba(212,168,67,.35));color:#fff;text-align:center;pointer-events:none;animation:pnUp .35s ease;backdrop-filter:blur(4px);}
+@keyframes pnUp{from{opacity:0;transform:translate(-50%,14px);}to{opacity:1;transform:translate(-50%,0);}}
+.party-now .pn-head{font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:2px;opacity:.8;text-transform:uppercase;color:var(--ch-color,#d4a843);}
+.party-now .pn-now{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;margin:3px 0;}
 .party-now .pn-from{font-size:11px;opacity:.8;}
 .party-now .pn-next{font-size:11px;opacity:.7;margin-top:3px;max-width:620px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#live-btn{margin-left:8px;padding:3px 11px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:#fff;background:linear-gradient(135deg,#c81d3c,#8b0000);border:1px solid #ff4466;border-radius:12px;cursor:pointer;vertical-align:middle;animation:livePulse 2s infinite;}
+#live-btn:hover{filter:brightness(1.2);}
+@keyframes livePulse{0%,100%{box-shadow:0 0 4px rgba(255,68,102,.5);}50%{box-shadow:0 0 12px rgba(255,68,102,.9);}}
+.build-db-btn{width:100%;margin:6px 0 2px;padding:8px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:#000;background:var(--ch-color,#d4a843);border:none;border-radius:6px;cursor:pointer;}
+.build-db-btn:hover{filter:brightness(1.1);}
+.build-db-btn:disabled{opacity:.6;cursor:wait;}
+.build-db-hint{font-size:10px;opacity:.6;text-align:center;margin:0 0 6px;line-height:1.35;}
 </style>
 </head>
 <body>
@@ -7780,6 +7788,8 @@ mark.sr-hl{background:var(--ch-color,#d4a843);color:#000;border-radius:2px;paddi
       <button class="stab"        data-tab="playlists" onclick="switchTab('playlists')">≡ PLAYLISTS</button>
     </div>
     <div id="db-status" class="db-status">⏳ Loading...</div>
+    <button id="build-db-btn" class="build-db-btn" onclick="exportDB()" title="One-time: crawl everything and download db.json to host">⬇ BUILD DATABASE FILE</button>
+    <div class="build-db-hint">One-time setup: builds the full song database, then commit the downloaded db.json next to index.html for instant search for everyone.</div>
     <button class="search-close" onclick="toggleSearch()">✕</button>
   </div>
 
@@ -8211,10 +8221,20 @@ async function fetchFiles(identifier){
     const r = await fetch('https://archive.org/metadata/' + identifier);
     const j = await r.json();
     
-    // Archive.org might return metadata without files array
+    // Big crawls get rate-limited and archive.org returns an empty response even for
+    // albums that DO have tracks. Retry once after a short backoff, then cache the result
+    // either way so we never re-hammer the same album.
     if(!j.files || !Array.isArray(j.files)) {
-      console.warn(`⚠️ No files array for ${identifier}`);
-      return [];
+      try{
+        await new Promise(res => setTimeout(res, 600));
+        const r2 = await fetch('https://archive.org/metadata/' + identifier);
+        const j2 = await r2.json();
+        if(j2 && Array.isArray(j2.files)) j.files = j2.files;
+      }catch(e){}
+      if(!j.files || !Array.isArray(j.files)) {
+        metaCache[identifier] = [];   // cache the miss (restricted/empty album) — don't fetch it again
+        return metaCache[identifier];
+      }
     }
     
     const files = j.files.filter(f => {
@@ -10142,9 +10162,14 @@ async function buildCompleteTrackIndex() {
   const updateStatus = () => {
     const percent = Math.round((processedShows / totalShows) * 100);
     trackIndexProgress = percent;
-    const statusEl = document.getElementById('searchResults');
+    const cnt = trackIndex.length.toLocaleString();
+    const b = document.getElementById('build-db-btn');
+    if (b && b.disabled) b.textContent = `⏳ ${percent}% · ${processedShows}/${totalShows} shows · ${cnt} tracks`;
+    const ds = document.getElementById('db-status');
+    if (ds && !trackIndexBuilt) ds.textContent = `Building ${percent}% · ${cnt} tracks`;
+    const statusEl = document.getElementById('search-results');
     if (statusEl && !trackIndexBuilt) {
-      statusEl.innerHTML = `<div class="search-no-results">Building search index... ${percent}%<br><small>This happens once, then cached locally</small></div>`;
+      statusEl.innerHTML = `<div class="search-placeholder">Building database… ${percent}%<br><small>${processedShows}/${totalShows} shows · ${cnt} tracks · keep this tab open</small></div>`;
     }
   };
   
@@ -11397,6 +11422,48 @@ let searchTab   = 'search';
 try { dbFavorites = JSON.parse(localStorage.getItem('dar_fav2') || '[]'); } catch(e) {}
 try { dbPlaylists = JSON.parse(localStorage.getItem('dar_pl2')  || '{}'); } catch(e) {}
 
+function _exportGenre(t){
+  const sg=(t.genre||t.searchableGenre||'');
+  if(sg && sg.toLowerCase()!=='music') return sg;
+  let d=_stationGenreFor(t.stationNum);
+  if(!d && t.stationName) d=_deriveGenre({name:t.stationName});
+  return d||sg||'';
+}
+async function exportDB(){
+  const btn=document.getElementById('build-db-btn');
+  const setBtn=function(txt,dis){ if(btn){ btn.textContent=txt; btn.disabled=!!dis; } };
+  if(!confirm('This crawls every station from Archive.org and downloads db.json. It can take a few minutes \u2014 keep this tab open and on this page. Continue?')) return;
+  setBtn('\u23f3 Building\u2026 keep tab open', true);
+  try{
+    trackIndexBuilt=false;
+    try{ localStorage.removeItem(TRACK_INDEX_CACHE_KEY); localStorage.removeItem(ARTIST_INDEX_CACHE_KEY); }catch(e){}
+    await buildCompleteTrackIndex();
+    if(!trackIndex.length) throw new Error('No tracks were indexed');
+    const tracks=trackIndex.map(function(t){
+      return { title:t.name||'', url:t.url||'', duration:t.duration||0, show:t.showId||'',
+        artist:(t.artists&&t.artists[0])||t.artist||'', album:t._album||t.albumTitle||'',
+        station_name:t.stationName||'', station:t.stationNum||0, genre:_exportGenre(t),
+        uid:t._uid||t.url||'', year:t._year||'' };
+    });
+    const aS=new Set(), gS=new Set(), yS=new Set(), stn={};
+    tracks.forEach(function(t){ if(t.artist)aS.add(t.artist); if(t.genre)gS.add(t.genre); if(t.year)yS.add(t.year); if(t.station!=null)stn[t.station]=t.station_name||('Station '+t.station); });
+    const out={ total_tracks:tracks.length, generated:new Date().toISOString(),
+      index:{ artists:Array.from(aS).slice(0,5000), genres:Array.from(gS).sort(),
+        years:Array.from(yS).sort().reverse(),
+        stations:Object.keys(stn).map(function(k){ return {num:isNaN(+k)?k:+k, name:stn[k]}; }) },
+      tracks:tracks };
+    const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='db.json'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); },5000);
+    setBtn('\u2713 db.json downloaded ('+tracks.length.toLocaleString()+')', false);
+    if(typeof _toast==='function') _toast('db.json ready \u2014 '+tracks.length.toLocaleString()+' tracks. Commit it next to index.html');
+  }catch(e){
+    console.error('exportDB failed',e);
+    setBtn('\u26a0\ufe0f Build failed \u2014 retry', false);
+    alert('Build failed: '+((e&&e.message)||e));
+  }
+}
 async function loadDB() {
   if (dbLoadTried || trackIndexBuilt) return;
   dbLoadTried = true;
@@ -11706,7 +11773,7 @@ function playDBTrack(uid){
   const artist=(track.artists&&track.artists.length)?track.artists[0]:(track.artist||'');
   const np=document.getElementById('now-playing'); if(np) np.textContent=(artist?artist+' — ':'')+(track.name||track.title||'');
   const h=document.getElementById('np-heart'); if(h){ h.classList.add('visible'); h.classList.toggle('fav-on',dbFavorites.includes(uid)); }
-  const lb=document.getElementById('live-btn'); if(lb) lb.style.display='';
+  const lb=document.getElementById('live-btn'); if(lb) lb.style.display='inline-block';
   if(!on){ on=true; const pw=document.getElementById('pwr'); if(pw){ pw.textContent='POWER'; pw.classList.remove('active'); } }
   const url=(track.url||'').replace(/^http:\/\//,'https://');
   p.src=url; p.volume=currentVolume; p.load(); p.play().catch(function(e){ console.log('Play blocked:',e); const npx=document.getElementById('now-playing'); if(npx) npx.textContent='⚠️ Could not play this track (try another)'; });
