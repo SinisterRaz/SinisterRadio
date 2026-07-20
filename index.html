@@ -9697,9 +9697,20 @@ async function playTrackFromInfo(trackInfo) {
           
           console.log('✓ Playing from library:', trackInfo.name, 'from show:', showToLoad);
           return;
+        } else if (files.length > 0) {
+          // Show-level search result: exact file URL isn't in the db,
+          // so just play the first track of the loaded show.
+          currentTrackIndex = 0;
+          p.src = files[0].u;
+          p.currentTime = 0;
+          p.volume = currentVolume;
+          p.play().catch(e => console.log('Play blocked:', e));
+          document.getElementById('now-playing').textContent = `OFFLINE: ${trackInfo.name}`;
+          setTimeout(() => onTrackChange(), 100);
+          console.log('✓ Playing show from start:', showToLoad);
+          return;
         } else {
-          console.warn('✗ Track not found in loaded files. URL:', trackInfo.url);
-          console.warn('✗ Available tracks:', files.map(f => f.u));
+          console.warn('✗ No files found for show:', showToLoad);
         }
       } catch(e) {
         console.error('✗ Error loading album files:', e);
