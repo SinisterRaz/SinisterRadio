@@ -7788,6 +7788,7 @@ mark.sr-hl{background:var(--ch-color,#d4a843);color:#000;border-radius:2px;paddi
       <button class="stab"        data-tab="playlists" onclick="switchTab('playlists')">≡ PLAYLISTS</button>
     </div>
     <div id="db-status" class="db-status">⏳ Loading...</div>
+    <button id="export-db-btn" class="build-db-btn" onclick="exportDB()">📦 BUILD &amp; DOWNLOAD db.json (full ~30k tracks)</button>
     <button class="search-close" onclick="toggleSearch()">✕</button>
   </div>
 
@@ -10272,6 +10273,63 @@ setTimeout(() => {
   buildCompleteTrackIndex();
 }, 3000);
 
+// Export a prebuilt db.json (full 30k-track index) for hosting on GitHub
+async function exportDB() {
+  const btn = document.getElementById('export-db-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Crawling all shows…'; }
+
+  // Force a complete fresh crawl so the file is guaranteed full, not a partial cache
+  try { localStorage.removeItem(TRACK_INDEX_CACHE_KEY); localStorage.removeItem(ARTIST_INDEX_CACHE_KEY); } catch(e){}
+  trackIndexBuilt = false; artistIndexBuilt = false; trackIndex = []; artistIndex = {};
+
+  await buildCompleteTrackIndex();
+
+  if (btn) btn.textContent = `📦 Packaging ${trackIndex.length.toLocaleString()} tracks…`;
+
+  // Group tracks by show so repeated data (URL prefix, show id, station, genre)
+  // is stored ONCE per show instead of on every track. Tracks are stored as
+  // [name, filename, duration] arrays. URL is reconstructed on load.
+  const showMap = new Map();
+  const prefix = 'https://archive.org/download/';
+  trackIndex.forEach(t => {
+    const id = t.showId || '';
+    if (!showMap.has(id)) {
+      showMap.set(id, {
+        i: id,
+        s: t.stationNum || 0,
+        n: t.stationName || '',
+        a: (t.artists && t.artists[0]) || '',
+        g: t.genre || '',
+        y: t._year || '',
+        t: []
+      });
+    }
+    // filename = last path segment of the URL
+    let file = (t.url || '').startsWith(prefix + id + '/')
+      ? (t.url || '').slice((prefix + id + '/').length)
+      : (t.url || '').split('/').pop();
+    showMap.get(id).t.push([t.name || '', file, t.duration || 0]);
+  });
+
+  const db = {
+    v: 2,
+    built: new Date().toISOString(),
+    total_tracks: trackIndex.length,
+    shows: Array.from(showMap.values())
+  };
+
+  const blob = new Blob([JSON.stringify(db)], {type:'application/json'});
+  const sizeMB = (blob.size/1048576).toFixed(1);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'db.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(a.href);
+
+  if (btn) { btn.disabled = false; btn.textContent = `✓ Downloaded db.json (${db.total_tracks.toLocaleString()} tracks, ${sizeMB}MB)`; }
+  alert(`db.json downloaded!\n\n${db.total_tracks.toLocaleString()} tracks · ${sizeMB}MB\n\nCommit this file to your repo (replace the old db.json) and everyone gets instant full search.`);
+}
+
 // Function to manually rebuild the search index
 async function rebuildSearchIndex() {
   if (!confirm('Rebuild search index?\n\nThis will clear the cache and re-index all tracks.\nThis may take 10-30 seconds.')) {
@@ -11439,29 +11497,56 @@ async function loadDB() {
     const r = await fetch('./db.json');
     if (!r.ok) throw new Error('HTTP ' + r.status);
     db = await r.json();
-    trackIndex = db.tracks.map(t => ({
-      name: t.title||'', url: t.url||'', duration: t.duration||0,
-      showId: t.show||'', artists: t.artist ? [t.artist] : [],
-      albumTitle: t.album||'', stationName: t.station_name||'',
-      stationNum: t.station||0, stationIndex: (t.station||1)-1,
-      genre: t.genre||'',
-      searchableArtist: (t.artist||'').toLowerCase(),
-      searchableSong:   (t.title||'').toLowerCase(),
-      searchableGenre:  (t.genre||'').toLowerCase(),
-      _uid: t.uid||'', _year: t.year||'', _album: t.album||''
-    }));
+
+    if (Array.isArray(db.shows)) {
+      // Compact grouped schema (v2): show data stored once, tracks reconstruct their URL.
+      // show: {i:id, s:stationNum, n:stationName, a:artist, g:genre, y:year, t:[[name,file,dur],...]}
+      trackIndex = [];
+      db.shows.forEach(sh => {
+        const base = 'https://archive.org/download/' + sh.i + '/';
+        (sh.t||[]).forEach(tk => {
+          const name = tk[0]||'', file = tk[1]||'', dur = tk[2]||0;
+          trackIndex.push({
+            name, url: base + file, duration: dur,
+            showId: sh.i||'', artists: sh.a ? [sh.a] : [],
+            albumTitle: sh.i||'', stationName: sh.n||'',
+            stationNum: sh.s||0, stationIndex: (sh.s||1)-1,
+            genre: sh.g||'',
+            searchableArtist: (sh.a||'').toLowerCase(),
+            searchableSong:   name.toLowerCase(),
+            searchableGenre:  (sh.g||'').toLowerCase(),
+            _uid: sh.i + '::' + file, _year: sh.y||'', _album: sh.i||''
+          });
+        });
+      });
+    } else {
+      // Legacy flat schema (v1)
+      trackIndex = db.tracks.map(t => ({
+        name: t.title||'', url: t.url||'', duration: t.duration||0,
+        showId: t.show||'', artists: t.artist ? [t.artist] : [],
+        albumTitle: t.album||'', stationName: t.station_name||'',
+        stationNum: t.station||0, stationIndex: (t.station||1)-1,
+        genre: t.genre||'',
+        searchableArtist: (t.artist||'').toLowerCase(),
+        searchableSong:   (t.title||'').toLowerCase(),
+        searchableGenre:  (t.genre||'').toLowerCase(),
+        _uid: t.uid||'', _year: t.year||'', _album: t.album||''
+      }));
+    }
+
     trackIndex.forEach(t => t.artists.forEach(a => {
       const k = a.toLowerCase();
       if (!artistIndex[k]) artistIndex[k] = {name:a,count:0};
       artistIndex[k].count++;
     }));
     trackIndexBuilt = true; artistIndexBuilt = true;
-    if (status) status.textContent = '✓ ' + db.total_tracks.toLocaleString() + ' tracks';
+    const total = db.total_tracks || trackIndex.length;
+    if (status) status.textContent = '✓ ' + total.toLocaleString() + ' tracks';
     document.getElementById('search-btn')?.classList.add('db-ready');
     populateDBFilters();
     const res = document.getElementById('search-results');
-    if (res) res.innerHTML = '<div class="search-placeholder">🔍 ' + db.total_tracks.toLocaleString() + ' tracks ready</div>';
-    console.log('db.json loaded:', db.total_tracks, 'tracks');
+    if (res) res.innerHTML = '<div class="search-placeholder">🔍 ' + total.toLocaleString() + ' tracks ready</div>';
+    console.log('db.json loaded:', total, 'tracks');
   } catch(e) {
     if (status) status.textContent = 'db.json not found';
     console.warn('db.json unavailable:', e.message);
