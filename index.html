@@ -7986,8 +7986,8 @@ async function loadReggaetonShows() {
       console.log(`Loaded ${shows2.length} shows from spanish-speaking-hip-hop`);
     }
     
-    // Combine and deduplicate
-    reggaetonShows = [...new Set([...shows1, ...shows2])];
+    // Combine, deduplicate + SORT so every listener gets a BYTE-IDENTICAL pool → in sync
+    reggaetonShows = [...new Set([...shows1, ...shows2])].sort();
     
     if (reggaetonShows.length > 0) {
       console.log(`Total Reggaeton shows loaded: ${reggaetonShows.length}`);
@@ -8029,13 +8029,16 @@ async function loadDatPiffMixtapes() {
     // Search Archive.org for all DatPiff mixtapes
     const searchUrl = 'https://archive.org/advancedsearch.php?q=collection:datpiffarchives&fl=identifier&rows=10000&output=json';
     
-    const response = await fetch(searchUrl);
+    let response = await fetch(searchUrl);
+    if(!response.ok){ await new Promise(r=>setTimeout(r,1500)); response = await fetch(searchUrl); } // one retry — a transient hiccup must not desync this listener
     const data = await response.json();
     
     if (data.response && data.response.docs) {
       datpiffMixtapes = data.response.docs
         .map(doc => doc.identifier)
         .filter(id => id && id.startsWith('datpiff-mixtape-'));
+      // Dedupe + SORT so every listener gets a BYTE-IDENTICAL pool → identical schedule → in sync
+      datpiffMixtapes = [...new Set(datpiffMixtapes)].sort();
       
       console.log(`Loaded ${datpiffMixtapes.length} DatPiff mixtapes!`);
       
@@ -8071,7 +8074,7 @@ const datpiffPromise = loadDatPiffMixtapes();
 const reggaetonPromise = loadReggaetonShows();
 
 // Wait for both to complete, then generate schedule
-Promise.all([datpiffPromise, reggaetonPromise]).then(() => {
+const scheduleReady = Promise.all([datpiffPromise, reggaetonPromise]).then(() => {
   console.log('All dynamic content loaded, generating schedule...');
   
   function regenerateSchedule() {
@@ -8080,6 +8083,14 @@ Promise.all([datpiffPromise, reggaetonPromise]).then(() => {
     weeklySchedule = generateWeeklySchedule(currentWeek + (currentYear * 100));
     console.log('✓ Weekly schedule generated with ALL stations including DatPiff, Reggaeton, and The Plug Radio!');
     console.log('✓ Station 7 (The Plug Radio) schedule:', weeklySchedule[7] ? `${weeklySchedule[7].length} shows` : 'NOT FOUND');
+    // If someone is already tuned to one of the dynamic-pool stations, re-sync now that the
+    // full shared list is loaded — snaps them to the exact broadcast everyone else hears.
+    try {
+      if (typeof on !== 'undefined' && on && isLiveMode && STATIONS[cur] && !STATIONS[cur].streamUrl
+          && [1,2,3,4,8].indexOf(STATIONS[cur].num) !== -1) {
+        go(cur);
+      }
+    } catch(e){}
   }
   
   // Generate initial schedule
@@ -8115,6 +8126,13 @@ const metaCache = {};
 // LIVE BROADCAST SYSTEM
 let isLiveMode = true; // Start in LIVE mode
 let weeklySchedule = null;
+// Build an initial schedule IMMEDIATELY from the base stations (all of which already
+// have their default shows) so LIVE mode works instantly — no waiting on the slow
+// DatPiff/Reggaeton fetches. It's regenerated with that dynamic content folded in
+// once those resolve (see the Promise.all above).
+try {
+  weeklySchedule = generateWeeklySchedule(getWeekNumber(new Date()) + (new Date().getFullYear() * 100));
+} catch(e){ console.warn('Initial schedule build deferred to fetches:', e); }
 
 // Get ISO week number (same for everyone worldwide)
 function getWeekNumber(date) {
@@ -8320,6 +8338,14 @@ async function playSync(){
   
   let currentShow, scheduledTrackIndex, elapsedTime = 0;
   
+  // If we intend to play LIVE but the weekly schedule is still loading (it's built
+  // after two Archive.org fetches), wait for it — bounded to 6s — so we JOIN the
+  // broadcast already in progress instead of falling through to start-at-0:00.
+  if(isLiveMode && !weeklySchedule){
+    document.getElementById('now-playing').textContent = '📡 Syncing broadcast…';
+    try{ await Promise.race([ scheduleReady, new Promise(function(r){ setTimeout(r, 6000); }) ]); }catch(e){}
+  }
+  
   // LIVE MODE: Use scheduled broadcast
   if(isLiveMode && weeklySchedule) {
     const broadcast = getCurrentBroadcast(weeklySchedule, ch.num);
@@ -8424,6 +8450,8 @@ async function playSync(){
 async function go(i){
   if(!on) return;
   onDemand=false;
+  isLiveMode = true; // tuning a station always returns to LIVE (join mid-broadcast)
+  { const _lb2=document.getElementById('liveBtn'); if(_lb2) _lb2.classList.add('active'); }
   { const _lb=document.getElementById('live-btn'); if(_lb) _lb.style.display='none'; }
   cur = i;
   const s = STATIONS[i];
