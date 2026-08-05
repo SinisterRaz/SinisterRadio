@@ -8468,6 +8468,11 @@ async function playSync(){
   // If still no tracks after all retries, show error
   if(files.length === 0){
     console.error('No tracks available after trying', maxRetries, 'shows');
+    // Offline this means every fetch failed, not that the shows are empty.
+    if(navigator.onLine === false || netRetry > 0){
+      scheduleNetRetry('all fetches returned empty');
+      return;
+    }
     document.getElementById('now-playing').textContent = `⚠️ No tracks available - All shows empty`;
     return;
   }
@@ -8520,8 +8525,16 @@ async function playSync(){
   }
 }
 
+// Network-recovery state (declared before go() so it is never in the TDZ)
+let netRetry = 0;
+let netRetryTimer = null;
+let resyncing = false;
+let stallTimer = null;
+
 async function go(i){
   if(!on) return;
+  cancelNetRetry(); netRetry = 0;   // stale retry must not yank the new station
+  if(stallTimer){ clearTimeout(stallTimer); stallTimer = null; }
   onDemand=false;
   isLiveMode = true; // tuning a station always returns to LIVE (join mid-broadcast)
   { const _lb2=document.getElementById('liveBtn'); if(_lb2) _lb2.classList.add('active'); }
@@ -8700,6 +8713,90 @@ p.addEventListener('loadedmetadata', () => {
 // Handle track load errors - skip to next track if current fails
 let loadTimeout = null;
 
+// ─────────────────────────────────────────────────────────────────────────────
+// NETWORK RECOVERY (mobile drops in and out constantly)
+// Every failure path used to call autoAdvanceTrack(), which immediately does a
+// fetchFiles() network call — offline that also fails, so the chain dead-ended
+// and the radio stayed silent until manually re-tuned. Instead: back off, wait
+// for the network, then re-sync from the shared clock so we rejoin the
+// broadcast where everyone else is rather than where we left off.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function cancelNetRetry(){
+  if(netRetryTimer){ clearTimeout(netRetryTimer); netRetryTimer = null; }
+}
+
+async function resyncBroadcast(reason){
+  if(!on || resyncing) return;
+  if(STATIONS[cur] && STATIONS[cur].streamUrl) return;  // live streams have their own retry
+  resyncing = true;
+  cancelNetRetry();
+  try{
+    console.log('🔁 Re-syncing to broadcast clock —', reason);
+    await playSync();          // recomputes track + offset from UTC clock
+    netRetry = 0;
+  }catch(e){
+    console.error('resync failed:', e);
+    scheduleNetRetry('resync threw');
+  }finally{
+    resyncing = false;
+  }
+}
+
+function scheduleNetRetry(reason){
+  if(!on) return;
+  if(STATIONS[cur] && STATIONS[cur].streamUrl) return;
+  cancelNetRetry();
+  netRetry++;
+  const np = document.getElementById('now-playing');
+
+  if(navigator.onLine === false){
+    if(np) np.textContent = '📴 Offline — will resume when connection returns';
+    return;   // the 'online' listener takes over; no point burning retries
+  }
+
+  const wait = Math.min(30000, 1500 * Math.pow(1.7, netRetry - 1));  // 1.5s → 30s cap
+  if(np) np.textContent = `📡 Reconnecting… (${netRetry})`;
+  console.log(`⏳ Reconnect attempt ${netRetry} in ${Math.round(wait/1000)}s — ${reason}`);
+  netRetryTimer = setTimeout(() => resyncBroadcast('retry ' + netRetry), wait);
+}
+
+// Network came back — rejoin the broadcast immediately.
+window.addEventListener('online', () => {
+  console.log('🌐 Network restored');
+  netRetry = 0;
+  if(on) resyncBroadcast('network restored');
+});
+window.addEventListener('offline', () => {
+  console.log('🌐 Network lost');
+  const np = document.getElementById('now-playing');
+  if(on && np) np.textContent = '📴 Offline — will resume when connection returns';
+});
+
+// Returning to the tab after the phone slept: we are almost certainly behind
+// the broadcast clock, so re-sync rather than resume where we stalled.
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible' && on && !p.paused){
+    if(navigator.onLine !== false) resyncBroadcast('tab visible again');
+  }
+});
+
+// Connection dropped mid-track: the element stalls instead of erroring.
+function armStallWatch(tag){
+  if(stallTimer) clearTimeout(stallTimer);
+  if(!on || (STATIONS[cur] && STATIONS[cur].streamUrl)) return;
+  stallTimer = setTimeout(() => {
+    if(on && p.paused === false && p.readyState < 3){
+      console.warn('⏱️ Stalled 15s (' + tag + ') — treating as a drop');
+      scheduleNetRetry('stalled');
+    }
+  }, 15000);
+}
+p.addEventListener('stalled', () => armStallWatch('stalled'));
+p.addEventListener('waiting', () => armStallWatch('waiting'));
+p.addEventListener('playing', () => { if(stallTimer){ clearTimeout(stallTimer); stallTimer = null; } netRetry = 0; cancelNetRetry(); });
+
+
 p.addEventListener('error', function handleTrackError() {
   if(STATIONS[cur] && STATIONS[cur].streamUrl) {
     const st = STATIONS[cur];
@@ -8737,7 +8834,16 @@ p.addEventListener('error', function handleTrackError() {
   }
   
   if(!on) return;
-  
+
+  // Distinguish "this one file is bad" from "the network is gone".
+  // MEDIA_ERR_NETWORK(2) / MEDIA_ERR_SRC_NOT_SUPPORTED(4) while offline both
+  // mean skipping is pointless — the next fetch would fail too.
+  const code = p.error && p.error.code;
+  if(navigator.onLine === false || code === 2){
+    scheduleNetRetry('media error code ' + code);
+    return;
+  }
+
   // If we have more tracks, try the next one
   if(currentFiles && currentFiles.length > 1) {
     console.log('⏭️ Skipping to next track...');
@@ -8750,7 +8856,7 @@ p.addEventListener('error', function handleTrackError() {
     }
   } else {
     console.error('❌ No more tracks available');
-    document.getElementById('now-playing').textContent = '⚠️ Track failed to load';
+    scheduleNetRetry('no tracks available');
   }
 });
 
@@ -8767,13 +8873,18 @@ p.addEventListener('loadstart', () => {
   // Set new timeout
   loadTimeout = setTimeout(() => {
     if(p.paused && p.readyState < 2) {
-      console.warn('⏱️ Track took too long to load, skipping...');
-      if(on && currentFiles && currentFiles.length > 1) {
+      console.warn('⏱️ Track took too long to load');
+      if(!on) return;
+      // Offline: skipping just fails again. Back off and wait for the network.
+      if(navigator.onLine === false){ scheduleNetRetry('load timeout while offline'); return; }
+      if(currentFiles && currentFiles.length > 1) {
         if(isLiveMode) {
           autoAdvanceTrack();
         } else {
           nextTrack();
         }
+      } else {
+        scheduleNetRetry('load timeout, no alternates');
       }
     }
   }, 10000); // 10 second timeout
@@ -8872,7 +8983,7 @@ async function autoAdvanceTrack(){
       slot = slots[currentScheduleIndex];
       files = await fetchFiles(slot.show);
     }
-    if(files.length === 0) return;
+    if(files.length === 0){ scheduleNetRetry('slot fetch empty'); return; }
 
     currentFiles = files;
 
