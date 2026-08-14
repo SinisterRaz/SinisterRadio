@@ -7867,6 +7867,67 @@ mark.sr-hl{background:var(--ch-color,#d4a843);color:#000;border-radius:2px;paddi
   </div>
 </div>
 <script>
+// ─────────────────────────────────────────────────────────────────────────
+// TRUE TIME — everyone must read the same watch.
+// Sync works by every listener computing their position from the clock. That
+// only holds if the clocks agree. We were reading new Date(), which is the
+// LISTENER'S OWN DEVICE clock, and nothing enforces that being right — an SL
+// viewer on a PC 3 minutes off plays a different track entirely.
+// Every HTTP response carries a Date: header with real server time. We already
+// call archive.org, so we learn the offset from that and correct for it. No
+// new dependency, no stream server.
+// ─────────────────────────────────────────────────────────────────────────
+let clockOffsetMs = 0;        // serverTime - deviceTime
+let clockSynced = false;
+
+function trueNow(){ return new Date(Date.now() + clockOffsetMs); }
+
+function noteServerDate(dateHeader, requestSentAt){
+  if(!dateHeader) return;
+  const serverMs = Date.parse(dateHeader);
+  if(!isFinite(serverMs)) return;
+  // The header is stamped mid-flight, so credit half the round trip.
+  const rtt = Date.now() - requestSentAt;
+  const estimated = serverMs + (rtt / 2);
+  const offset = estimated - Date.now();
+  // Date headers are whole seconds, so sub-second precision isn't real.
+  // Only act on a meaningful skew, and don't let one weird reply swing us.
+  if(Math.abs(offset) > 1500){
+    if(!clockSynced || Math.abs(offset - clockOffsetMs) > 1500){
+      clockOffsetMs = offset;
+      console.log('🕐 Device clock is ' + (offset > 0 ? 'BEHIND' : 'AHEAD') + ' by ' +
+                  Math.abs(Math.round(offset/1000)) + 's — correcting broadcast time.');
+    }
+  } else if(!clockSynced){
+    clockOffsetMs = 0;
+    console.log('🕐 Device clock accurate (within ' + Math.abs(Math.round(offset)) + 'ms).');
+  }
+
+  const first = !clockSynced;
+  clockSynced = true;
+
+  // The first schedule is built at page load, BEFORE any fetch has happened,
+  // so it used the uncorrected clock. If the correction lands us in a different
+  // ISO week, that schedule is the wrong one entirely — rebuild it.
+  if(first && Math.abs(clockOffsetMs) > 1500){
+    try {
+      const corrected = isoWeekSeed(trueNow());
+      if(typeof currentWeekSeed !== 'undefined' && currentWeekSeed !== null && corrected !== currentWeekSeed){
+        console.log('🗓️ Clock correction changed the week ' + currentWeekSeed + ' → ' + corrected + ' — rebuilding schedule.');
+        currentWeekSeed = corrected;
+        if(typeof window.__regenSchedule === 'function') window.__regenSchedule();
+        else weeklySchedule = generateWeeklySchedule(corrected);
+      }
+      // Even inside the same week we may now be at a different point in it.
+      if(typeof on !== 'undefined' && on && typeof isLiveMode !== 'undefined' && isLiveMode
+         && STATIONS[cur] && !STATIONS[cur].streamUrl && typeof resyncBroadcast === 'function'){
+        resyncBroadcast('clock corrected by ' + Math.round(clockOffsetMs/1000) + 's');
+      }
+    } catch(e){ console.warn('post-clock-sync rebuild skipped:', e); }
+  }
+}
+
+
 // EXACT COPY OF TV MUSIC CHANNELS
 const STATIONS = [
   {num:1, name:"🔥 Classic Rap Radio", cat:"Music", master:true, networkShows:["RicNuttIse-bPresentsWelcomeToSyndiegoMixtapes","dedication-2-lil-wayne","tdolapt1bykazeloon","the-drive-in-theatre-currensy","kiz-mixtapes","Pastor_Troy_-_Crown_Royal_Legend-2013","14yogottiigotemftlilwayneandthebirdman","2-09-i-wanna-disc-2-east-coast-edition-kurupt_202305","from-me-to-u-juelz","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_HD_3-2011","VA-Biggy_Jiggy_Mixtapes_-_Exclusive_Tunes_S.G._Vol_32-2010","DJ_Ty_Boogie_-_The_Greatest_Whoever_Done_It_13_-MixFiend-2007","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_73-2011","cole-world-sideline-story-jcole-itunes","lil-peep-live-forever_202503","VA-DJ_Superstar_Jay_-_I_Am_Mixtapes_86-2011","va-dj-chuck-t-down-south-slangin-vol.-51-bootleg-2008-fpuo","va-dj-chuck-t-down-south-slangin-vol.-48-bootleg-2008-fpuo","dj-lindo_20251212_2301","Gangsta_Grillz_The_Whole_Series__Covers","VA-Superstar_Jay_-_I_Am_Mixtapes_197-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_208-2018","VA-Biggy_Jiggy_Mixtapes_-_Exclusiv_Tunes-2014","FlexinNReppin2DatPiff.com","VA-Superstar_Jay_-_I_Am_Mixtapes_207-2018","mixtapes_202212","VA-Superstar_Jay_-_I_Am_Mixtapes_194-2016","VA-Superstar_Jay_-_I_Am_Mixtapes_186-2016","DJ_Stretch_-_Mixtapes_For_Dummyz_Vol_1_Feat._Project_Pat_and_Three_6_Mafia-2009","VA-Superstar_Jay_-_I_Am_Mixtapes_200-2017","VA-Superstar_Jay_-_I_Am_Mixtapes_147-2013","VA-Superstar_Jay_-_I_Am_Mixtapes_199-2017"], avgDur:2400},
@@ -8107,7 +8168,7 @@ const scheduleReady = Promise.all([datpiffPromise, reggaetonPromise]).then(() =>
   console.log('All dynamic content loaded, generating schedule...');
   
   function regenerateSchedule() {
-    currentWeekSeed = isoWeekSeed(new Date());   // UTC week AND UTC week-year
+    currentWeekSeed = isoWeekSeed(trueNow());   // UTC week AND UTC week-year
     weeklySchedule = generateWeeklySchedule(currentWeekSeed);
     console.log('✓ Weekly schedule generated with ALL stations including DatPiff, Reggaeton, and The Plug Radio!');
     console.log('✓ Station 7 (The Plug Radio) schedule:', weeklySchedule[7] ? `${weeklySchedule[7].length} shows` : 'NOT FOUND');
@@ -8167,7 +8228,7 @@ var currentWeekSeed = null;   // declared before first use (no temporal dead zon
 // DatPiff/Reggaeton fetches. It's regenerated with that dynamic content folded in
 // once those resolve (see the Promise.all above).
 try {
-  weeklySchedule = generateWeeklySchedule(currentWeekSeed = isoWeekSeed(new Date()));
+  weeklySchedule = generateWeeklySchedule(currentWeekSeed = isoWeekSeed(trueNow()));
 } catch(e){ console.warn('Initial schedule build deferred to fetches:', e); }
 
 // Get ISO week number (same for everyone worldwide)
@@ -8207,7 +8268,7 @@ function isoWeekSeed(d){
 let weekBoundaryTimer = null;
 function scheduleWeekRollover(){
   if(weekBoundaryTimer) clearTimeout(weekBoundaryTimer);
-  const now = new Date();
+  const now = trueNow();
   const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const day = next.getUTCDay() || 7;
   next.setUTCDate(next.getUTCDate() + (8 - day));   // next Monday 00:00 UTC
@@ -8215,7 +8276,7 @@ function scheduleWeekRollover(){
   if(ms < 1000) ms = 1000;
   if(ms > 86400000) ms = 86400000;   // re-arm daily; long timers get throttled/suspended
   weekBoundaryTimer = setTimeout(() => {
-    const fresh = isoWeekSeed(new Date());
+    const fresh = isoWeekSeed(trueNow());
     if(fresh !== currentWeekSeed){
       console.log('🗓️ ISO week rolled over — regenerating schedule', currentWeekSeed, '→', fresh);
       currentWeekSeed = fresh;
@@ -8264,7 +8325,7 @@ function generateWeeklySchedule(weekSeed) {
 
 // Get current show/track based on time
 function getCurrentBroadcast(schedule, stationNum) {
-  const now = new Date();
+  const now = trueNow();
   const secondsIntoWeek =
     (now.getUTCDay()     * 86400) +
     (now.getUTCHours()   * 3600)  +
@@ -8359,7 +8420,10 @@ async function fetchFiles(identifier){
   if(metaCache[identifier]) return metaCache[identifier];
   
   try{
+    const _sentAt = Date.now();
     const r = await fetch('https://archive.org/metadata/' + identifier);
+    // Learn true time from a request we were making anyway.
+    try { noteServerDate(r.headers.get('date'), _sentAt); } catch(e){}
     const j = await r.json();
     
     // Big crawls get rate-limited and archive.org returns an empty response even for
