@@ -8221,6 +8221,61 @@ const metaCache = {};
 // LIVE BROADCAST SYSTEM
 let isLiveMode = true; // Start in LIVE mode
 let weeklySchedule = null;
+// ─────────────────────────────────────────────────────────────────
+// BROADCAST RELAY — when the controller changes station or powers
+// on/off, POST to the LSL script's HTTP-in URL so it pushes the
+// new URL to all viewers. LSL passes its URL via #relay=<url>.
+// ─────────────────────────────────────────────────────────────────
+let _relayUrl = null;
+let _fromUrl = false;
+
+function getRelayUrl(){
+  if(_relayUrl) return _relayUrl;
+  try {
+    const h = (location.hash || '').replace(/^#/, '');
+    const q = new URLSearchParams(h);
+    const r = q.get('relay');
+    if(r && r.startsWith('http')){ _relayUrl = r; return r; }
+  } catch(e){}
+  return null;
+}
+
+function relayToLSL(body){
+  if(_fromUrl) return;
+  const url = getRelayUrl();
+  if(!url) return;
+  fetch(url, { method:'POST', headers:{'Content-Type':'text/plain'}, body:body })
+    .catch(e => console.warn('relay failed:', e));
+}
+
+function readUrlState(){
+  try {
+    const h = (location.hash || '').replace(/^#/, '');
+    if(h.indexOf('=') < 0) return null;
+    const q = new URLSearchParams(h);
+    const raw = q.get('ch') || q.get('station');
+    if(raw === null) return null;
+    const n = parseInt(raw, 10);
+    if(!isFinite(n)) return null;
+    return { ch:n, power: q.get('power') || null };
+  } catch(e){ return null; }
+}
+
+// On startup: if URL has a station, tune to it
+window.addEventListener('hashchange', function(){
+  try {
+    const st = readUrlState();
+    if(!st || typeof STATIONS === 'undefined') return;
+    const i = STATIONS.findIndex(x => x.num === st.ch);
+    if(i >= 0 && i !== cur){
+      _fromUrl = true;
+      if(!on) power();  // turn on if off
+      go(i);
+      _fromUrl = false;
+    }
+  } catch(e){}
+});
+
 var currentWeekSeed = null;   // declared before first use (no temporal dead zone)
 
 // Build an initial schedule IMMEDIATELY from the base stations (all of which already
@@ -8229,6 +8284,19 @@ var currentWeekSeed = null;   // declared before first use (no temporal dead zon
 // once those resolve (see the Promise.all above).
 try {
   weeklySchedule = generateWeeklySchedule(currentWeekSeed = isoWeekSeed(trueNow()));
+
+  // BROADCAST: if URL has a station, tune to it on boot
+  const _urlState = readUrlState();
+  if(_urlState && _urlState.power === 'off'){
+    // LSL said power off — stay off
+  } else if(_urlState && _urlState.ch){
+    const _i = STATIONS.findIndex(x => x.num === _urlState.ch);
+    if(_i >= 0){
+      _fromUrl = true;
+      cur = _i;
+      _fromUrl = false;
+    }
+  }
 } catch(e){ console.warn('Initial schedule build deferred to fetches:', e); }
 
 // Get ISO week number (same for everyone worldwide)
@@ -8703,6 +8771,7 @@ async function go(i){
   { const _lb2=document.getElementById('liveBtn'); if(_lb2) _lb2.classList.add('active'); }
   { const _lb=document.getElementById('live-btn'); if(_lb) _lb.style.display='none'; }
   cur = i;
+  relayToLSL('ch=' + STATIONS[i].num);
   const s = STATIONS[i];
   document.getElementById('num').textContent = s.num;
   document.getElementById('name').textContent = s.name;
@@ -8765,6 +8834,7 @@ function power(){
     
     // Tell Second Life radio is ON
     sendToSL('RADIO_ON');
+    relayToLSL('power=on');
     startVisualizer(); // Start visualizer
   } else {
     pwr.textContent = 'OFF';
@@ -8786,6 +8856,7 @@ function power(){
     console.log('📻 POWER OFF');
     // Tell Second Life radio is OFF
     sendToSL('RADIO_OFF');
+    relayToLSL('power=off');
     stopVisualizer(); // Stop visualizer
   }
 }
